@@ -1,4 +1,4 @@
-package com.foodrec.backend.DemoAPITemplate.service;
+package com.foodrec.backend.RecipeAPI.service;
 
 public class APIService {
 }

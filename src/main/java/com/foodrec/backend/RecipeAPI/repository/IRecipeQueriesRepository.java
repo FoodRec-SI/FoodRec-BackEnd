@@ -1,6 +1,7 @@
-package com.foodrec.backend.RecipeAPI.repository.queries;
+package com.foodrec.backend.RecipeAPI.repository;
 
 import com.foodrec.backend.RecipeAPI.model.Recipe;
+import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -21,8 +22,9 @@ public interface IRecipeQueriesRepository extends JpaRepository<Recipe,Long>{
     @Query(value="SELECT * FROM recipe",nativeQuery = true)
     List<Recipe> findAllRecipes();
 
-    /*Param("recipeid"): tìm xem trong câu query có chỗ nào ghi là :recipeId không. Nếu có thì thay chỗ đó thành
-    * giá trị được truyền từ Controller bên ngoài vào (thông qua đầu vào String recipeid )*/
+    /*Param("recipeid"): tìm xem trong câu query có chỗ nào ghi là :recipeId không.
+    Nếu có thì thay chỗ đó thành object (món đồ) được truyền từ Controller bên ngoài vào, đó là String recipeid )*/
+
     @Query(value="SELECT * FROM recipe WHERE recipeid = :recipeid",nativeQuery = true)
     Recipe findRecipeByRecipeid(@Param("recipeid") String recipeid);
 }
