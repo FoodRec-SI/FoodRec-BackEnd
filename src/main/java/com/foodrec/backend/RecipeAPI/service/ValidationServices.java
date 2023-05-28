@@ -1,12 +1,13 @@
 package com.foodrec.backend.RecipeAPI.service;
 
+import com.foodrec.backend.RecipeAPI.dto.RecipeDto;
 import com.foodrec.backend.RecipeAPI.model.Recipe;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 
 public class ValidationServices {
-    public static boolean containsAnyEmptyField(Recipe rec, ArrayList<String> exceptionList)throws IllegalAccessException{
+    public static boolean containsAnyEmptyField(RecipeDto rec, ArrayList<String> exceptionList)throws IllegalAccessException{
         //lấy danh sách các fields (thuộc tính có sẵn trong object Recipe rec)
         //getFields không hoạt động vì tất cả thuộc tính của Recipe class là PRIVATE.
         //Vì vậy phải sử dụng hàm getDeclaredFields.
