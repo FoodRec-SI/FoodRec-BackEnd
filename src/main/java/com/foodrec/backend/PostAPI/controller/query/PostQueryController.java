@@ -1,6 +1,7 @@
 package com.foodrec.backend.PostAPI.controller.query;
 
-import com.foodrec.backend.PostAPI.model.Post;
+import com.foodrec.backend.PostAPI.dto.PostDTO;
+import com.foodrec.backend.PostAPI.entity.Post;
 import com.foodrec.backend.PostAPI.service.PostQueryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,8 +17,17 @@ public class PostQueryController {
     private PostQueryService postQueryService;
 
     @GetMapping("/posts")
-    public ResponseEntity<List<Post>> getAllPost(){
-        List<Post> posts = postQueryService.getAllPost();
-        return new ResponseEntity<>(posts, HttpStatus.OK);
+    public ResponseEntity<List<PostDTO>> getAllPost(){
+        List<PostDTO> postDTOs = postQueryService.getAllPosts();
+        return new ResponseEntity<>(postDTOs, HttpStatus.OK);
+    }
+    @GetMapping("/posts/newest")
+    public ResponseEntity<List<PostDTO>> sortNewestPostByDate() {
+        try {
+            List<PostDTO> postDTOs = postQueryService.sortNewestPostByDate();
+            return new ResponseEntity<>(postDTOs, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 }

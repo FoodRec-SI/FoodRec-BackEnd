@@ -1,9 +1,12 @@
 package com.foodrec.backend.PostAPI.service;
 
-import com.foodrec.backend.PostAPI.model.Post;
+import com.foodrec.backend.PostAPI.dto.PostDTO;
 
 import java.util.List;
 
 public interface PostQueryService {
-    public List<Post> getAllPost();
+    List<PostDTO> getAllPosts();
+    PostDTO findPostByID(String postid);
+    List<PostDTO> sortNewestPostByDate();
+
 }

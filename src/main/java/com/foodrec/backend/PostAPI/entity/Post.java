@@ -1,11 +1,11 @@
-package com.foodrec.backend.PostAPI.model;
+package com.foodrec.backend.PostAPI.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
-import java.sql.Time;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "post")
@@ -15,7 +15,7 @@ public class Post {
     @Column(name = "postid")
     private String postid;
     @Column(name = "time")
-    private Time time;
+    private LocalDateTime time;
     @Column(name = "status")
     private int status;
     @Column(name = "recipeid")
@@ -36,11 +36,11 @@ public class Post {
         this.postid = postid;
     }
 
-    public Time getTime() {
+    public LocalDateTime getTime() {
         return time;
     }
 
-    public void setTime(Time time) {
+    public void setTime(LocalDateTime time) {
         this.time = time;
     }
 
