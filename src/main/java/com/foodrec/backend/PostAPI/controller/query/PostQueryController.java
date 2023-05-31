@@ -1,7 +1,9 @@
 package com.foodrec.backend.PostAPI.controller.query;
 
+import an.awesome.pipelinr.Pipeline;
 import com.foodrec.backend.PostAPI.dto.PostDTO;
 import com.foodrec.backend.PostAPI.entity.Post;
+import com.foodrec.backend.PostAPI.query.get_all_posts.GetAllPostsQuery;
 import com.foodrec.backend.PostAPI.service.PostQueryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -13,21 +15,12 @@ import java.util.List;
 
 @RestController
 public class PostQueryController {
-    @Autowired
-    private PostQueryService postQueryService;
 
+    @Autowired
+    Pipeline pipeline;
     @GetMapping("/posts")
     public ResponseEntity<List<PostDTO>> getAllPost(){
-        List<PostDTO> postDTOs = postQueryService.getAllPosts();
-        return new ResponseEntity<>(postDTOs, HttpStatus.OK);
-    }
-    @GetMapping("/posts/newest")
-    public ResponseEntity<List<PostDTO>> sortNewestPostByDate() {
-        try {
-            List<PostDTO> postDTOs = postQueryService.sortNewestPostByDate();
-            return new ResponseEntity<>(postDTOs, HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+        List<PostDTO> result = pipeline.send(new GetAllPostsQuery());
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 }

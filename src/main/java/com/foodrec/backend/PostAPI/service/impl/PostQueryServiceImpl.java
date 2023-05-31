@@ -30,13 +30,13 @@ public class PostQueryServiceImpl implements PostQueryService {
     }
 
     @Override
-    public PostDTO findPostById(String postid) {
-        Optional<Post> optionalPost = postRepository.findById(postid);
+    public PostDTO findPostById(String postId) {
+        Optional<Post> optionalPost = postRepository.findById(postId);
         if (optionalPost.isPresent()) {
             Post post = optionalPost.get();
             return modelMapper.map(post, PostDTO.class);
         } else {
-            throw new EntityNotFoundException("Post not found with id: " + postid);
+            throw new EntityNotFoundException("Post not found with id: " + postId);
         }
     }
 
