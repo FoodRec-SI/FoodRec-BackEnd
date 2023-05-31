@@ -5,7 +5,8 @@ import com.foodrec.backend.PostAPI.dto.PostDTO;
 public interface PostCommandService {
     boolean createPost(PostDTO postDTO);
 
-    void updatePost();
+    boolean updateStatusPost(String userid, String postid);
 
-    void updateStatusPost();
+    boolean removePostByUser(String userid, String postid);
+
 }

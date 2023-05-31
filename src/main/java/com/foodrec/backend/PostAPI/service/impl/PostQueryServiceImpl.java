@@ -30,7 +30,7 @@ public class PostQueryServiceImpl implements PostQueryService {
     }
 
     @Override
-    public PostDTO findPostByID(String postid) {
+    public PostDTO findPostById(String postid) {
         Optional<Post> optionalPost = postRepository.findById(postid);
         if (optionalPost.isPresent()) {
             Post post = optionalPost.get();

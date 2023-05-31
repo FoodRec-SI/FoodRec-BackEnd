@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface PostQueryService {
     List<PostDTO> getAllPosts();
-    PostDTO findPostByID(String postid);
+    PostDTO findPostById(String postid);
     List<PostDTO> sortNewestPostByDate();
 
 }

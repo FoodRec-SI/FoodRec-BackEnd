@@ -22,6 +22,12 @@ dependencies {
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation "org.testcontainers:testcontainers:1.18.1"
 	implementation 'jakarta.persistence:jakarta.persistence-api:3.1.0'
+	implementation 'com.github.docker-java:docker-java-api:3.2.10'
+}
+configurations {
+	compile.exclude module: "jackson-core"
+	compile.exclude module: "jackson-databind"
+	compile.exclude module: "jackson-annotations"
 }
 
 tasks.named('test') {

@@ -5,12 +5,13 @@ import com.foodrec.backend.PostAPI.entity.Post;
 import com.foodrec.backend.PostAPI.repository.PostRepository;
 import com.foodrec.backend.PostAPI.service.PostCommandService;
 import com.foodrec.backend.PostAPI.service.PostQueryService;
+import com.github.dockerjava.api.exception.UnauthorizedException;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.time.LocalTime;
+
 @Service
 public class PostCommandServiceImpl implements PostCommandService {
     @Autowired
@@ -19,6 +20,7 @@ public class PostCommandServiceImpl implements PostCommandService {
     private ModelMapper modelMapper;
     @Autowired
     private PostQueryService postQueryService;
+
     @Override
     public boolean createPost(PostDTO postDTO) {
         boolean isSuccess = true;
@@ -33,13 +35,13 @@ public class PostCommandServiceImpl implements PostCommandService {
             Post post = modelMapper.map(postDTO, Post.class);
             // Check if the post already exists in the database using postid from postDTO
             Post existingPost = postRepository.findById(postDTO.getPostid()).orElse(null);
-            if(existingPost != null){
+            if (existingPost != null) {
                 return false; // post already exists, do not create a new one
             }
-            //Save the new Post entity to the database using PostRepository
+            //Save the new Post to the database using PostRepository
             postRepository.save(post);
             //Check the new Post
-            if(postQueryService.findPostByID(postDTO.getPostid())==null){
+            if (postQueryService.findPostById(postDTO.getPostid()) == null) {
                 return false;
             }
         } catch (IllegalAccessError illegalAccessError) {
@@ -49,12 +51,32 @@ public class PostCommandServiceImpl implements PostCommandService {
     }
 
     @Override
-    public void updatePost() {
-
+    public boolean updateStatusPost(String userid, String postid) {
+        return false;
     }
 
     @Override
-    public void updateStatusPost() {
-
+    public boolean removePostByUser(String userid, String postid) {
+        boolean isRemoved = true;
+        // Get the post DTO from the frontend
+        PostDTO postDTO = postQueryService.findPostById(postid);
+        if (postDTO == null) {
+            throw new IllegalArgumentException("Invalid Post!");
+        }
+        //Convert PostDTO to Post entity
+        Post post = modelMapper.map(postDTO, Post.class);
+        //Check if the user is authorized to delete this post
+        if (!post.getUserid().equals(userid)) {
+            throw new UnauthorizedException("User is not authorized to delete this post!");
+        }
+        //Delete the post from the database using PostRepository
+        try {
+            postRepository.deleteById(postid);
+        } catch (Exception e) {
+            throw new RuntimeException("Could not delete post: " + e);
+        }
+        return isRemoved;
     }
 }
+
+
