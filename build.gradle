@@ -18,10 +18,16 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.modelmapper:modelmapper:2.3.8'
 	runtimeOnly 'org.postgresql:postgresql'
+
+	testImplementation 'org.testcontainers:testcontainers:1.17.3'
+	testImplementation group: 'org.testcontainers', name: 'junit-jupiter', version: '1.17.3'
+	testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: '5.9.0'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-	testImplementation "org.testcontainers:testcontainers:1.18.1"
+
+	testImplementation group:'org.testcontainers',name:'postgresql',version:'1.10.2'
 }
 
 tasks.named('test') {
 	useJUnitPlatform()
 }
+

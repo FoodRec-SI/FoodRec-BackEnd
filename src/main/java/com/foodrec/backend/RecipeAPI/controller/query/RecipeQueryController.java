@@ -1,32 +1,32 @@
-package com.foodrec.backend.RecipeAPI.controller;
+package com.foodrec.backend.RecipeAPI.controller.query;
 
-import com.foodrec.backend.RecipeAPI.dto.RecipeDto;
-import com.foodrec.backend.RecipeAPI.model.Recipe;
-import com.foodrec.backend.RecipeAPI.service.Query.RecipeQueryService;
+import com.foodrec.backend.RecipeAPI.dto.RUDRecipeDTO;
+import com.foodrec.backend.RecipeAPI.service.RecipeQueryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
-import java.util.List;
 
 @RestController
-public class RecipeQueriesController {
+public class RecipeQueryController {
     /*tự động tạo 1 hiện thân (món đồ/vật thể/phần mềm/chiếc máy) chứa TẤT CẢ những hàm
-    * có trong Interface _recipeQueryService. Nói cách khác, cái này sẽ tạo 1 cái máy RecipeQueryService,
+    * có trong Interface recipeQueryService. Nói cách khác, cái này sẽ tạo 1 cái máy RecipeQueryService,
     * chuyên xử lý nhiều thứ (v.d. kiểm tra dữ liệu xem có null không trước khi thêm vào database...)*/
     @Autowired
-    private RecipeQueryService _recipeQueryService;
+    private RecipeQueryService recipeQueryService;
 
     //báo hiệu rằng hàm ngay dưới tương ứng với HttpGet - lấy dữ liệu + cách gọi nó.
     @RequestMapping(value="/recipe",method=RequestMethod.GET)
     /* ResponseEntity cơ bản là 1 HttpResponse
     (chứa status code (2xx,3xx,4xx,5xx); header, và body (chứa thông tin để trả cho Client)*/
-    public ResponseEntity<ArrayList<RecipeDto>> getRecipes(){
-        ArrayList<RecipeDto> result =  (ArrayList<RecipeDto>)_recipeQueryService.findAllRecipes();
+    public ResponseEntity<?> getRecipes(){
+        ArrayList<RUDRecipeDTO> result =  (ArrayList<RUDRecipeDTO>)
+                recipeQueryService.findAllRecipes();
         if(result==null){
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("Invalid Request. Please try again."
+                    ,HttpStatus.BAD_REQUEST);
         }
         return new ResponseEntity<>(result,HttpStatus.OK);
     }
@@ -39,10 +39,11 @@ public class RecipeQueriesController {
 
     * * Nguồn: https://www.baeldung.com/spring-requestmapping
     *        https://www.baeldung.com/spring-pathvariable*/
-    public ResponseEntity<RecipeDto> getRecipeById(@PathVariable String id){
-        RecipeDto result = _recipeQueryService.findRecipeByRecipeid(id);
+    public ResponseEntity<?> getRecipeById(@PathVariable String id){
+        RUDRecipeDTO result = recipeQueryService.findRecipeByRecipeid(id);
         if(result==null){
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("The reipe might not be added yet. Please try again."
+                    ,HttpStatus.BAD_REQUEST);
         }
         return new ResponseEntity<>(result, HttpStatus.OK);
     }

@@ -1,21 +1,18 @@
-package com.foodrec.backend.RecipeAPI.service.Command;
+package com.foodrec.backend.RecipeAPI.service.impl;
 
-import com.foodrec.backend.RecipeAPI.dto.RecipeDto;
-import com.foodrec.backend.RecipeAPI.model.Recipe;
+import com.foodrec.backend.RecipeAPI.dto.NewRecipeDTO;
+import com.foodrec.backend.RecipeAPI.dto.RUDRecipeDTO;
+import com.foodrec.backend.RecipeAPI.entity.Recipe;
 import com.foodrec.backend.RecipeAPI.repository.RecipeRepository;
-import com.foodrec.backend.RecipeAPI.service.Query.RecipeQueryService;
-import com.foodrec.backend.RecipeAPI.service.ValidationServices;
+import com.foodrec.backend.RecipeAPI.service.RecipeCommandService;
+import com.foodrec.backend.RecipeAPI.utils.Utils;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.repository.query.Param;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.ui.Model;
-import org.springframework.ui.ModelMap;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Optional;
 
 /*Lưu ý điểm khác giữa Repository và Service, VÀ Controller:
     - Repository: Là 1 KHO CHỨA (a.k.a 1 cái Database),
@@ -37,33 +34,37 @@ import java.util.Arrays;
 * sẽ được tạo ra.
 * */
 @Service
-public class RecipeCommandServiceImpl implements RecipeCommandService{
+public class RecipeCommandServiceImpl implements RecipeCommandService {
     @Autowired
     private RecipeRepository _recipeRepository;
     @Autowired
     private ModelMapper _modelMapper;
     @Autowired
-    private RecipeQueryService _recipeQueryService;
+    private Utils utils;
+
     private ArrayList<String> excludedFields = new ArrayList<>
             (Arrays.asList("description"));
-    public boolean insertRecipe(RecipeDto rec){
+    public boolean insertRecipe(NewRecipeDTO newRecipeDTO){
         try{
             //B1: Kiểm tra xem các thuộc tính trong công thức (v.d. tên,...) có bị null không.
-            boolean containsAnyEmptyField = ValidationServices.
-                    containsAnyEmptyField(rec,excludedFields);
+            boolean containsAnyEmptyField = utils.
+                    containsAnyEmptyField(newRecipeDTO,excludedFields);
             if (containsAnyEmptyField==true){
                 return false;
             }
 
             //B2: Nếu Ok thì map từ Dto sang Entity và thêm vào database.
-            Recipe recEntity = _modelMapper.map(rec,Recipe.class);
-            recEntity.setUserid("1");
-            _recipeRepository.insertRecipe(recEntity);
+            Recipe recEntity = _modelMapper.map(newRecipeDTO,Recipe.class);
+
+            recEntity.setRecipeid(utils.generateRecId());
+            recEntity.setUserid("U0001");
+            recEntity.setHidden(false);
+            _recipeRepository.save(recEntity);
 
 
             //B3: Kiểm tra xem công thức đã được add chưa, bằng cách tìm lại chính công thức đó.
-            RecipeDto isAddedRec = _recipeQueryService.findRecipeByRecipeid(rec.getRecipeid());
-            if(isAddedRec==null){
+            Optional<Recipe> isAddedRec = _recipeRepository.findById(recEntity.getRecipeid());
+            if(isAddedRec.get()==null){
                 return false;
             }
 
@@ -73,24 +74,25 @@ public class RecipeCommandServiceImpl implements RecipeCommandService{
 
         return true;
     }
-    public boolean updateRecipeDetailsById(RecipeDto rec) {
+    public boolean updateRecipeDetailsById(RUDRecipeDTO RUDRecipeDTO) {
         try{
             //B1: Kiểm tra xem các thuộc tính trong công thức (v.d. tên,...) có bị null không.
-            boolean containsAnyEmptyField = ValidationServices.
-                    containsAnyEmptyField(rec,excludedFields);
+            boolean containsAnyEmptyField = utils.
+                    containsAnyEmptyField(RUDRecipeDTO,excludedFields);
             if (containsAnyEmptyField==true){
                 return false;
             }
 
             //B2: Nếu Ok thì map từ Dto sang Entity và update vào database
             //Đồng thời bổ sung thêm cái userId vào recipe entity, do bên Dto KHÔNG CÓ.
-            Recipe recEntity = _modelMapper.map(rec,Recipe.class);
-            recEntity.setUserid("1");
-            _recipeRepository.updateRecipeDetails(recEntity);
+            Recipe recEntity = _modelMapper.map(RUDRecipeDTO,Recipe.class);
+            recEntity.setUserid("U0001"); //Tạm thời gài tạm userId = 1, do hiện tại chưa có cookies.
+            recEntity.setHidden(false);
+            _recipeRepository.save(recEntity);
 
 
             //B3: Kiểm tra xem công thức đã được add chưa, bằng cách tìm lại chính công thức đó.
-            RecipeDto targetRec = _recipeQueryService.findRecipeByRecipeid(rec.getRecipeid());
+            Optional<Recipe> targetRec = _recipeRepository.findById(recEntity.getRecipeid());
             if(targetRec==null){
                 return false;
             }
@@ -101,10 +103,10 @@ public class RecipeCommandServiceImpl implements RecipeCommandService{
 
         return true;
     }
-    public boolean deleteRecipeById(String recid){
-        _recipeRepository.deleteRecipeById(recid);
-        RecipeDto targetRec = _recipeQueryService.findRecipeByRecipeid(recid);
-        if(targetRec!=null){
+    public boolean updateRecipeStatusById(String recipeId){
+        _recipeRepository.updateRecipeHiddenById(recipeId);
+        Optional<Recipe> targetRec = _recipeRepository.findById(recipeId);
+        if(targetRec.get().isHidden()==false){
             return false;
         }
         return true;

@@ -1,7 +1,6 @@
 package com.foodrec.backend.RecipeAPI.dto;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Id;
+import com.foodrec.backend.RecipeAPI.service.RecipeCommandService;
 
 /*Note: DTO cơ bản là 1 Model, chỉ khác ở chỗ như sau:
   - Điểm 1: Recipe chứa ĐẦY ĐỦ các thuộc tính + hàm, trong khi đó DTO chỉ chứa 1 SỐ CÁI thuộc tính.
@@ -10,26 +9,30 @@ import jakarta.persistence.Id;
       Hoặc là, khi front-end yêu cầu lấy thông tin người dùng, thì NÓ ĐÂU NHẤT THIẾT CẦN BIẾT MẬT KHẨU làm gì?
   - Nên điểm khác thứ 2 là: DTO là dành cho cả Front + Backend, còn Model chỉ ở lì BACKEND.
 * */
-public class RecipeDto {
-    public RecipeDto() {
+//Nguyên nhân phải implement: giúp cho Utils.checkFieldEmpty nhận được nhiều LOẠI DTO khác nhau.
+//Bản chất: Coi RecipeDTO là 1 bản hợp đồng. Bất kì ai tuân theo thì sẽ đợc qua cửa Utils.checkFieldEmpty.
+public class NewRecipeDTO implements RecipeDTO {
+    public NewRecipeDTO() { //DTO cho việc tạo 1 công thức mới (KO BẮT ng dùng nhập Id công thức)
     }
 
-    private String recipeid;
+    public NewRecipeDTO(String recipename,
+                        String description, int calories, int duration,
+                        byte[] image) {
+        this.recipename = recipename;
+        this.description = description;
+        this.calories = calories;
+        this.duration = duration;
+        this.image = image;
+    }
     private String recipename;
-
-    public String getRecipeid() {
-        return recipeid;
-    }
-
-    public void setRecipeid(String recipeid) {
-        this.recipeid = recipeid;
-    }
 
     private String description;
 
     private int calories;
 
     private int duration;
+
+    private byte[] image;
 
     public String getRecipename() {
         return recipename;
@@ -70,8 +73,4 @@ public class RecipeDto {
     public void setImage(byte[] image) {
         this.image = image;
     }
-
-    private byte[] image;
-
-
 }

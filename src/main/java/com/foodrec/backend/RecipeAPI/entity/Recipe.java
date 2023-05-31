@@ -1,4 +1,4 @@
-package com.foodrec.backend.RecipeAPI.model;
+package com.foodrec.backend.RecipeAPI.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -27,6 +27,10 @@ public class Recipe {
     @Column(name="image")
     private byte[] image;
 
+    @Column(name="hidden")
+    private boolean hidden;
+
+
     public byte[] getImage() {
         return image;
     }
@@ -35,8 +39,7 @@ public class Recipe {
         this.image = image;
     }
 
-    @Column(name="hidden")
-    private boolean hidden;
+
 
     public String getRecipeid() {
         return recipeid;

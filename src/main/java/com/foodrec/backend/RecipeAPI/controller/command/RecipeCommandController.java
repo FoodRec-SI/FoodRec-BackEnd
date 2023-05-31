@@ -1,21 +1,18 @@
-package com.foodrec.backend.RecipeAPI.controller;
+package com.foodrec.backend.RecipeAPI.controller.command;
 
 
-import com.foodrec.backend.RecipeAPI.dto.RecipeDto;
-import com.foodrec.backend.RecipeAPI.model.Recipe;
-import com.foodrec.backend.RecipeAPI.service.Command.RecipeCommandService;
+import com.foodrec.backend.RecipeAPI.dto.NewRecipeDTO;
+import com.foodrec.backend.RecipeAPI.dto.RUDRecipeDTO;
+import com.foodrec.backend.RecipeAPI.service.RecipeCommandService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-
 @RestController
-public class RecipeCommandsController {
+public class RecipeCommandController {
     @Autowired
-    private RecipeCommandService _recipeCommandService;
+    private RecipeCommandService recipeCommandService;
     /*@RequestBody: v.d. khi bên Front-end gửi yêu cầu tạo 1 Recipe, đây là những gì nó sẽ kèm
                     theo trong Body:
     *               {
@@ -34,32 +31,32 @@ public class RecipeCommandsController {
             giá trị "Bánh Xèo Miền Tây" gài vào thuộc tính recipename, của Recipe(Model) đó.
         * */
     @RequestMapping(value="/recipe",method= RequestMethod.POST)//cách để gọi hàm controller này.
-    public ResponseEntity insertRecipe(@RequestBody RecipeDto newRec){
-        boolean isInserted = _recipeCommandService.insertRecipe(newRec);
-        //Kiểm tra xem công thức đã được thêm vào chưa.
+    public ResponseEntity insertRecipe(@RequestBody NewRecipeDTO newRec){
+        boolean isInserted = recipeCommandService.insertRecipe(newRec);
         if(isInserted==false)
-            return new ResponseEntity<String>("Couldn't add recipe.", HttpStatus.BAD_REQUEST);
-        return new ResponseEntity<String>("Successfully added recipe with id "+newRec.getRecipeid(),HttpStatus.OK);
+            return new ResponseEntity<String>("Couldn't add recipe. Please make sure that NO FIELDS is null.",
+                    HttpStatus.BAD_REQUEST);
+
+        return new ResponseEntity<String>("Successfully added recipe with name "+
+                newRec.getRecipename(),HttpStatus.OK);
 
     }
 
 
-    @RequestMapping(value="/recipe/{id}",method=RequestMethod.PUT)
-    public ResponseEntity<String> updateRecipeById(@RequestBody RecipeDto rec){
-        boolean isUpdated = _recipeCommandService.updateRecipeDetailsById(rec);
+    @RequestMapping(value="/recipe",method=RequestMethod.PUT)
+    public ResponseEntity<String> updateRecipeById(@RequestBody RUDRecipeDTO rec){
+        boolean isUpdated = recipeCommandService.updateRecipeDetailsById(rec);
         if(isUpdated==false)
             return new ResponseEntity<String>("Unable to update recipe with id, as one " +
-                "of the fields (recipename,calories,userid,duration,image,hidden) might be null."+
-                rec.getRecipeid(), HttpStatus.BAD_REQUEST);
+                "of the fields (recipename,calories,userid,duration,image,hidden) might be null.",
+                    HttpStatus.BAD_REQUEST);
 
         return new ResponseEntity<String>("Successfully updated recipe with id "+
-                rec.getRecipeid(),HttpStatus.OK);
+                rec.getRecipename(),HttpStatus.OK);
     }
-
-
     @RequestMapping(value="/recipe/{id}",method=RequestMethod.DELETE)
-    public ResponseEntity deleteRecipeById(@PathVariable String id){
-        boolean isDeleted = _recipeCommandService.deleteRecipeById(id);
+    public ResponseEntity updateRecipeHiddenById(@PathVariable String id){
+        boolean isDeleted = recipeCommandService.updateRecipeStatusById(id);
         if(isDeleted==false)
             return new ResponseEntity<String>("Unable to delete recipe with id "+
                     id,HttpStatus.BAD_REQUEST);
