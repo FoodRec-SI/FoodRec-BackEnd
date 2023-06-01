@@ -4,6 +4,7 @@ import an.awesome.pipelinr.Command;
 import com.foodrec.backend.PostAPI.dto.PostDTO;
 import com.foodrec.backend.PostAPI.entity.Post;
 import com.foodrec.backend.PostAPI.repository.PostRepository;
+import com.foodrec.backend.PostAPI.utils.PostIdGenerator;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 
@@ -14,10 +15,12 @@ import java.util.List;
 public class CreatePostCommandHandler implements Command.Handler<CreatePostCommand, Boolean> {
     private final PostRepository postRepository;
     private final ModelMapper modelMapper;
+    private final PostIdGenerator postIdGenerator;
 
-    public CreatePostCommandHandler(PostRepository postRepository, ModelMapper modelMapper) {
+    public CreatePostCommandHandler(PostRepository postRepository, ModelMapper modelMapper, PostIdGenerator postIdGenerator) {
         this.postRepository = postRepository;
         this.modelMapper = modelMapper;
+        this.postIdGenerator = postIdGenerator;
     }
 
     @Override
@@ -37,12 +40,14 @@ public class CreatePostCommandHandler implements Command.Handler<CreatePostComma
                     throw new IllegalArgumentException("Duplicate RecipeID!");
                 }
             }
+            String postId = postIdGenerator.generateNextPostId();
+            postDTO.setPostid(postId);
             //Convert PostDTO to Post entity
             Post post = modelMapper.map(postDTO, Post.class);
             //Save the new Post to the database using PostRepository
             postRepository.save(post);
             //Check the new Post
-            if(postRepository.findById(postDTO.getPostid()).isEmpty()){
+            if(postRepository.findById(postId).isEmpty()){
                 return false;
             }
         } catch (IllegalAccessError illegalAccessError) {

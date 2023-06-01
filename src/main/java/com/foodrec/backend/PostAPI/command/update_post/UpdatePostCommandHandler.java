@@ -21,12 +21,12 @@ public class UpdatePostCommandHandler implements Command.Handler<UpdatePostComma
             Post post = postRepository.findById(command.getPostid())
                     .orElseThrow(() -> new IllegalArgumentException("Invalid postid"));
             post.setModeratorid(command.getModeratorid());
+            if(post.getStatus() == command.getStatus()){
+                throw new IllegalArgumentException("Duplicate status");
+            }
             post.setStatus(command.getStatus());
             if(post.getStatus() > 4 || post.getStatus() < 2){
                 throw new IllegalArgumentException("Is not valid!!!");
-            }
-            if(post.getStatus() == command.getStatus()){
-                throw new IllegalArgumentException("Duplicate status");
             }
             postRepository.save(post);
         } catch (IllegalAccessError illegalAccessError) {
