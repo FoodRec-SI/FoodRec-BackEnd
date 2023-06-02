@@ -4,8 +4,10 @@ build/
 !gradle/wrapper/gradle-wrapper.jar
 !**/src/main/**/build/
 !**/src/test/**/build/
-!**/src/main/resources/application.properties
-.config
+# Ignore application.properties file
+**/src/main/resources/application.properties
+# Ignore config.json file in .config/auth0 directory
+.config/auth0/config.json
 
 ### STS ###
 .apt_generated
