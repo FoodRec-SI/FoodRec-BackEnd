@@ -5,14 +5,19 @@ import com.foodrec.backend.PostAPI.dto.PostDTO;
 
 public class CreatePostCommand implements Command<Boolean> {
 
-    private final PostDTO postDTO;
+    private final String recipeid;
+    private final String userid;
 
-    public CreatePostCommand(PostDTO postDTO) {
-        this.postDTO = postDTO;
+    public CreatePostCommand(String recipeid, String userid) {
+        this.recipeid = recipeid;
+        this.userid = userid;
     }
 
-    public PostDTO getPostDTO() {
-        return postDTO;
+    public String getRecipeid() {
+        return recipeid;
     }
 
+    public String getUserid() {
+        return userid;
+    }
 }

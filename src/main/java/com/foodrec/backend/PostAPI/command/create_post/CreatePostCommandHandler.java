@@ -25,7 +25,9 @@ public class CreatePostCommandHandler implements Command.Handler<CreatePostComma
 
     @Override
     public Boolean handle(CreatePostCommand command) {
-        PostDTO postDTO = command.getPostDTO();
+        PostDTO postDTO = new PostDTO();
+        postDTO.setRecipeid(command.getRecipeid());
+        postDTO.setUserid(command.getUserid());
         boolean isCreated = true;
         try {
             if (postDTO.getRecipeid() == null || postDTO.getUserid() == null) {

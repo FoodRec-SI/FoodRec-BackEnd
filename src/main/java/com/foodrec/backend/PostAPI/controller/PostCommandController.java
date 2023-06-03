@@ -17,9 +17,9 @@ public class PostCommandController {
         this.pipeline = pipeline;
     }
 
-    @RequestMapping(value = "/post", method = RequestMethod.POST)
-    public ResponseEntity<String> createPost(@RequestBody PostDTO postDTO) {
-        CreatePostCommand command = new CreatePostCommand(postDTO);
+    @RequestMapping(value = "/post/{recipeid}/{userid}", method = RequestMethod.POST)
+    public ResponseEntity<String> createPost(@RequestBody String recipeid, @RequestBody String userid) {
+        CreatePostCommand command = new CreatePostCommand(recipeid, userid);
         boolean isSuccess = pipeline.send(command);
         if (isSuccess) {
             return ResponseEntity.ok("Post created successfully!");
