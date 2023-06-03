@@ -1,8 +1,13 @@
 package com.foodrec.backend.RecipeAPI.controller.query;
 
+import an.awesome.pipelinr.Pipeline;
+import com.foodrec.backend.RecipeAPI.controller.command.RecipeCommandController;
 import com.foodrec.backend.RecipeAPI.dto.RUDRecipeDTO;
-import com.foodrec.backend.RecipeAPI.service.RecipeQueryService;
+import com.foodrec.backend.RecipeAPI.query.get_all.GetAllRecipesQuery;
+import com.foodrec.backend.RecipeAPI.query.get_all.GetAllRecipesQueryHandler;
+import com.foodrec.backend.RecipeAPI.query.get_recipe_by_id.GetRecipeByIdQuery;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -11,19 +16,19 @@ import java.util.ArrayList;
 
 @RestController
 public class RecipeQueryController {
-    /*tự động tạo 1 hiện thân (món đồ/vật thể/phần mềm/chiếc máy) chứa TẤT CẢ những hàm
-    * có trong Interface recipeQueryService. Nói cách khác, cái này sẽ tạo 1 cái máy RecipeQueryService,
-    * chuyên xử lý nhiều thứ (v.d. kiểm tra dữ liệu xem có null không trước khi thêm vào database...)*/
-    @Autowired
-    private RecipeQueryService recipeQueryService;
 
     //báo hiệu rằng hàm ngay dưới tương ứng với HttpGet - lấy dữ liệu + cách gọi nó.
+    final Pipeline pipeline;
+    public RecipeQueryController(Pipeline pipeline){
+        this.pipeline = pipeline;
+    }
     @RequestMapping(value="/recipe",method=RequestMethod.GET)
     /* ResponseEntity cơ bản là 1 HttpResponse
     (chứa status code (2xx,3xx,4xx,5xx); header, và body (chứa thông tin để trả cho Client)*/
-    public ResponseEntity<?> getRecipes(){
-        ArrayList<RUDRecipeDTO> result =  (ArrayList<RUDRecipeDTO>)
-                recipeQueryService.findAllRecipes();
+    public ResponseEntity<?> getRecipes(@RequestParam(defaultValue = "0")
+                                            int pageNumber, @RequestParam(defaultValue = "6") int pageSize){
+        GetAllRecipesQuery getAllRecipesQuery = new GetAllRecipesQuery(pageNumber,pageSize);
+        Page<RUDRecipeDTO> result = pipeline.send(getAllRecipesQuery);
         if(result==null){
             return new ResponseEntity<>("Invalid Request. Please try again."
                     ,HttpStatus.BAD_REQUEST);
@@ -40,9 +45,11 @@ public class RecipeQueryController {
     * * Nguồn: https://www.baeldung.com/spring-requestmapping
     *        https://www.baeldung.com/spring-pathvariable*/
     public ResponseEntity<?> getRecipeById(@PathVariable String id){
-        RUDRecipeDTO result = recipeQueryService.findRecipeByRecipeid(id);
+        GetRecipeByIdQuery getRecipeByIdQuery = new GetRecipeByIdQuery(id);
+        RUDRecipeDTO result = pipeline.send(getRecipeByIdQuery);
         if(result==null){
-            return new ResponseEntity<>("The reipe might not be added yet. Please try again."
+            return new ResponseEntity<>("The recipe might be deleted or non-existent. " +
+                    "Please try again."
                     ,HttpStatus.BAD_REQUEST);
         }
         return new ResponseEntity<>(result, HttpStatus.OK);

@@ -4,7 +4,7 @@ import an.awesome.pipelinr.Command;
 import com.foodrec.backend.PostAPI.dto.PostDTO;
 import com.foodrec.backend.PostAPI.entity.Post;
 import com.foodrec.backend.PostAPI.repository.PostRepository;
-import com.foodrec.backend.PostAPI.utils.PostIdGenerator;
+import com.foodrec.backend.Utils.RecipeIdGenerator;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 
@@ -15,12 +15,12 @@ import java.util.List;
 public class CreatePostCommandHandler implements Command.Handler<CreatePostCommand, Boolean> {
     private final PostRepository postRepository;
     private final ModelMapper modelMapper;
-    private final PostIdGenerator postIdGenerator;
+    private final RecipeIdGenerator recipeIdGenerator;
 
-    public CreatePostCommandHandler(PostRepository postRepository, ModelMapper modelMapper, PostIdGenerator postIdGenerator) {
+    public CreatePostCommandHandler(PostRepository postRepository, ModelMapper modelMapper, RecipeIdGenerator recipeIdGenerator) {
         this.postRepository = postRepository;
         this.modelMapper = modelMapper;
-        this.postIdGenerator = postIdGenerator;
+        this.recipeIdGenerator = recipeIdGenerator;
     }
 
     @Override
@@ -40,7 +40,7 @@ public class CreatePostCommandHandler implements Command.Handler<CreatePostComma
                     throw new IllegalArgumentException("Duplicate RecipeID!");
                 }
             }
-            String postId = postIdGenerator.generateNextPostId();
+            String postId = recipeIdGenerator.generateNextPostId();
             postDTO.setPostid(postId);
             //Convert PostDTO to Post entity
             Post post = modelMapper.map(postDTO, Post.class);

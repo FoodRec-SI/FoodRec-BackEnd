@@ -1,7 +1,5 @@
 package com.foodrec.backend.RecipeAPI.dto;
 
-import com.foodrec.backend.RecipeAPI.service.RecipeCommandService;
-
 /*Note: DTO cơ bản là 1 Model, chỉ khác ở chỗ như sau:
   - Điểm 1: Recipe chứa ĐẦY ĐỦ các thuộc tính + hàm, trong khi đó DTO chỉ chứa 1 SỐ CÁI thuộc tính.
    + Nguyên nhân: Do khi trả về client, mình KHÔNG NHẤT THIẾT PHẢI TRẢ VỀ TẤT CẢ THÔNG TIN.

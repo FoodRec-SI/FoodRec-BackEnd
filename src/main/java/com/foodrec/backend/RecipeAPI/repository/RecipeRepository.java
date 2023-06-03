@@ -3,6 +3,7 @@ package com.foodrec.backend.RecipeAPI.repository;
 import com.foodrec.backend.RecipeAPI.dto.RUDRecipeDTO;
 import com.foodrec.backend.RecipeAPI.entity.Recipe;
 import jakarta.transaction.Transactional;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -53,7 +54,7 @@ public interface RecipeRepository extends JpaRepository<Recipe,String> {
 //   * (cơ bản là đặt tên hàm qq j cũng được)
 //   * Nguồn: https://viblo.asia/p/spring-boot-12-spring-jpa-method-atquery-Qbq5Q4nGlD8*/
     @Query(value="SELECT * FROM recipe WHERE hidden = false",nativeQuery = true)
-    List<Recipe> findAllRecipes();
+    List<Recipe> findAllRecipes(Pageable pageable);
 //
 //    /*Param("recipeid"): tìm xem trong câu query có chỗ nào ghi là :recipeId không.
 //    Nếu có thì thay chỗ đó thành object (món đồ) được truyền từ Controller bên ngoài vào, đó là String recipeid )*/

@@ -1,12 +1,10 @@
-package com.foodrec.backend.PostAPI.utils;
+package com.foodrec.backend.Utils;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.Query;
 import org.modelmapper.internal.util.Assert;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
-@Component
 public class RepositoryUtils {
     private static EntityManager entityManager;
 
@@ -23,4 +21,5 @@ public class RepositoryUtils {
         query.setMaxResults(1);
         return (String) query.getSingleResult();
     }
+
 }
