@@ -1,23 +1,17 @@
 package com.foodrec.backend.PostAPI.command.create_post;
 
 import an.awesome.pipelinr.Command;
-import com.foodrec.backend.PostAPI.dto.PostDTO;
+import com.foodrec.backend.PostAPI.dto.CreatePostDTO;
 
 public class CreatePostCommand implements Command<Boolean> {
 
-    private final String recipeid;
-    private final String userid;
+    private final CreatePostDTO createPostDTO;
 
-    public CreatePostCommand(String recipeid, String userid) {
-        this.recipeid = recipeid;
-        this.userid = userid;
+    public CreatePostCommand(CreatePostDTO createPostDTO) {
+        this.createPostDTO = createPostDTO;
     }
 
-    public String getRecipeid() {
-        return recipeid;
-    }
-
-    public String getUserid() {
-        return userid;
+    public CreatePostDTO getCreatePostDTO() {
+        return createPostDTO;
     }
 }

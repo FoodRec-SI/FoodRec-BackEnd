@@ -1,12 +1,11 @@
 package com.foodrec.backend.PostAPI.query.get_all_posts;
 
 import an.awesome.pipelinr.Command;
-import com.foodrec.backend.PostAPI.dto.PostDTO;
+import com.foodrec.backend.PostAPI.dto.ViewPostDTO;
 import org.springframework.data.domain.Page;
 
-import java.util.List;
 
-public class GetAllPostsQuery implements Command<Page<PostDTO>> {
+public class GetAllPostsQuery implements Command<Page<ViewPostDTO>> {
     private final int pageNumber;
     private final int pageSize;
 

@@ -1,27 +1,16 @@
 package com.foodrec.backend.PostAPI.command.update_post;
 
 import an.awesome.pipelinr.Command;
+import com.foodrec.backend.PostAPI.dto.UpdatePostDTO;
 
 public class UpdatePostCommand implements Command<Boolean> {
-    private final String postid;
-    private final String moderatorid;
-    private final int status;
+    private final UpdatePostDTO updatePostDTO;
 
-    public UpdatePostCommand(String postid, String moderatorid, int status) {
-        this.postid = postid;
-        this.moderatorid = moderatorid;
-        this.status = status;
+    public UpdatePostCommand(UpdatePostDTO updatePostDTO) {
+        this.updatePostDTO = updatePostDTO;
     }
 
-    public int getStatus() {
-        return status;
-    }
-
-    public String getPostid() {
-        return postid;
-    }
-
-    public String getModeratorid() {
-        return moderatorid;
+    public UpdatePostDTO getUpdatePostDTO() {
+        return updatePostDTO;
     }
 }

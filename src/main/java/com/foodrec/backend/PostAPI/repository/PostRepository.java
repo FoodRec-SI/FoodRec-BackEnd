@@ -9,8 +9,9 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public interface PostRepository extends JpaRepository<Post, String> {
-    @Query(value = "SELECT p.postid FROM Post p ORDER BY p.postid DESC LIMIT 1")
-    String findLastPostId();
+    Page<Post> findAllByStatus(int status, Pageable pageable);
 }

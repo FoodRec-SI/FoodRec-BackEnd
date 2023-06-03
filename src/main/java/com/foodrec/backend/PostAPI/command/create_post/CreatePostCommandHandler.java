@@ -1,10 +1,13 @@
 package com.foodrec.backend.PostAPI.command.create_post;
 
 import an.awesome.pipelinr.Command;
-import com.foodrec.backend.PostAPI.dto.PostDTO;
+import com.foodrec.backend.PostAPI.dto.CreatePostDTO;
 import com.foodrec.backend.PostAPI.entity.Post;
 import com.foodrec.backend.PostAPI.repository.PostRepository;
-import com.foodrec.backend.PostAPI.utils.PostIdGenerator;
+import com.foodrec.backend.Utils.IdGenerator;
+import com.foodrec.backend.exception.DuplicateExceptionHandler;
+import com.foodrec.backend.exception.InvalidDataExceptionHandler;
+import com.foodrec.backend.exception.NotFoundExceptionHandler;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 
@@ -25,35 +28,36 @@ public class CreatePostCommandHandler implements Command.Handler<CreatePostComma
 
     @Override
     public Boolean handle(CreatePostCommand command) {
-        PostDTO postDTO = new PostDTO();
-        postDTO.setRecipeid(command.getRecipeid());
-        postDTO.setUserid(command.getUserid());
+        CreatePostDTO createPostDTO = command.getCreatePostDTO();
         boolean isCreated = true;
         try {
-            if (postDTO.getRecipeid() == null || postDTO.getUserid() == null) {
-                throw new IllegalArgumentException("Invalid Post!");
+            if (createPostDTO.getRecipeid() == null || createPostDTO.getUserid() == null) {
+                throw new InvalidDataExceptionHandler("Invalid Post!");
             }
-            LocalDateTime localDateTime = LocalDateTime.now();
-            postDTO.setTime(localDateTime);
-            postDTO.setStatus(1); // Set status is pending censorship
+            //Check duplicate Recipe
             List<Post> existingPost = postRepository.findAll();
             for (Post value : existingPost) {
-                if (value.getRecipeid().equals(postDTO.getRecipeid())) {
-                    throw new IllegalArgumentException("Duplicate RecipeID!");
+                if (value.getRecipeid().equals(createPostDTO.getRecipeid())) {
+                    throw new DuplicateExceptionHandler("Duplicate Recipe ID");
                 }
             }
-            String postId = postIdGenerator.generateNextPostId();
-            postDTO.setPostid(postId);
             //Convert PostDTO to Post entity
-            Post post = modelMapper.map(postDTO, Post.class);
+            Post post = modelMapper.map(createPostDTO, Post.class);
+            //Add new data for Post entity
+            String postId = IdGenerator.generateNextId(Post.class, "postid");
+            post.setPostid(postId);
+            LocalDateTime localDateTime = LocalDateTime.now();
+            post.setTime(localDateTime);
+            post.setStatus(1); // Set status is pending censorship
+
             //Save the new Post to the database using PostRepository
             postRepository.save(post);
             //Check the new Post
-            if(postRepository.findById(postId).isEmpty()){
-                return false;
+            if (postRepository.findById(postId).isEmpty()) {
+                throw new NotFoundExceptionHandler("The post you just created cannot be found!");
             }
-        } catch (IllegalAccessError illegalAccessError) {
-            isCreated = false;
+        } catch (InvalidDataExceptionHandler invalidDataExceptionHandler) {
+            throw new InvalidDataExceptionHandler("Invalid Post Data!");
         }
         return isCreated;
     }

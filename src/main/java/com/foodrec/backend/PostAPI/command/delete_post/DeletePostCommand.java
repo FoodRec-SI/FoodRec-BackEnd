@@ -1,22 +1,16 @@
 package com.foodrec.backend.PostAPI.command.delete_post;
 
 import an.awesome.pipelinr.Command;
-import com.foodrec.backend.PostAPI.dto.PostDTO;
+import com.foodrec.backend.PostAPI.dto.DeletePostDTO;
 
 public class DeletePostCommand implements Command<Boolean> {
-    private final String postid;
-    private final String userid;
+    private final DeletePostDTO deletePostDTO;
 
-    public DeletePostCommand(String postid, String userid) {
-        this.postid = postid;
-        this.userid = userid;
+    public DeletePostCommand(DeletePostDTO deletePostDTO) {
+        this.deletePostDTO = deletePostDTO;
     }
 
-    public String getPostid() {
-        return postid;
-    }
-
-    public String getUserid() {
-        return userid;
+    public DeletePostDTO getDeletePostDTO() {
+        return deletePostDTO;
     }
 }
