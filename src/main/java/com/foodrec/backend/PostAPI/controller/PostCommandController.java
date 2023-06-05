@@ -9,9 +9,11 @@ import com.foodrec.backend.PostAPI.dto.DeletePostDTO;
 import com.foodrec.backend.PostAPI.dto.UpdatePostDTO;
 import com.foodrec.backend.exception.DuplicateExceptionHandler;
 import com.foodrec.backend.exception.InvalidDataExceptionHandler;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+@Tag(name = "PostAPI")
 @RestController
 public class PostCommandController {
     final Pipeline pipeline;
@@ -22,7 +24,7 @@ public class PostCommandController {
 
     @RequestMapping(value = "/post", method = RequestMethod.POST)
     public ResponseEntity<String> createPost(@RequestBody CreatePostDTO createPostDTO) throws Exception {
-        try{
+        try {
             CreatePostCommand command = new CreatePostCommand(createPostDTO);
             boolean isCreated = pipeline.send(command);
             if (isCreated) {
@@ -30,7 +32,7 @@ public class PostCommandController {
             } else {
                 return ResponseEntity.badRequest().body("Invalid post data");
             }
-        }catch (InvalidDataExceptionHandler | DuplicateExceptionHandler ex) {
+        } catch (InvalidDataExceptionHandler | DuplicateExceptionHandler ex) {
             return ResponseEntity.badRequest().body(ex.getMessage());
         }
     }
