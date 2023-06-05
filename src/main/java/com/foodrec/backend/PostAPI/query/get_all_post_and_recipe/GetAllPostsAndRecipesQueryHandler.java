@@ -34,17 +34,12 @@ public class GetAllPostsAndRecipesQueryHandler implements Command.Handler<GetAll
         for (Post post : postPage.getContent()) {
             Optional<Recipe> optionalRecipe = recipeMongoRepository.findByRecipeid(post.getRecipeid());
             System.out.println(recipeMongoRepository.findById(post.getRecipeid()));
-            System.out.println(post.getRecipeid());
-            System.out.println(optionalRecipe.isPresent());
             if (optionalRecipe.isPresent()) {
                 CombinedPostRecipeDTO combinedPostRecipeDTO = modelMapper.map(post, CombinedPostRecipeDTO.class);
                 Recipe recipe = optionalRecipe.get();
                 combinedPostRecipeDTO.setRecipeName(recipe.getRecipename());
-                System.out.println(recipe.getRecipename());
                 combinedPostRecipeDTO.setDescription(recipe.getDescription());
-                System.out.println(recipe.getDescription());
                 combinedPostRecipeDTO.setCalories(recipe.getCalories());
-                System.out.println(recipe.getCalories());
                 combinedPostRecipeDTO.setDuration(recipe.getDuration());
                 combinedPostRecipeDTO.setImage(recipe.getImage());
                 combinedDTOs.add(combinedPostRecipeDTO);
