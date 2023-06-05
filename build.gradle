@@ -27,6 +27,8 @@ dependencies {
     implementation 'net.sizovs:pipelinr:0.8'
     implementation 'io.lettuce:lettuce-core:6.2.4.RELEASE'
     implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+    implementation 'org.springframework.boot:spring-boot-starter-data-mongodb'
+    implementation 'org.mongodb:mongodb-driver-sync:4.9.1'
 }
 configurations {
     compile.exclude module: "jackson-core"
