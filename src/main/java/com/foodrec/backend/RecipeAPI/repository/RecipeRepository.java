@@ -1,6 +1,5 @@
 package com.foodrec.backend.RecipeAPI.repository;
 
-import com.foodrec.backend.RecipeAPI.dto.RUDRecipeDTO;
 import com.foodrec.backend.RecipeAPI.entity.Recipe;
 import jakarta.transaction.Transactional;
 import org.springframework.data.domain.Pageable;
@@ -34,18 +33,10 @@ public interface RecipeRepository extends JpaRepository<Recipe,String> {
 //
     @Transactional
     @Modifying
-    @Query(value="UPDATE recipe SET hidden = true WHERE recipeid = :recipeid",nativeQuery = true)
-    void updateRecipeHiddenById(@Param("recipeid") String recipeid);
+    @Query(value="UPDATE recipe SET status = false WHERE recipeid = :recipeid",nativeQuery = true)
+    void updateRecipeStatusById(@Param("recipeid") String recipeid);
 
-//    @Transactional
-//    @Modifying
-//    @Query(value="UPDATE recipe " +
-//            "SET recipename = :#{#rec.recipename},description = :#{#rec.description}," +
-//            "calories = :#{#rec.calories},userid = :#{#rec.userid}, " +
-//            "duration = :#{#rec.duration},image = :#{#rec.image},hidden = :#{#rec.hidden} " +
-//            "WHERE recipeid = :#{#rec.recipeid}",nativeQuery = true)
-//    void updateRecipeDetails(@Param("rec") Recipe rec);
-//
+
 //    /*Quy tắc đặt tên hàm tìm dữ liệu nếu dùng JpaRepository để CRUD dữ liệu:
 //      ### find<thực_thể>by/get<thực_thể>by/delete<thực_thể>by... ###
 //
@@ -53,12 +44,12 @@ public interface RecipeRepository extends JpaRepository<Recipe,String> {
 //   * thì quy tắc trên coi như VỨT.
 //   * (cơ bản là đặt tên hàm qq j cũng được)
 //   * Nguồn: https://viblo.asia/p/spring-boot-12-spring-jpa-method-atquery-Qbq5Q4nGlD8*/
-    @Query(value="SELECT * FROM recipe WHERE hidden = false",nativeQuery = true)
+    @Query(value="SELECT * FROM recipe WHERE status = true",nativeQuery = true)
     List<Recipe> findAllRecipes(Pageable pageable);
 //
 //    /*Param("recipeid"): tìm xem trong câu query có chỗ nào ghi là :recipeId không.
 //    Nếu có thì thay chỗ đó thành object (món đồ) được truyền từ Controller bên ngoài vào, đó là String recipeid )*/
 //
-    @Query(value="SELECT * FROM recipe WHERE recipeid = :recipeid AND hidden = false",nativeQuery = true)
+    @Query(value="SELECT * FROM recipe WHERE recipeid = :recipeid AND status = true",nativeQuery = true)
     Recipe findRecipeByRecipeId(@Param("recipeid") String recipeid);
 }

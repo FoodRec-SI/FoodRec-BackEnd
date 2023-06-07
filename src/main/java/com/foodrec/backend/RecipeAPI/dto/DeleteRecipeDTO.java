@@ -1,35 +1,15 @@
-package com.foodrec.backend.RecipeAPI.entity;
+package com.foodrec.backend.RecipeAPI.dto;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
-
-@Table(name="recipe")
-@Entity
-public class Recipe {
-    public Recipe() {
+public class DeleteRecipeDTO { //DTO cho việc lấy công thức (có thêm Id so với NewRecipeDTO)
+    public DeleteRecipeDTO() {
     }
-    /*Quy tắc đặt tên cho thuộc tính: tên thuộc tính trong Spring
-    phải trùng với tên cột trong bảng trong Database.,*/
-    @Id
-    @Column(name="recipeid")
-    private String recipeId; //recipeId
-    @Column(name="recipename")
-    private String recipeName;
-    @Column(name="description")
-    private String description;
-    @Column(name="calories")
-    private int calories;
-    @Column(name="username")
-    private String username;
-    @Column(name="duration")
-    private int duration;
-    @Column(name="image")
-    private byte[] image;
 
-    @Column(name="status")
-    private boolean status;
+    private String recipeId;
+    private String recipeName;
+    private String description;
+    private int calories;
+    private int duration;
+    private byte[] image;
 
     public String getRecipeId() {
         return recipeId;
@@ -63,14 +43,6 @@ public class Recipe {
         this.calories = calories;
     }
 
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
     public int getDuration() {
         return duration;
     }
@@ -87,11 +59,5 @@ public class Recipe {
         this.image = image;
     }
 
-    public boolean isStatus() {
-        return status;
-    }
 
-    public void setStatus(boolean status) {
-        this.status = status;
-    }
 }
