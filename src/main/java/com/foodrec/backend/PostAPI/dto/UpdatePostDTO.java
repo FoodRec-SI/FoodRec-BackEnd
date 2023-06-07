@@ -1,37 +1,42 @@
 package com.foodrec.backend.PostAPI.dto;
 
+import com.foodrec.backend.PostAPI.entity.PostStatus;
+
 public class UpdatePostDTO {
-    private String postid;
-    private int status;
-    private String moderatorid;
+    private String postId;
+    private PostStatus status;
+    private String moderatorName;
 
-    public UpdatePostDTO(String postid, int status, String moderatorid) {
-        this.postid = postid;
+    public UpdatePostDTO() {
+    }
+
+    public UpdatePostDTO(String postId, PostStatus status, String moderatorName) {
+        this.postId = postId;
         this.status = status;
-        this.moderatorid = moderatorid;
+        this.moderatorName = moderatorName;
     }
 
-    public String getPostid() {
-        return postid;
+    public String getPostId() {
+        return postId;
     }
 
-    public void setPostid(String postid) {
-        this.postid = postid;
+    public void setPostId(String postId) {
+        this.postId = postId;
     }
 
-    public int getStatus() {
+    public PostStatus getStatus() {
         return status;
     }
 
-    public void setStatus(int status) {
+    public void setStatus(PostStatus status) {
         this.status = status;
     }
 
-    public String getModeratorid() {
-        return moderatorid;
+    public String getModeratorName() {
+        return moderatorName;
     }
 
-    public void setModeratorid(String moderatorid) {
-        this.moderatorid = moderatorid;
+    public void setModeratorName(String moderatorName) {
+        this.moderatorName = moderatorName;
     }
 }

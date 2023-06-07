@@ -1,27 +1,33 @@
 package com.foodrec.backend.PostAPI.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class DeletePostDTO {
-    private String postid;
-    private String userid;
+    private String postId;
+    @JsonProperty("username")
+    private String userName;
 
-    public DeletePostDTO(String postid, String userid) {
-        this.postid = postid;
-        this.userid = userid;
+    public DeletePostDTO() {
     }
 
-    public String getPostid() {
-        return postid;
+    public DeletePostDTO(String postId, String userName) {
+        this.postId = postId;
+        this.userName = userName;
     }
 
-    public void setPostid(String postid) {
-        this.postid = postid;
+    public String getPostId() {
+        return postId;
     }
 
-    public String getUserid() {
-        return userid;
+    public void setPostId(String postId) {
+        this.postId = postId;
     }
 
-    public void setUserid(String userid) {
-        this.userid = userid;
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 }
