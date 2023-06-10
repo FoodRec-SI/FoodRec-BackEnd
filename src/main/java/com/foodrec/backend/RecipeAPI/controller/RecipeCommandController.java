@@ -11,10 +11,12 @@ import com.foodrec.backend.RecipeAPI.dto.UpdateRecipeDTO;
 import com.foodrec.backend.RecipeAPI.exceptions.InvalidRecipeAttributeException;
 import com.foodrec.backend.RecipeAPI.exceptions.InvalidRecipeIdException;
 import com.foodrec.backend.RecipeAPI.exceptions.RecipeNotFoundException;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+@Tag(name = "Recipe")
 @RestController
 public class RecipeCommandController {
     final Pipeline pipeline;
@@ -23,24 +25,7 @@ public class RecipeCommandController {
         this.pipeline = pipeline;
     }
 
-    /*@RequestBody: v.d. khi bên Front-end gửi yêu cầu tạo 1 Recipe, đây là những gì nó sẽ kèm
-                    theo trong Body:
-    *               {
-                        "recipeid":3,
-                        "recipename":"Bánh Xèo Miền Tây",
-                        "description":"Là 1 loại bánh ngon vl",
-                        "calories":30,
-                        "userid":"1",
-                        "duration":120,
-                        "image":"\\0",
-                        "hidden":false
-
-                    }
-            Khi đó, Spring Boot sẽ tự động lôi từng thuộc tính ra (v.d. "recipename": Bành Xèo Miền Tây")
-            sau đó đối chiếu xem, trong Recipe(Model) có thuộc tính nào tên là "recipename" không. Nếu có thì đem
-            giá trị "Bánh Xèo Miền Tây" gài vào thuộc tính recipename, của Recipe(Model) đó.
-        * */
-    @RequestMapping(value = "/recipe", method = RequestMethod.POST)//cách để gọi hàm controller này.
+    @RequestMapping(value = "/api/member/recipe", method = RequestMethod.POST)//cách để gọi hàm controller này.
     public ResponseEntity createRecipe(@RequestBody CreateRecipeDTO newRec) {
         ResponseEntity result = null;
         try {
@@ -65,7 +50,7 @@ public class RecipeCommandController {
         return result;
     }
 
-    @RequestMapping(value = "/recipe", method = RequestMethod.PUT)
+    @RequestMapping(value = "/api/member/recipe", method = RequestMethod.PUT)
     public ResponseEntity updateRecipeById(@RequestBody UpdateRecipeDTO rec) {
 
         ResponseEntity result = null;
@@ -90,7 +75,7 @@ public class RecipeCommandController {
         return result;
     }
 
-    @RequestMapping(value = "/recipe/{id}", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/api/member/recipe/{id}", method = RequestMethod.DELETE)
     public ResponseEntity deleteRecipeById(@PathVariable String id) {
         ResponseEntity result = null;
         try {

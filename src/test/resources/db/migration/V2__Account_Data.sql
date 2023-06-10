@@ -37,7 +37,6 @@ INSERT INTO public.account (username, password, role, description, status) VALUE
 INSERT INTO public.account (username, password, role, description, status) VALUES ('namsieuquay2', '123456', '0', 'This account use for test DB', true);
 INSERT INTO public.account (username, password, role, description, status) VALUES ('vathuglife', 'hahaha', 'US', 'This account use for test DB', true);
 
-
 --
 -- TOC entry 3223 (class 2606 OID 21632)
 -- Name: account account_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres

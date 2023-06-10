@@ -22,19 +22,15 @@ public class DeleteRecipeCommandHandler implements Command.Handler<DeleteRecipeC
     }
     @Override
     public Boolean handle(DeleteRecipeCommand deleteRecipeCommand) throws InvalidRecipeIdException{
-        //B0: Check xem người dùng có cố tình nhập bậy cái id không. Nếu có thì đá ra luôn.
         boolean isValidRecId = recipeUtils.validateRecipeId(deleteRecipeCommand.getRecipeid());
         if(!isValidRecId)
             throw new InvalidRecipeIdException
                     ("Invalid Recipe Id detected. Please try again.");
-        //B1: Kiểm tra xem Recipe đã bị xóa chưa. Nếu rồi (hidden = true thì KHỎI SET.)
         Optional<Recipe> foundRecipe = recipeRepository.findById(deleteRecipeCommand.getRecipeid());
         if(foundRecipe.get().isStatus()==false){
             return false;
         }
-
         recipeRepository.updateRecipeStatusById(deleteRecipeCommand.getRecipeid());
-
         return true;
     }
 }

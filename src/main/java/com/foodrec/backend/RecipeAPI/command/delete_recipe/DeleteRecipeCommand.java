@@ -4,11 +4,12 @@ import an.awesome.pipelinr.Command;
 
 public class DeleteRecipeCommand implements Command<Boolean> {
     private final String recipeid;
-    public DeleteRecipeCommand(String recipeid){
+
+    public DeleteRecipeCommand(String recipeid) {
         this.recipeid = recipeid;
     }
 
-    public String getRecipeid(){
+    public String getRecipeid() {
         return recipeid;
     }
 

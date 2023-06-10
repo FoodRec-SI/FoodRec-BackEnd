@@ -15,59 +15,44 @@ import java.util.Arrays;
 import java.util.Optional;
 
 @Component
-public class CreateRecipeCommandHandler implements Command.Handler<CreateRecipeCommand, RecipeDTO>{
+public class CreateRecipeCommandHandler implements Command.Handler<CreateRecipeCommand, RecipeDTO> {
 
-    @Autowired
     private final RecipeRepository recipeRepository;
     private ModelMapper modelMapper;
     private final RecipeUtils recipeUtils;
     private final ArrayList<String> nonNullFields = new ArrayList<>
-            (Arrays.asList("recipeName","description","image"));
+            (Arrays.asList("recipeName", "description", "image"));
     private final ArrayList<String> nonNegativeFields = new ArrayList<>
-            (Arrays.asList("calories","duration"));
+            (Arrays.asList("calories", "duration"));
 
     public CreateRecipeCommandHandler(RecipeRepository recipeRepository,
                                       RecipeUtils recipeUtils,
-                                      ModelMapper modelMapper ) {
+                                      ModelMapper modelMapper) {
         this.recipeRepository = recipeRepository;
         this.recipeUtils = recipeUtils;
         this.modelMapper = modelMapper;
     }
 
     public RecipeDTO handle(CreateRecipeCommand createRecipeCommand)
-    throws InvalidRecipeAttributeException {
+            throws InvalidRecipeAttributeException {
         RecipeDTO result = null;
-
-            //B1: Kiểm tra xem các thuộc tính trong công thức (v.d. tên,...) có hợp lý ko
-            // (v.d. tên khác null, số calories lớn hơn 0)
-            boolean isValid =
-                    recipeUtils.fieldValidator(createRecipeCommand.getCreateRecipeDTO(),
-                            nonNullFields,nonNegativeFields);
-            if (isValid==false){
-                throw new InvalidRecipeAttributeException ("One of the recipe attributes " +
-                        "(name,description, calories, duration, image)" +
-                        " is invalid. Please try again.");
-            }
-
-            //B2: Nếu Ok thì map từ Dto sang Entity và thêm vào database.
-            Recipe recEntity = modelMapper.map(createRecipeCommand.getCreateRecipeDTO(),Recipe.class);
-
-            recEntity.setRecipeId(recipeUtils.generateRecId());
-            recEntity.setUsername("vathuglife");//temporary username for testing
-            recEntity.setStatus(true);
-            recipeRepository.save(recEntity);
-
-
-            //B3: Kiểm tra xem công thức đã được add chưa, bằng cách tìm lại chính công thức đó.
-            Optional<Recipe> isAddedRec = recipeRepository.findById(recEntity.getRecipeId());
-            if(isAddedRec.get()!=null){
-                result = modelMapper.map(isAddedRec.get(), RecipeDTO.class);
-            }
-
-
-
-
+        boolean isValid =
+                recipeUtils.fieldValidator(createRecipeCommand.getCreateRecipeDTO(),
+                        nonNullFields, nonNegativeFields);
+        if (isValid == false) {
+            throw new InvalidRecipeAttributeException("One of the recipe attributes " +
+                    "(name,description, calories, duration, image)" +
+                    " is invalid. Please try again.");
+        }
+        Recipe recEntity = modelMapper.map(createRecipeCommand.getCreateRecipeDTO(), Recipe.class);
+        recEntity.setRecipeId(recipeUtils.generateRecId());
+        recEntity.setUserName("vathuglife");//temporary username for testing
+        recEntity.setStatus(true);
+        recipeRepository.save(recEntity);
+        Optional<Recipe> isAddedRec = recipeRepository.findById(recEntity.getRecipeId());
+        if (isAddedRec.get() != null) {
+            result = modelMapper.map(isAddedRec.get(), RecipeDTO.class);
+        }
         return result;
-
     }
 }
