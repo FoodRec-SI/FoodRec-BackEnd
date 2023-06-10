@@ -9,20 +9,11 @@ package com.foodrec.backend.RecipeAPI.dto;
 * */
 //Nguyên nhân phải implement: giúp cho Utils.checkFieldEmpty nhận được nhiều LOẠI DTO khác nhau.
 //Bản chất: Coi RecipeDTO là 1 bản hợp đồng. Bất kì ai tuân theo thì sẽ đợc qua cửa Utils.checkFieldEmpty.
-public class NewRecipeDTO implements RecipeDTO {
-    public NewRecipeDTO() { //DTO cho việc tạo 1 công thức mới (KO BẮT ng dùng nhập Id công thức)
+public class CreateRecipeDTO {
+    public CreateRecipeDTO() { //DTO cho việc tạo 1 công thức mới (KO BẮT ng dùng nhập Id công thức)
     }
 
-    public NewRecipeDTO(String recipename,
-                        String description, int calories, int duration,
-                        byte[] image) {
-        this.recipename = recipename;
-        this.description = description;
-        this.calories = calories;
-        this.duration = duration;
-        this.image = image;
-    }
-    private String recipename;
+    private String recipeName;
 
     private String description;
 
@@ -32,12 +23,12 @@ public class NewRecipeDTO implements RecipeDTO {
 
     private byte[] image;
 
-    public String getRecipename() {
-        return recipename;
+    public String getRecipeName() {
+        return recipeName;
     }
 
-    public void setRecipename(String recipename) {
-        this.recipename = recipename;
+    public void setRecipeName(String recipeName) {
+        this.recipeName = recipeName;
     }
 
     public String getDescription() {

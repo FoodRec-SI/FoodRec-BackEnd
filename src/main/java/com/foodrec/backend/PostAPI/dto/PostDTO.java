@@ -1,7 +1,6 @@
 package com.foodrec.backend.PostAPI.dto;
 
 import com.foodrec.backend.PostAPI.entity.PostStatus;
-import jakarta.persistence.Column;
 
 import java.time.LocalDateTime;
 

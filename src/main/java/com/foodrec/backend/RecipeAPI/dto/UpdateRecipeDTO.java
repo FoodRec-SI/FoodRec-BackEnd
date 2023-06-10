@@ -1,14 +1,13 @@
 package com.foodrec.backend.RecipeAPI.dto;
 
-public class RecipeDTO {
-    public RecipeDTO(){}
+public class UpdateRecipeDTO {
+    public UpdateRecipeDTO(){}
     private String recipeId;
     private String recipeName;
     private String description;
     private int calories;
     private int duration;
     private byte[] image;
-
 
     public String getRecipeId() {
         return recipeId;

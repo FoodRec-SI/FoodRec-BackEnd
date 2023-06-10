@@ -26,7 +26,7 @@ public class PostCommandController {
         this.pipeline = pipeline;
     }
 
-    @RequestMapping(value = "/post", method = RequestMethod.POST)
+    @RequestMapping(value = "/api/member/post", method = RequestMethod.POST)
     public ResponseEntity createPost(@RequestBody CreatePostDTO createPostDTO) {
         ResponseEntity responseEntity = null;
         try {
@@ -42,7 +42,7 @@ public class PostCommandController {
         return responseEntity;
     }
 
-    @RequestMapping(value = "/moderator/post", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/api/moderator/post", method = RequestMethod.DELETE)
     public ResponseEntity<String> removePostByUser(@RequestBody DeletePostDTO deletePostDTO) {
         try {
             DeletePostCommand command = new DeletePostCommand(deletePostDTO);
@@ -60,7 +60,7 @@ public class PostCommandController {
         }
     }
 
-    @RequestMapping(value = "/post", method = RequestMethod.PUT)
+    @RequestMapping(value = "/api/member/post", method = RequestMethod.PUT)
     public ResponseEntity updatePostStatus(@RequestBody UpdatePostDTO updatePostDTO) {
         ResponseEntity responseEntity = null;
         try {
@@ -74,6 +74,5 @@ public class PostCommandController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Internal server error");
         }
         return responseEntity;
-
     }
 }

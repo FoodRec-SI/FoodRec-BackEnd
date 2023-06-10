@@ -1,17 +1,18 @@
 package com.foodrec.backend.RecipeAPI.command.create_recipe;
 
 import an.awesome.pipelinr.Command;
-import com.foodrec.backend.RecipeAPI.dto.NewRecipeDTO;
-import com.foodrec.backend.RecipeAPI.dto.RUDRecipeDTO;
 
-public class CreateRecipeCommand implements Command<Boolean> {
-    private final NewRecipeDTO newRecipeDTO;
+import com.foodrec.backend.RecipeAPI.dto.CreateRecipeDTO;
+import com.foodrec.backend.RecipeAPI.dto.RecipeDTO;
 
-    public CreateRecipeCommand(NewRecipeDTO newRecipeDTO) {
-        this.newRecipeDTO = newRecipeDTO;
+public class CreateRecipeCommand implements Command<RecipeDTO> {
+    private final CreateRecipeDTO createRecipeDTO;
+
+    public CreateRecipeCommand(CreateRecipeDTO createRecipeDTO) {
+        this.createRecipeDTO = createRecipeDTO;
     }
 
-    public NewRecipeDTO getRudRecipeDTO() {
-        return newRecipeDTO;
+    public CreateRecipeDTO getCreateRecipeDTO() {
+        return createRecipeDTO;
     }
 }

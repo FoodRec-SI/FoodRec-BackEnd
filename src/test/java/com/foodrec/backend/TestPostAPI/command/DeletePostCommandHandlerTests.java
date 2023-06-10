@@ -1,14 +1,8 @@
 package com.foodrec.backend.TestPostAPI.command;
 
 import an.awesome.pipelinr.Pipeline;
-import com.foodrec.backend.PostAPI.command.create_post.CreatePostCommand;
 import com.foodrec.backend.PostAPI.command.delete_post.DeletePostCommand;
-import com.foodrec.backend.PostAPI.command.update_post.UpdatePostCommand;
-import com.foodrec.backend.PostAPI.dto.CreatePostDTO;
 import com.foodrec.backend.PostAPI.dto.DeletePostDTO;
-import com.foodrec.backend.PostAPI.dto.PostDTO;
-import com.foodrec.backend.PostAPI.dto.UpdatePostDTO;
-import com.foodrec.backend.PostAPI.entity.Post;
 import com.foodrec.backend.PostAPI.repository.PostRepository;
 import com.foodrec.backend.exception.InvalidDataExceptionHandler;
 import com.foodrec.backend.exception.NotFoundExceptionHandler;
@@ -21,17 +15,14 @@ import org.springframework.test.context.DynamicPropertySource;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
-
-import java.util.Optional;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 @Testcontainers
 @SpringBootTest
 public class DeletePostCommandHandlerTests {
+
     @Autowired
     private PostRepository postRepository;
-
     @Autowired
     private Pipeline pipeline;
     @Container

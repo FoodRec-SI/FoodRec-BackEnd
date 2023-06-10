@@ -1,16 +1,17 @@
 package com.foodrec.backend.RecipeAPI.command.update_recipe;
 
 import an.awesome.pipelinr.Command;
-import com.foodrec.backend.RecipeAPI.dto.RUDRecipeDTO;
+import com.foodrec.backend.RecipeAPI.dto.RecipeDTO;
+import com.foodrec.backend.RecipeAPI.dto.UpdateRecipeDTO;
 
-public class UpdateRecipeCommand implements Command<Boolean> {
-    private final RUDRecipeDTO rudRecipeDTO;
+public class UpdateRecipeCommand implements Command<RecipeDTO> {
+    private final UpdateRecipeDTO UpdateRecipeDTO;
 
-    public UpdateRecipeCommand(RUDRecipeDTO rudRecipeDTO) {
-        this.rudRecipeDTO = rudRecipeDTO;
+    public UpdateRecipeCommand(UpdateRecipeDTO UpdateRecipeDTO) {
+        this.UpdateRecipeDTO = UpdateRecipeDTO;
     }
 
-    public RUDRecipeDTO getRUDRecipeDTO() {
-        return rudRecipeDTO;
+    public UpdateRecipeDTO getUpdateRecipeDTO() {
+        return UpdateRecipeDTO;
     }
 }

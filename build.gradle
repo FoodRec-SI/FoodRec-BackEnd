@@ -16,7 +16,7 @@ repositories {
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-web'
-    runtimeOnly 'org.postgresql:postgresql'
+    implementation 'org.postgresql:postgresql'
     implementation 'org.modelmapper:modelmapper:2.3.8'
     implementation 'jakarta.persistence:jakarta.persistence-api:3.1.0'
     implementation 'com.github.docker-java:docker-java-api:3.3.0'
@@ -37,6 +37,6 @@ configurations {
     compile.exclude module: "jackson-annotations"
 }
 
-tasks.named('test') {
+tasks.withType(Test) {
     useJUnitPlatform()
 }

@@ -12,7 +12,6 @@ import java.util.Set;
 @Table(name = "recipe")
 @Entity
 public class Recipe {
-
     @Id
     @Column(name = "recipeid")
     private String recipeId; //recipeId
@@ -28,11 +27,12 @@ public class Recipe {
     private int duration;
     @Column(name = "image")
     private byte[] image;
-
     @Column(name = "status")
     private boolean status;
+
     @OneToMany(mappedBy = "recipe")
     private List<Post> posts = new ArrayList<>();
+
     @ManyToMany
     @JoinTable(
             name = "recipe_tag",
