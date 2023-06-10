@@ -1,35 +1,56 @@
 package com.foodrec.backend.RecipeAPI.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import com.foodrec.backend.PostAPI.entity.Post;
+import com.foodrec.backend.TagAPI.entity.Tag;
+import jakarta.persistence.*;
 
-@Table(name="recipe")
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+@Table(name = "recipe")
 @Entity
 public class Recipe {
+    @Id
+    @Column(name = "recipeid")
+    private String recipeId; //recipeId
+    @Column(name = "recipename")
+    private String recipeName;
+    @Column(name = "description")
+    private String description;
+    @Column(name = "calories")
+    private int calories;
+    @Column(name = "username")
+    private String userName;
+    @Column(name = "duration")
+    private int duration;
+    @Column(name = "image")
+    private byte[] image;
+    @Column(name = "status")
+    private boolean status;
+
+    @OneToMany(mappedBy = "recipe")
+    private List<Post> posts = new ArrayList<>();
+
+    @ManyToMany
+    @JoinTable(
+            name = "recipe_tag",
+            joinColumns = @JoinColumn(name = "recipeid"),
+            inverseJoinColumns = @JoinColumn(name = "tagid")
+    )
+    private Set<Tag> tagSet = new HashSet<>();
+
+    public Set<Tag> getTagSet() {
+        return tagSet;
+    }
+
+    public void setTagSet(Set<Tag> tagSet) {
+        this.tagSet = tagSet;
+    }
+
     public Recipe() {
     }
-    /*Quy tắc đặt tên cho thuộc tính: tên thuộc tính trong Spring
-    phải trùng với tên cột trong bảng trong Database.,*/
-    @Id
-    @Column(name="recipeid")
-    private String recipeId; //recipeId
-    @Column(name="recipename")
-    private String recipeName;
-    @Column(name="description")
-    private String description;
-    @Column(name="calories")
-    private int calories;
-    @Column(name="username")
-    private String username;
-    @Column(name="duration")
-    private int duration;
-    @Column(name="image")
-    private byte[] image;
-
-    @Column(name="status")
-    private boolean status;
 
     public String getRecipeId() {
         return recipeId;
@@ -63,12 +84,8 @@ public class Recipe {
         this.calories = calories;
     }
 
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
     public int getDuration() {
@@ -93,5 +110,17 @@ public class Recipe {
 
     public void setStatus(boolean status) {
         this.status = status;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public List<Post> getPosts() {
+        return posts;
+    }
+
+    public void setPosts(List<Post> posts) {
+        this.posts = posts;
     }
 }

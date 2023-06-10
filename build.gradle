@@ -25,21 +25,17 @@ dependencies {
     implementation 'io.lettuce:lettuce-core:6.2.4.RELEASE'
     implementation 'org.springframework.boot:spring-boot-starter-data-redis'
 
-    //Testcontainers, Testcontainers.postgresql PHẢI CÙNG PHIÊN BẢN.
     testImplementation 'org.testcontainers:testcontainers:1.15.1'
     testImplementation group:'org.testcontainers',name:'junit-jupiter',version:'1.15.1'
     testImplementation group: 'org.testcontainers', name: 'postgresql', version: '1.15.1'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
-    testImplementation "org.flywaydb:flyway-core" //cài flyway-core thì KHÔNG ĐƯỢC VIẾT PHIÊN BẢN VÀO.
-
+    testImplementation "org.flywaydb:flyway-core"
 }
 configurations {
     compile.exclude module: "jackson-core"
     compile.exclude module: "jackson-databind"
     compile.exclude module: "jackson-annotations"
-
 }
-
 
 tasks.withType(Test) {
     useJUnitPlatform()

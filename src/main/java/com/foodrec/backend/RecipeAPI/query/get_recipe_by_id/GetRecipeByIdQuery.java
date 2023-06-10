@@ -3,8 +3,6 @@ package com.foodrec.backend.RecipeAPI.query.get_recipe_by_id;
 import an.awesome.pipelinr.Command;
 import com.foodrec.backend.RecipeAPI.dto.RecipeDTO;
 
-//Cú pháp: Command<Kiểu_dl_trả_về_front-end>
-//Phần bên dưới chứa đầu vào của Command.
 public class GetRecipeByIdQuery implements Command<RecipeDTO> {
     private final String recipeid;
 

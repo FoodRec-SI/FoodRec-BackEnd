@@ -6,22 +6,22 @@ import com.foodrec.backend.RecipeAPI.exceptions.InvalidPageInfoException;
 import com.foodrec.backend.RecipeAPI.exceptions.InvalidRecipeIdException;
 import com.foodrec.backend.RecipeAPI.query.get_all.GetAllRecipesQuery;
 import com.foodrec.backend.RecipeAPI.query.get_recipe_by_id.GetRecipeByIdQuery;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+@Tag(name = "Recipe")
 @RestController
 public class RecipeQueryController {
-
-    //báo hiệu rằng hàm ngay dưới tương ứng với HttpGet - lấy dữ liệu + cách gọi nó.
     final Pipeline pipeline;
 
     public RecipeQueryController(Pipeline pipeline) {
         this.pipeline = pipeline;
     }
 
-    @RequestMapping(value = "/recipe", method = RequestMethod.GET)
+    @RequestMapping(value = "/api/member/recipe", method = RequestMethod.GET)
     /* ResponseEntity cơ bản là 1 HttpResponse
     (chứa status code (2xx,3xx,4xx,5xx); header, và body (chứa thông tin để trả cho Client)*/
     public ResponseEntity<?> getRecipes(@RequestParam(defaultValue = "0")
@@ -44,7 +44,7 @@ public class RecipeQueryController {
     }
 
 
-    @RequestMapping(value = "/recipe/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "/api/member/recipe/{id}", method = RequestMethod.GET)
     /* @PathVariable String id: tìm xem, trong URI ở phần RequestMapping,
      *  có biến/thông tin nào có tên là {id} không. Nếu có thì lấy ra, không thì cook.
 
@@ -63,7 +63,7 @@ public class RecipeQueryController {
             if (result != null) {
                 responseEntity = new ResponseEntity<>(result, HttpStatus.OK);
             }
-        } catch (InvalidRecipeIdException e){
+        } catch (InvalidRecipeIdException e) {
             responseEntity = new ResponseEntity<>(e.getMsg()
                     , HttpStatus.BAD_REQUEST);
         }

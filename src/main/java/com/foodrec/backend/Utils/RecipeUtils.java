@@ -15,73 +15,65 @@ import java.util.regex.Pattern;
 public class RecipeUtils {
     @Autowired
     private RecipeRepository recipeRepository;
-    public RecipeUtils(){}
+
+    public RecipeUtils() {
+    }
+
     public boolean fieldValidator(Object any,
                                   ArrayList<String> nonNullFields,
                                   ArrayList<String> nonNegativeFields) {
-        //lấy danh sách các fields (thuộc tính có sẵn trong object Recipe rec)
-        //getFields không hoạt động vì tất cả thuộc tính của Recipe class là PRIVATE.
-        //Vì vậy phải sử dụng hàm getDeclaredFields.
         try {
             Field[] fields = any.getClass().getDeclaredFields();
             for (Field eachField : fields) {
-                eachField.setAccessible(true); //bắt buộc phải có. Nếu không thì nó sẽ không lấy giá trị của từng field được (v.d. giá trị của recipename là "Bánh xèo thơm ngon").
+                eachField.setAccessible(true);
                 String eachFieldName = eachField.getName();
-
-                //Nếu field là mấy cái KO DC NULL (v.d recipeName,desc,image)
-                if (nonNullFields.contains(eachFieldName)){
+                if (nonNullFields.contains(eachFieldName)) {
                     Object value = eachField.get(any);
-                    if(value==null)
+                    if (value == null)
                         return false;
                 }
-
-                //Nếu field là mấy cái KO DC BÉ HƠN 0 (v.d calories, duration)
                 if (nonNegativeFields.contains(eachFieldName)) {
                     int testNum = Integer.parseInt(eachField.get(any).toString());
-                    if(testNum<=0)
+                    if (testNum <= 0)
                         return false;
                 }
-
             }
-        }catch (IllegalAccessException e){ //Nếu 1 trong những fields k truy cập được
-            return false;
-        }catch (NumberFormatException e){ //Nếu ng dùng cố tình nhập calories, duration thành chữ
+        } catch (IllegalAccessException | NumberFormatException e) {
             return false;
         }
         return true;
     }
-    public String generateRecId(){
+
+    public String generateRecId() {
         String result = null;
-        //Tìm xem có tồn tại 1 recipe trong Database không.
         Recipe latestRec = recipeRepository.findAll
-                (Sort.by(Sort.Direction.DESC, "recipeId")).get(0);;
-        if(latestRec == null){ //TH1: KO CÓ Recipe nào trong bảng Recipe
+                (Sort.by(Sort.Direction.DESC, "recipeId")).get(0);
+        if (latestRec == null) {
             result = "REC000001";
-        }else{ //TH2: CÓ ÍT NHẤT 1 recipe trong bảng Recipe. -> Lấy id thằng recipe mới nhất + 1
+        } else {
             Pattern p = Pattern.compile("\\d+");
             Matcher m = p.matcher(latestRec.getRecipeId());
             String numberSection = "";
-            if(m.find()) {
+            if (m.find()) {
                 numberSection = m.group(0);
             }
-            int newId = Integer.parseInt(numberSection)+1;
-            if(newId<10){
-                result = "REC00000"+newId;
-            }else if(newId<100){
-                result = "REC0000"+newId;
-            }else {
-                result = "REC000"+newId;
+            int newId = Integer.parseInt(numberSection) + 1;
+            if (newId < 10) {
+                result = "REC00000" + newId;
+            } else if (newId < 100) {
+                result = "REC0000" + newId;
+            } else {
+                result = "REC000" + newId;
             }
-
         }
         return result;
     }
-    public boolean validateRecipeId(String recId){
+
+    public boolean validateRecipeId(String recId) {
         Pattern p = Pattern.compile("^REC[0-9]{6}$");
         Matcher m = p.matcher(recId);
-        if(!m.find())
+        if (!m.find())
             return false;
         return true;
-
     }
 }

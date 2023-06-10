@@ -1,6 +1,6 @@
 package com.foodrec.backend.RecipeAPI.dto;
 
-public class DeleteRecipeDTO { //DTO cho việc lấy công thức (có thêm Id so với NewRecipeDTO)
+public class DeleteRecipeDTO {
     public DeleteRecipeDTO() {
     }
 

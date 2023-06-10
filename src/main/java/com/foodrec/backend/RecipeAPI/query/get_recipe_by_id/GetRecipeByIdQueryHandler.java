@@ -11,7 +11,6 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 
-//Cú pháp: Command.Handler<Command_Class,Kiểu_dl_trả về)
 @Component
 public class GetRecipeByIdQueryHandler implements Command.Handler<GetRecipeByIdQuery, RecipeDTO> {
     private final RecipeRepository recipeRepository;
@@ -30,19 +29,15 @@ public class GetRecipeByIdQueryHandler implements Command.Handler<GetRecipeByIdQ
     public RecipeDTO handle(GetRecipeByIdQuery getRecipeByIdQuery)
             throws InvalidRecipeIdException {
         boolean isValidRecId = recipeUtils.validateRecipeId(getRecipeByIdQuery.getRecipeid());
-        if(!isValidRecId)
+        if (!isValidRecId)
             throw new InvalidRecipeIdException
-                    ("Invalid Recipe Id detected. Please try again.");
-
-        ArrayList<Recipe> recListTest = (ArrayList<Recipe>)recipeRepository.findAll();
+                    ("Invalid Recipe Id detected. Please try again!");
+        ArrayList<Recipe> recListTest = (ArrayList<Recipe>) recipeRepository.findAll();
         Recipe recipe = recipeRepository.findRecipeByRecipeId(getRecipeByIdQuery.getRecipeid());
         RecipeDTO recDto = null;
-
         if (recipe != null) {
             recDto = modelMapper.map(recipe, RecipeDTO.class);
         }
-
         return recDto;
     }
-
 }
