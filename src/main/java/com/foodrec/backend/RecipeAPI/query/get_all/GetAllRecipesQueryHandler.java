@@ -32,7 +32,6 @@ public class GetAllRecipesQueryHandler implements Command.Handler<GetAllRecipesQ
     @Override
     public Page<RecipeDTO> handle(GetAllRecipesQuery command)
             throws InvalidPageInfoException {
-
         if (!pageUtils.isNumber(command.getPageNumber())
                 || !pageUtils.isNumber(command.getPageSize())) {
             throw new InvalidPageInfoException("pageNumber or pageSize must be an Integer!");
@@ -42,7 +41,6 @@ public class GetAllRecipesQueryHandler implements Command.Handler<GetAllRecipesQ
         if (pageNumber < 0 || pageSize < 0)
             throw new InvalidPageInfoException
                     ("pageNumber or pageSize can't be less than 0.");
-
         Pageable pageable = PageRequest.of(pageNumber, pageSize,
                 Sort.by("recipeId").descending());
         Page<Recipe> recipePage = recipeRepository.findAll(pageable);
