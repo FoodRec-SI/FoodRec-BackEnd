@@ -46,7 +46,7 @@ public class CreateRecipeCommandHandler implements Command.Handler<CreateRecipeC
         }
         Recipe recEntity = modelMapper.map(createRecipeCommand.getCreateRecipeDTO(), Recipe.class);
         recEntity.setRecipeId(recipeUtils.generateRecId());
-        recEntity.setUserName("vathuglife");//temporary username for testing
+        recEntity.setUserName("vathuglife");
         recEntity.setStatus(true);
         recipeRepository.save(recEntity);
         Optional<Recipe> isAddedRec = recipeRepository.findById(recEntity.getRecipeId());
