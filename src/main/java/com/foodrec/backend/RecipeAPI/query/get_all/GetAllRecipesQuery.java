@@ -1,12 +1,10 @@
 package com.foodrec.backend.RecipeAPI.query.get_all;
 
 import an.awesome.pipelinr.Command;
-import com.foodrec.backend.RecipeAPI.dto.ReadRecipeDTO;
+import com.foodrec.backend.RecipeAPI.dto.RecipeDTO;
 import org.springframework.data.domain.Page;
 
-import java.text.NumberFormat;
-
-public class GetAllRecipesQuery implements Command<Page<ReadRecipeDTO>>
+public class GetAllRecipesQuery implements Command<Page<RecipeDTO>>
 {
     private final String pageNumber;
     private final String pageSize;

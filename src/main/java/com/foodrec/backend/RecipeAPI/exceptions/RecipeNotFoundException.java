@@ -1,6 +1,8 @@
 package com.foodrec.backend.RecipeAPI.exceptions;
 
 
+import org.springframework.web.bind.annotation.ResponseStatus;
+
 
 public class RecipeNotFoundException extends RuntimeException{
     private String msg;

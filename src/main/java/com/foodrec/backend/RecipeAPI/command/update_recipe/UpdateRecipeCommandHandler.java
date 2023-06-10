@@ -1,7 +1,7 @@
 package com.foodrec.backend.RecipeAPI.command.update_recipe;
 
 import an.awesome.pipelinr.Command;
-import com.foodrec.backend.RecipeAPI.dto.ReadRecipeDTO;
+import com.foodrec.backend.RecipeAPI.dto.RecipeDTO;
 import com.foodrec.backend.RecipeAPI.entity.Recipe;
 import com.foodrec.backend.RecipeAPI.exceptions.InvalidRecipeAttributeException;
 import com.foodrec.backend.RecipeAPI.exceptions.InvalidRecipeIdException;
@@ -17,7 +17,7 @@ import java.util.Arrays;
 import java.util.Optional;
 
 @Component
-public class UpdateRecipeCommandHandler implements Command.Handler<UpdateRecipeCommand, ReadRecipeDTO> {
+public class UpdateRecipeCommandHandler implements Command.Handler<UpdateRecipeCommand, RecipeDTO> {
     @Autowired
     private final RecipeRepository recipeRepository;
 
@@ -37,12 +37,12 @@ public class UpdateRecipeCommandHandler implements Command.Handler<UpdateRecipeC
     }
 
     @Override
-    public ReadRecipeDTO handle(UpdateRecipeCommand updateRecipeCommand)
+    public RecipeDTO handle(UpdateRecipeCommand updateRecipeCommand)
         throws InvalidRecipeIdException, InvalidRecipeAttributeException {
         //B1: Kiểm tra xem các thuộc tính trong Recipe có bị null (v.d. name, image),
         //hoặc bé hơn 0 (calories,duration). Đồng thời khi cập nhật lại, phải kiểm tra xem
         //người dùng có cố tình nhập sai cái recipeId không.
-        ReadRecipeDTO readRecipeDTO = null;
+        RecipeDTO recipeDTO = null;
         boolean isRecipeIdValid = recipeUtils.validateRecipeId(updateRecipeCommand
                 .getUpdateRecipeDTO().getRecipeId());
         if (isRecipeIdValid == false) {
@@ -75,8 +75,8 @@ public class UpdateRecipeCommandHandler implements Command.Handler<UpdateRecipeC
         recipeRepository.save(recEntity);
 
         //B4: Trả về front-end nguyên cái công thức vừa update để cho front-end ktra.
-        readRecipeDTO = modelMapper.map(recEntity,ReadRecipeDTO.class);
+        recipeDTO = modelMapper.map(recEntity, RecipeDTO.class);
 
-        return readRecipeDTO;
+        return recipeDTO;
     }
 }

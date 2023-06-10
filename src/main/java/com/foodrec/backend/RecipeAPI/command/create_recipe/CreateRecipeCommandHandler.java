@@ -1,7 +1,7 @@
 package com.foodrec.backend.RecipeAPI.command.create_recipe;
 
 import an.awesome.pipelinr.Command;
-import com.foodrec.backend.RecipeAPI.dto.ReadRecipeDTO;
+import com.foodrec.backend.RecipeAPI.dto.RecipeDTO;
 import com.foodrec.backend.RecipeAPI.entity.Recipe;
 import com.foodrec.backend.RecipeAPI.exceptions.InvalidRecipeAttributeException;
 import com.foodrec.backend.RecipeAPI.repository.RecipeRepository;
@@ -15,7 +15,7 @@ import java.util.Arrays;
 import java.util.Optional;
 
 @Component
-public class CreateRecipeCommandHandler implements Command.Handler<CreateRecipeCommand,ReadRecipeDTO>{
+public class CreateRecipeCommandHandler implements Command.Handler<CreateRecipeCommand, RecipeDTO>{
 
     @Autowired
     private final RecipeRepository recipeRepository;
@@ -34,9 +34,9 @@ public class CreateRecipeCommandHandler implements Command.Handler<CreateRecipeC
         this.modelMapper = modelMapper;
     }
 
-    public ReadRecipeDTO handle(CreateRecipeCommand createRecipeCommand)
+    public RecipeDTO handle(CreateRecipeCommand createRecipeCommand)
     throws InvalidRecipeAttributeException {
-        ReadRecipeDTO result = null;
+        RecipeDTO result = null;
 
             //B1: Kiểm tra xem các thuộc tính trong công thức (v.d. tên,...) có hợp lý ko
             // (v.d. tên khác null, số calories lớn hơn 0)
@@ -61,7 +61,7 @@ public class CreateRecipeCommandHandler implements Command.Handler<CreateRecipeC
             //B3: Kiểm tra xem công thức đã được add chưa, bằng cách tìm lại chính công thức đó.
             Optional<Recipe> isAddedRec = recipeRepository.findById(recEntity.getRecipeId());
             if(isAddedRec.get()!=null){
-                result = modelMapper.map(isAddedRec.get(),ReadRecipeDTO.class);
+                result = modelMapper.map(isAddedRec.get(), RecipeDTO.class);
             }
 
 
