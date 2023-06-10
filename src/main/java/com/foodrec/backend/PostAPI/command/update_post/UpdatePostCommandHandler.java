@@ -1,6 +1,7 @@
 package com.foodrec.backend.PostAPI.command.update_post;
 
 import an.awesome.pipelinr.Command;
+import com.foodrec.backend.PostAPI.dto.PostDTO;
 import com.foodrec.backend.PostAPI.dto.UpdatePostDTO;
 import com.foodrec.backend.PostAPI.entity.Post;
 import com.foodrec.backend.PostAPI.entity.PostStatus;
@@ -15,19 +16,21 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Optional;
 
 @Component
-public class UpdatePostCommandHandler implements Command.Handler<UpdatePostCommand, Boolean> {
+public class UpdatePostCommandHandler implements Command.Handler<UpdatePostCommand, PostDTO> {
     private final PostRepository postRepository;
+    private final ModelMapper modelMapper;
 
-    public UpdatePostCommandHandler(PostRepository postRepository) {
+    public UpdatePostCommandHandler(PostRepository postRepository, ModelMapper modelMapper) {
         this.postRepository = postRepository;
+        this.modelMapper = modelMapper;
     }
 
     @Transactional
     @Override
-    public Boolean handle(UpdatePostCommand command) {
+    public PostDTO handle(UpdatePostCommand command) {
         UpdatePostDTO updatePostDTO = command.getUpdatePostDTO();
         if (updatePostDTO.getStatus() == null || updatePostDTO.getPostId() == null ||
-                updatePostDTO.getModeratorName() == null) {
+                updatePostDTO.getModeratorName() == null || updatePostDTO.getStatus().equals(PostStatus.PENDING_APPROVAL)) {
             throw new InvalidDataExceptionHandler("Invalid data!");
         }
         Optional<Post> optionalPost = postRepository.findById(updatePostDTO.getPostId());
@@ -37,10 +40,11 @@ public class UpdatePostCommandHandler implements Command.Handler<UpdatePostComma
         if(optionalPost.get().getStatus() == updatePostDTO.getStatus().getValue()){
             throw new DuplicateExceptionHandler("Duplicate post status!");
         }
+
         Post post = optionalPost.get();
         post.setStatus(updatePostDTO.getStatus().getValue());
         post.setModeratorName(updatePostDTO.getModeratorName());
         postRepository.save(post);
-        return true;
+        return modelMapper.map(post, PostDTO.class);
     }
 }

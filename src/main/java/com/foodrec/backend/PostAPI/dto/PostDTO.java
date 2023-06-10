@@ -1,5 +1,6 @@
 package com.foodrec.backend.PostAPI.dto;
 
+import com.foodrec.backend.PostAPI.entity.PostStatus;
 import jakarta.persistence.Column;
 
 import java.time.LocalDateTime;
@@ -14,12 +15,23 @@ public class PostDTO {
     private int duration;
     private byte[] image;
     private LocalDateTime time;
+    private PostStatus postStatus;
+    private String recipeId;
+
+    public String getRecipeId() {
+        return recipeId;
+    }
+
+    public void setRecipeId(String recipeId) {
+        this.recipeId = recipeId;
+    }
 
     public PostDTO() {
     }
 
-    public PostDTO(String postId, String userName, String moderatorName, String recipeName,
-                   String description, int calories, int duration, byte[] image, LocalDateTime time) {
+    public PostDTO(String postId, String userName, String moderatorName,
+                   String recipeName, String description, int calories,
+                   int duration, byte[] image, LocalDateTime time, PostStatus postStatus) {
         this.postId = postId;
         this.userName = userName;
         this.moderatorName = moderatorName;
@@ -29,6 +41,7 @@ public class PostDTO {
         this.duration = duration;
         this.image = image;
         this.time = time;
+        this.postStatus = postStatus;
     }
 
     public String getPostId() {
@@ -59,7 +72,7 @@ public class PostDTO {
         return recipeName;
     }
 
-    public void setRecipename(String recipeName) {
+    public void setRecipeName(String recipeName) {
         this.recipeName = recipeName;
     }
 
@@ -101,5 +114,13 @@ public class PostDTO {
 
     public void setTime(LocalDateTime time) {
         this.time = time;
+    }
+
+    public PostStatus getPostStatus() {
+        return postStatus;
+    }
+
+    public void setPostStatus(PostStatus postStatus) {
+        this.postStatus = postStatus;
     }
 }

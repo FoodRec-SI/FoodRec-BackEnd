@@ -23,10 +23,13 @@ public class DeletePostCommandHandler implements Command.Handler<DeletePostComma
     @Override
     public Boolean handle(DeletePostCommand command) {
         DeletePostDTO deletePostDTO = command.getDeletePostDTO();
+        if (deletePostDTO.getPostId() == null || deletePostDTO.getUserName() == null) {
+            throw new InvalidDataExceptionHandler("Invalid post!");
+        }
         //Check if the postid is not exist
         Optional<Post> postOptional = postRepository.findById(deletePostDTO.getPostId());
         if (postOptional.isEmpty()) {
-            throw new NotFoundExceptionHandler("Invalid postid");
+            throw new NotFoundExceptionHandler("Post cannot found!");
         }
         //Check if the user is authorized to delete this post
         if (!postOptional.get().getUserName().equals(deletePostDTO.getUserName())) {

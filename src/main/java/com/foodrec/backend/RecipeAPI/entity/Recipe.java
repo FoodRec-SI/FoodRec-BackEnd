@@ -1,60 +1,71 @@
 package com.foodrec.backend.RecipeAPI.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import com.foodrec.backend.PostAPI.entity.Post;
+import com.foodrec.backend.TagAPI.entity.Tag;
+import jakarta.persistence.*;
 
-@Table(name="recipe")
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+@Table(name = "recipe")
 @Entity
 public class Recipe {
-    public Recipe() {
-    }
-    /*Quy tắc đặt tên cho thuộc tính: tên thuộc tính trong Spring
-    phải trùng với tên cột trong bảng trong Database.,*/
+
     @Id
-    private String recipeid;
-    @Column(name="recipename")
-    private String recipename;
-    @Column(name="description")
+    @Column(name = "recipeid")
+    private String recipeId; //recipeId
+    @Column(name = "recipename")
+    private String recipeName;
+    @Column(name = "description")
     private String description;
-    @Column(name="calories")
+    @Column(name = "calories")
     private int calories;
-    @Column(name="userid")
-    private String userid;
-    @Column(name="duration")
+    @Column(name = "username")
+    private String userName;
+    @Column(name = "duration")
     private int duration;
-    @Column(name="image")
+    @Column(name = "image")
     private byte[] image;
 
-    @Column(name="hidden")
-    private boolean hidden;
+    @Column(name = "status")
+    private boolean status;
+    @OneToMany(mappedBy = "recipe")
+    private List<Post> posts = new ArrayList<>();
+    @ManyToMany
+    @JoinTable(
+            name = "recipe_tag",
+            joinColumns = @JoinColumn(name = "recipeid"),
+            inverseJoinColumns = @JoinColumn(name = "tagid")
+    )
+    private Set<Tag> tagSet = new HashSet<>();
 
-
-    public byte[] getImage() {
-        return image;
+    public Set<Tag> getTagSet() {
+        return tagSet;
     }
 
-    public void setImage(byte[] image) {
-        this.image = image;
+    public void setTagSet(Set<Tag> tagSet) {
+        this.tagSet = tagSet;
     }
 
-
-
-    public String getRecipeid() {
-        return recipeid;
+    public Recipe() {
     }
 
-    public void setRecipeid(String recipeid) {
-        this.recipeid = recipeid;
+    public String getRecipeId() {
+        return recipeId;
     }
 
-    public String getRecipename() {
-        return recipename;
+    public void setRecipeId(String recipeId) {
+        this.recipeId = recipeId;
     }
 
-    public void setRecipename(String recipename) {
-        this.recipename = recipename;
+    public String getRecipeName() {
+        return recipeName;
+    }
+
+    public void setRecipeName(String recipeName) {
+        this.recipeName = recipeName;
     }
 
     public String getDescription() {
@@ -73,13 +84,10 @@ public class Recipe {
         this.calories = calories;
     }
 
-    public String getUserid() {
-        return userid;
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
-    public void setUserid(String userid) {
-        this.userid = userid;
-    }
     public int getDuration() {
         return duration;
     }
@@ -88,11 +96,31 @@ public class Recipe {
         this.duration = duration;
     }
 
-    public boolean isHidden() {
-        return hidden;
+    public byte[] getImage() {
+        return image;
     }
 
-    public void setHidden(boolean hidden) {
-        this.hidden = hidden;
+    public void setImage(byte[] image) {
+        this.image = image;
+    }
+
+    public boolean isStatus() {
+        return status;
+    }
+
+    public void setStatus(boolean status) {
+        this.status = status;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public List<Post> getPosts() {
+        return posts;
+    }
+
+    public void setPosts(List<Post> posts) {
+        this.posts = posts;
     }
 }

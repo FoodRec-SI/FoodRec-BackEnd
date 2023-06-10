@@ -1,9 +1,7 @@
 package com.foodrec.backend.PostAPI.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import com.foodrec.backend.RecipeAPI.entity.Recipe;
+import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
 
@@ -21,6 +19,8 @@ public class Post {
     private String userName;
     @Column(name = "moderatorname")
     private String moderatorName;
+    @Column(name = "recipeid")
+    private String recipeId;
     @Column(name = "recipename")
     private String recipeName;
     @Column(name = "description")
@@ -33,23 +33,11 @@ public class Post {
     private byte[] image;
     @Column(name = "time")
     private LocalDateTime time;
+    @ManyToOne
+    @JoinColumn
+    private Recipe recipe;
 
     public Post() {
-    }
-
-    public Post(String postId, int status, String userName, String moderatorName,
-                String recipeName, String description, int calories,
-                int duration, byte[] image, LocalDateTime time) {
-        this.postId = postId;
-        this.status = status;
-        this.userName = userName;
-        this.moderatorName = moderatorName;
-        this.recipeName = recipeName;
-        this.description = description;
-        this.calories = calories;
-        this.duration = duration;
-        this.image = image;
-        this.time = time;
     }
 
     public String getPostId() {
@@ -82,6 +70,14 @@ public class Post {
 
     public void setModeratorName(String moderatorName) {
         this.moderatorName = moderatorName;
+    }
+
+    public String getRecipeId() {
+        return recipeId;
+    }
+
+    public void setRecipeId(String recipeId) {
+        this.recipeId = recipeId;
     }
 
     public String getRecipeName() {
@@ -130,6 +126,14 @@ public class Post {
 
     public void setTime(LocalDateTime time) {
         this.time = time;
+    }
+
+    public Recipe getRecipe() {
+        return recipe;
+    }
+
+    public void setRecipe(Recipe recipe) {
+        this.recipe = recipe;
     }
 }
 

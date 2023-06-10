@@ -23,7 +23,7 @@ public class IdGenerator {
     }
 
     public static String generateNextId(Class<?> entityClass, String columnName) {
-        String entityClassName = entityClass.getSimpleName(); // Lấy tên lớp đối tượng
+        String entityClassName = entityClass.getSimpleName();
         String prefix = entityClassName.substring(0, 3);
         String columnId = cache.get(prefix);
         if (columnId == null || columnId.isEmpty()) {
