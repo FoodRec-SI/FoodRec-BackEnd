@@ -14,3 +14,4 @@ public class GetRecipeByIdQuery implements Command<RecipeDTO> {
         return recipeid;
     }
 }
+
