@@ -3,7 +3,7 @@ package com.foodrec.backend.RecipeAPI.query.get_all;
 import an.awesome.pipelinr.Command;
 
 
-import com.foodrec.backend.RecipeAPI.exceptions.InvalidPageInfoException;
+import com.foodrec.backend.exception.InvalidPageInfoException;
 import com.foodrec.backend.RecipeAPI.repository.RecipeRepository;
 import com.foodrec.backend.RecipeAPI.dto.RecipeDTO;
 import com.foodrec.backend.RecipeAPI.entity.Recipe;

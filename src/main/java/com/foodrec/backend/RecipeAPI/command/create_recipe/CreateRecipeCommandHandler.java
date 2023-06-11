@@ -3,9 +3,10 @@ package com.foodrec.backend.RecipeAPI.command.create_recipe;
 import an.awesome.pipelinr.Command;
 import com.foodrec.backend.RecipeAPI.dto.RecipeDTO;
 import com.foodrec.backend.RecipeAPI.entity.Recipe;
-import com.foodrec.backend.RecipeAPI.exceptions.InvalidRecipeAttributeException;
+
 import com.foodrec.backend.RecipeAPI.repository.RecipeRepository;
 import com.foodrec.backend.Utils.RecipeUtils;
+import com.foodrec.backend.exception.InvalidDataExceptionHandler;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -34,13 +35,13 @@ public class CreateRecipeCommandHandler implements Command.Handler<CreateRecipeC
     }
 
     public RecipeDTO handle(CreateRecipeCommand createRecipeCommand)
-            throws InvalidRecipeAttributeException {
+            throws InvalidDataExceptionHandler {
         RecipeDTO result = null;
         boolean isValid =
                 recipeUtils.fieldValidator(createRecipeCommand.getCreateRecipeDTO(),
                         nonNullFields, nonNegativeFields);
         if (isValid == false) {
-            throw new InvalidRecipeAttributeException("One of the recipe attributes " +
+            throw new InvalidDataExceptionHandler("One of the recipe attributes " +
                     "(name,description, calories, duration, image)" +
                     " is invalid. Please try again.");
         }
