@@ -1,0 +1,33 @@
+version: '2.4'
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: nam2507/foodrec:foodrec
+    ports:
+      - 8080:8080
+    environment:
+      SPRING_PROFILES_ACTIVE: production
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/foodrec-db
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: 12345
+    depends_on:
+      - db
+      - redis
+
+  db:
+    image: nam2507/foodrec:postgres
+    restart: always
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_DB: foodrec-db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 12345
+
+  redis:
+    image: nam2507/foodrec:redis
+    restart: always
+    ports:
+      - 6379:6379
