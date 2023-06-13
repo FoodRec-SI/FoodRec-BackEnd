@@ -5,12 +5,11 @@ import com.foodrec.backend.PostAPI.dto.PostDTO;
 import com.foodrec.backend.PostAPI.entity.Post;
 import com.foodrec.backend.PostAPI.entity.PostStatus;
 import com.foodrec.backend.PostAPI.repository.PostRepository;
-import com.foodrec.backend.exception.InvalidDataExceptionHandler;
+import com.foodrec.backend.Exception.InvalidDataExceptionHandler;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Component;
 
-import java.util.Arrays;
 import java.util.List;
 @Component
 public class GetPostsByStatusQueryHandler implements Command.Handler<GetPostByStatusQuery, Page<PostDTO>> {
@@ -23,12 +22,12 @@ public class GetPostsByStatusQueryHandler implements Command.Handler<GetPostBySt
     }
 
     @Override
-    public Page<PostDTO> handle(GetPostByStatusQuery command) {
-        if (command.getPageNumber() < 0 || command.getPageSize() < 1) {
+    public Page<PostDTO> handle(GetPostByStatusQuery query) {
+        if (query.getPageNumber() < 0 || query.getPageSize() < 1) {
             throw new InvalidDataExceptionHandler("Invalid data!");
         }
-        List<Integer> statusNum = PostStatus.convertPostStatusesToIntArray(command.getPostStatuses());
-        Pageable pageable = PageRequest.of(command.getPageNumber(), command.getPageSize(), Sort.by("time").descending());
+        List<Integer> statusNum = PostStatus.convertPostStatusesToIntArray(query.getPostStatuses());
+        Pageable pageable = PageRequest.of(query.getPageNumber(), query.getPageSize(), Sort.by("time").descending());
         Page<Post> postsPage = postRepository.findAllByStatusIn(statusNum, pageable);
         List<PostDTO> postDTOS = postsPage.getContent().stream().map(post -> {
             PostDTO postDTO = modelMapper.map(post, PostDTO.class);

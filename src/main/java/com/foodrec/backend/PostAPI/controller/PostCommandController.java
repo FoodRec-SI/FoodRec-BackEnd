@@ -8,10 +8,10 @@ import com.foodrec.backend.PostAPI.dto.CreatePostDTO;
 import com.foodrec.backend.PostAPI.dto.DeletePostDTO;
 import com.foodrec.backend.PostAPI.dto.PostDTO;
 import com.foodrec.backend.PostAPI.dto.UpdatePostDTO;
-import com.foodrec.backend.exception.DuplicateExceptionHandler;
-import com.foodrec.backend.exception.InvalidDataExceptionHandler;
-import com.foodrec.backend.exception.NotFoundExceptionHandler;
-import com.foodrec.backend.exception.UnauthorizedExceptionHandler;
+import com.foodrec.backend.Exception.DuplicateExceptionHandler;
+import com.foodrec.backend.Exception.InvalidDataExceptionHandler;
+import com.foodrec.backend.Exception.NotFoundExceptionHandler;
+import com.foodrec.backend.Exception.UnauthorizedExceptionHandler;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -42,7 +42,7 @@ public class PostCommandController {
         return responseEntity;
     }
 
-    @RequestMapping(value = "/api/moderator/post", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/api/member/post", method = RequestMethod.DELETE)
     public ResponseEntity<String> removePostByUser(@RequestBody DeletePostDTO deletePostDTO) {
         try {
             DeletePostCommand command = new DeletePostCommand(deletePostDTO);
@@ -60,7 +60,7 @@ public class PostCommandController {
         }
     }
 
-    @RequestMapping(value = "/api/member/post", method = RequestMethod.PUT)
+    @RequestMapping(value = "/api/moderator/post", method = RequestMethod.PUT)
     public ResponseEntity updatePostStatus(@RequestBody UpdatePostDTO updatePostDTO) {
         ResponseEntity responseEntity = null;
         try {

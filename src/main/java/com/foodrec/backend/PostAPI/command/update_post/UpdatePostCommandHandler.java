@@ -6,9 +6,9 @@ import com.foodrec.backend.PostAPI.dto.UpdatePostDTO;
 import com.foodrec.backend.PostAPI.entity.Post;
 import com.foodrec.backend.PostAPI.entity.PostStatus;
 import com.foodrec.backend.PostAPI.repository.PostRepository;
-import com.foodrec.backend.exception.DuplicateExceptionHandler;
-import com.foodrec.backend.exception.InvalidDataExceptionHandler;
-import com.foodrec.backend.exception.NotFoundExceptionHandler;
+import com.foodrec.backend.Exception.DuplicateExceptionHandler;
+import com.foodrec.backend.Exception.InvalidDataExceptionHandler;
+import com.foodrec.backend.Exception.NotFoundExceptionHandler;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,7 +30,7 @@ public class UpdatePostCommandHandler implements Command.Handler<UpdatePostComma
     public PostDTO handle(UpdatePostCommand command) {
         UpdatePostDTO updatePostDTO = command.getUpdatePostDTO();
         if (updatePostDTO.getStatus() == null || updatePostDTO.getPostId() == null ||
-                updatePostDTO.getModeratorName() == null || updatePostDTO.getStatus().equals(PostStatus.PENDING_APPROVAL)) {
+                updatePostDTO.getModeratorId() == null || updatePostDTO.getStatus().equals(PostStatus.PENDING_APPROVAL)) {
             throw new InvalidDataExceptionHandler("Invalid data!");
         }
         Optional<Post> optionalPost = postRepository.findById(updatePostDTO.getPostId());
@@ -43,7 +43,7 @@ public class UpdatePostCommandHandler implements Command.Handler<UpdatePostComma
 
         Post post = optionalPost.get();
         post.setStatus(updatePostDTO.getStatus().getValue());
-        post.setModeratorName(updatePostDTO.getModeratorName());
+        post.setModeratorId(updatePostDTO.getModeratorId());
         postRepository.save(post);
         return modelMapper.map(post, PostDTO.class);
     }

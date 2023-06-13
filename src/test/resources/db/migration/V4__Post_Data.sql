@@ -38,8 +38,14 @@ SET default_tablespace = '';
 -- Data for Name: post; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-INSERT INTO public.post (postid, status, userid, moderatorid, recipename, description, calories, duration, image, "time", recipeid) VALUES ('POS000001', 2, 'ACC000001', 'ACC000004', 'bánh xèo', '1 loại bánh ngon vcl', 50, 120, '\x00', '2023-06-06 13:54:25.306751', 'REC000001');
-INSERT INTO public.post (postid, status, userid, moderatorid, recipename, description, calories, duration, image, "time", recipeid) VALUES ('POS000002', 1, 'ACC000001', null, 'bánh xèo C', '1 loại bánh ngon vcl', 50, 120, '\x00', '2023-06-06 13:54:25.306751', 'REC000004');
+INSERT INTO public.post (postid, status, userid, moderatorid, recipename, description, calories, duration, image, "time", recipeid)
+VALUES ('POS000001', 2, 'ACC000001', 'ACC000004', 'bánh xèo', '1 loại bánh ngon vcl', 50, 120, '\x00', '2023-06-06 13:54:25.306751', 'REC000001');
+
+INSERT INTO public.post (postid, status, userid, moderatorid, recipename, description, calories, duration, image, "time", recipeid)
+VALUES ('POS000002', 1, 'ACC000001', null, 'bánh xèo C', '1 loại bánh ngon vcl', 50, 120, '\x00', '2023-06-06 13:54:25.306751', 'REC000004');
+
+INSERT INTO public.post (postid, status, userid, moderatorid, recipename, description, calories, duration, image, "time", recipeid)
+VALUES ('POS000003', 2, 'ACC000001', 'ACC000004', 'bánh xèo BA', '1 loại bánh ngon vcl', 50, 120, '\x00', '2023-06-06 13:54:25.306751', 'REC000003');
 
 
 --
