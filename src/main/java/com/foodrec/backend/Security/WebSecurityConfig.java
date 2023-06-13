@@ -23,7 +23,9 @@ public class WebSecurityConfig {
         return http
                 .headers(httpSecurityHeadersConfigurer -> httpSecurityHeadersConfigurer
                         .xssProtection(xXssConfig -> xXssConfig
-                                .headerValue(XXssProtectionHeaderWriter.HeaderValue.ENABLED_MODE_BLOCK)))
+                                .headerValue(XXssProtectionHeaderWriter.HeaderValue.DISABLED))
+                        .contentSecurityPolicy(contentSecurityPolicyConfig -> contentSecurityPolicyConfig
+                                .policyDirectives("script-src 'self'")))
                 .authorizeHttpRequests(authorizeHttpRequests -> authorizeHttpRequests
                         .requestMatchers(HttpMethod.GET, "/actuator/**").permitAll()
                         .requestMatchers("/api/moderator/**").hasRole(MODERATOR)
