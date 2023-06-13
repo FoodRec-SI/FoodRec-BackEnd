@@ -9,6 +9,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.header.writers.XXssProtectionHeaderWriter;
 
 @RequiredArgsConstructor
 @Configuration
@@ -20,6 +21,11 @@ public class WebSecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
+                .headers(httpSecurityHeadersConfigurer -> httpSecurityHeadersConfigurer
+                        .xssProtection(xXssConfig -> xXssConfig
+                                .headerValue(XXssProtectionHeaderWriter.HeaderValue.DISABLED))
+                        .contentSecurityPolicy(contentSecurityPolicyConfig -> contentSecurityPolicyConfig
+                                .policyDirectives("script-src 'self'")))
                 .authorizeHttpRequests(authorizeHttpRequests -> authorizeHttpRequests
                         .requestMatchers(HttpMethod.GET, "/actuator/**").permitAll()
                         .requestMatchers("/api/moderator/**").hasRole(MODERATOR)
