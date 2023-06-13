@@ -6,11 +6,15 @@ import com.foodrec.backend.RecipeAPI.exceptions.InvalidPageInfoException;
 import com.foodrec.backend.RecipeAPI.exceptions.InvalidRecipeIdException;
 import com.foodrec.backend.RecipeAPI.query.get_all.GetAllRecipesQuery;
 import com.foodrec.backend.RecipeAPI.query.get_recipe_by_id.GetRecipeByIdQuery;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import static com.foodrec.backend.Config.SwaggerConfig.BEARER_KEY_SECURITY_SCHEME;
 
 @Tag(name = "RecipeAPI")
 @RestController
@@ -21,7 +25,8 @@ public class RecipeQueryController {
         this.pipeline = pipeline;
     }
 
-    @RequestMapping(value = "/recipe", method = RequestMethod.GET)
+    @Operation(security = {@SecurityRequirement(name = BEARER_KEY_SECURITY_SCHEME)})
+    @RequestMapping(value = "/api/member/recipe", method = RequestMethod.GET)
     public ResponseEntity<?> getRecipes(@RequestParam(defaultValue = "0")
                                         String pageNumber, @RequestParam(defaultValue = "6") String pageSize) {
         ResponseEntity responseEntity = null;
@@ -40,7 +45,8 @@ public class RecipeQueryController {
         return responseEntity;
     }
 
-    @RequestMapping(value = "/recipe/{id}", method = RequestMethod.GET)
+    @Operation(security = {@SecurityRequirement(name = BEARER_KEY_SECURITY_SCHEME)})
+    @RequestMapping(value = "/api/member/recipe/{id}", method = RequestMethod.GET)
     public ResponseEntity<?> getRecipeById(@PathVariable String id) {
         ResponseEntity responseEntity = null;
         try {

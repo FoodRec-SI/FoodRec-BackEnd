@@ -10,10 +10,16 @@ import com.foodrec.backend.RecipeAPI.dto.UpdateRecipeDTO;
 import com.foodrec.backend.RecipeAPI.exceptions.InvalidRecipeAttributeException;
 import com.foodrec.backend.RecipeAPI.exceptions.InvalidRecipeIdException;
 import com.foodrec.backend.RecipeAPI.exceptions.RecipeNotFoundException;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import static com.foodrec.backend.Config.SwaggerConfig.BEARER_KEY_SECURITY_SCHEME;
+
+@Tag(name = "RecipeAPI")
 @RestController
 public class RecipeCommandController {
     final Pipeline pipeline;
@@ -22,7 +28,8 @@ public class RecipeCommandController {
         this.pipeline = pipeline;
     }
 
-    @RequestMapping(value = "/recipe", method = RequestMethod.POST)
+    @Operation(security = {@SecurityRequirement(name = BEARER_KEY_SECURITY_SCHEME)})
+    @RequestMapping(value = "/api/member/recipe", method = RequestMethod.POST)
     public ResponseEntity createRecipe(@RequestBody CreateRecipeDTO newRec) {
         ResponseEntity result = null;
         try {
@@ -44,7 +51,8 @@ public class RecipeCommandController {
         return result;
     }
 
-    @RequestMapping(value = "/recipe", method = RequestMethod.PUT)
+    @Operation(security = {@SecurityRequirement(name = BEARER_KEY_SECURITY_SCHEME)})
+    @RequestMapping(value = "/api/member/recipe", method = RequestMethod.PUT)
     public ResponseEntity updateRecipeById(@RequestBody UpdateRecipeDTO rec) {
         ResponseEntity result = null;
         try {
@@ -68,7 +76,8 @@ public class RecipeCommandController {
         return result;
     }
 
-    @RequestMapping(value = "/recipe/{id}", method = RequestMethod.DELETE)
+    @Operation(security = {@SecurityRequirement(name = BEARER_KEY_SECURITY_SCHEME)})
+    @RequestMapping(value = "/api/member/recipe/{id}", method = RequestMethod.DELETE)
     public ResponseEntity deleteRecipeById(@PathVariable String id) {
         ResponseEntity result = null;
         try {
