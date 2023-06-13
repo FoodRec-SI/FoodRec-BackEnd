@@ -5,6 +5,7 @@ import com.foodrec.backend.RecipeAPI.dto.RecipeDTO;
 import com.foodrec.backend.RecipeAPI.entity.Recipe;
 
 import com.foodrec.backend.RecipeAPI.repository.RecipeRepository;
+import com.foodrec.backend.Utils.IdGenerator;
 import com.foodrec.backend.Utils.RecipeUtils;
 import com.foodrec.backend.exception.InvalidDataExceptionHandler;
 import org.modelmapper.ModelMapper;
@@ -46,7 +47,7 @@ public class CreateRecipeCommandHandler implements Command.Handler<CreateRecipeC
                     " is invalid. Please try again.");
         }
         Recipe recEntity = modelMapper.map(createRecipeCommand.getCreateRecipeDTO(), Recipe.class);
-        recEntity.setRecipeId(recipeUtils.generateRecId());
+        recEntity.setRecipeId(IdGenerator.generateNextId(Recipe.class,"recipeId"));
         recEntity.setUserName("vathuglife");
         recEntity.setStatus(true);
         recipeRepository.save(recEntity);
