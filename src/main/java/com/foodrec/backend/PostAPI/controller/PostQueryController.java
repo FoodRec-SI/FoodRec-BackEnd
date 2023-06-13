@@ -6,6 +6,8 @@ import com.foodrec.backend.PostAPI.entity.PostStatus;
 import com.foodrec.backend.PostAPI.query.get_all_posts.GetAllPostsApprovedQuery;
 import com.foodrec.backend.PostAPI.query.get_posts_by_status_by_moderator.GetPostByStatusQuery;
 import com.foodrec.backend.Exception.InvalidDataExceptionHandler;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -17,6 +19,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
+import static com.foodrec.backend.Config.SwaggerConfig.BEARER_KEY_SECURITY_SCHEME;
+
 @Tag(name = "PostAPI")
 @RestController
 public class PostQueryController {
@@ -27,6 +31,7 @@ public class PostQueryController {
         this.pipeline = pipeline;
     }
 
+    @Operation(security = {@SecurityRequirement(name = BEARER_KEY_SECURITY_SCHEME)})
     @GetMapping("/api/member/posts")
     public ResponseEntity<Page<PostDTO>> getAllPostsApproved(@RequestParam(defaultValue = "0") int pageNumber,
                                                              @RequestParam(defaultValue = "6") int pageSize) {
@@ -43,6 +48,7 @@ public class PostQueryController {
 
     }
 
+    @Operation(security = {@SecurityRequirement(name = BEARER_KEY_SECURITY_SCHEME)})
     @GetMapping("/api/moderator/posts")
     public ResponseEntity<Page<PostDTO>> getAllPostsByStatus(@RequestParam(defaultValue = "0") int pageNumber,
                                                              @RequestParam(defaultValue = "6") int pageSize,
