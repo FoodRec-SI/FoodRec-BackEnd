@@ -1,9 +1,12 @@
 package com.foodrec.backend.TagAPI.entity;
 
+import com.foodrec.backend.AccountAPI.entity.Account;
 import com.foodrec.backend.RecipeAPI.entity.Recipe;
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -14,25 +17,13 @@ public class Tag {
     private String tagId;
     @Column(name = "tagname")
     private String tagName;
-    @ManyToMany
-    @JoinTable(
-            name = "recipe_tag",
-            joinColumns = @JoinColumn(name = "recipeid"),
-            inverseJoinColumns = @JoinColumn(name = "tagid")
-    )
-    private Set<Recipe> recipeSet = new HashSet<>();
+    @ManyToMany(mappedBy = "tagAndAccountList")
+    private List<Account> accounts = new ArrayList<>();
+    @ManyToMany(mappedBy = "tagAndRecipeList")
+    private List<Recipe> recipes = new ArrayList<>();
 
     public Tag() {
     }
-
-    public Set<Recipe> getRecipeSet() {
-        return recipeSet;
-    }
-
-    public void setRecipeSet(Set<Recipe> recipeSet) {
-        this.recipeSet = recipeSet;
-    }
-
 
     public String getTagId() {
         return tagId;

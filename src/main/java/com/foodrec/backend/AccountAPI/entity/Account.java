@@ -1,9 +1,12 @@
 package com.foodrec.backend.AccountAPI.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import com.foodrec.backend.TagAPI.entity.Tag;
+import jakarta.persistence.*;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @Table
 @Entity
@@ -17,15 +20,22 @@ public class Account {
     private byte[] profileImage;
     @Column(name = "background-image")
     private byte[] backgroundImage;
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "account_tag",
+            joinColumns = @JoinColumn(name = "userid"),
+            inverseJoinColumns = @JoinColumn(name = "tagid"))
+    private List<Tag> tagAndAccountList = new ArrayList<>();
 
     public Account() {
     }
 
-    public Account(String userId, String description, byte[] profileImage, byte[] backgroundImage) {
+    public Account(String userId, String description, byte[] profileImage,
+                   byte[] backgroundImage, List<Tag> tagAndAccountList) {
         this.userId = userId;
         this.description = description;
         this.profileImage = profileImage;
         this.backgroundImage = backgroundImage;
+        this.tagAndAccountList = tagAndAccountList;
     }
 
     public String getUserId() {
@@ -58,5 +68,13 @@ public class Account {
 
     public void setBackgroundImage(byte[] backgroundImage) {
         this.backgroundImage = backgroundImage;
+    }
+
+    public List<Tag> getTagAndAccountList() {
+        return tagAndAccountList;
+    }
+
+    public void setTagAndAccountList(List<Tag> tagAndAccountList) {
+        this.tagAndAccountList = tagAndAccountList;
     }
 }

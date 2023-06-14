@@ -30,23 +30,28 @@ public class Recipe {
     @Column(name = "status")
     private boolean status;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "recipe_tag",
             joinColumns = @JoinColumn(name = "recipeid"),
             inverseJoinColumns = @JoinColumn(name = "tagid")
     )
-    private Set<Tag> tagSet = new HashSet<>();
-
-    public Set<Tag> getTagSet() {
-        return tagSet;
-    }
-
-    public void setTagSet(Set<Tag> tagSet) {
-        this.tagSet = tagSet;
-    }
+    private List<Tag> tagAndRecipeList = new ArrayList<>();
 
     public Recipe() {
+    }
+
+    public Recipe(String recipeId, String recipeName, String description, int calories, String userId,
+                  int duration, byte[] image, boolean status, List<Tag> tagAndRecipeList) {
+        this.recipeId = recipeId;
+        this.recipeName = recipeName;
+        this.description = description;
+        this.calories = calories;
+        this.userId = userId;
+        this.duration = duration;
+        this.image = image;
+        this.status = status;
+        this.tagAndRecipeList = tagAndRecipeList;
     }
 
     public String getRecipeId() {
@@ -111,5 +116,13 @@ public class Recipe {
 
     public void setStatus(boolean status) {
         this.status = status;
+    }
+
+    public List<Tag> getTagAndRecipeList() {
+        return tagAndRecipeList;
+    }
+
+    public void setTagAndRecipeList(List<Tag> tagAndRecipeList) {
+        this.tagAndRecipeList = tagAndRecipeList;
     }
 }
