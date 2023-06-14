@@ -6,8 +6,8 @@ import java.time.LocalDateTime;
 
 public class PostDTO {
     private String postId;
-    private String userName;
-    private String moderatorName;
+    private String userId;
+    private String moderatorId;
     private String recipeName;
     private String description;
     private int calories;
@@ -28,12 +28,12 @@ public class PostDTO {
     public PostDTO() {
     }
 
-    public PostDTO(String postId, String userName, String moderatorName,
-                   String recipeName, String description, int calories,
-                   int duration, byte[] image, LocalDateTime time, PostStatus postStatus) {
+    public PostDTO(String postId, String userId, String moderatorId, String recipeName,
+                   String description, int calories, int duration, byte[] image,
+                   LocalDateTime time, PostStatus postStatus, String recipeId) {
         this.postId = postId;
-        this.userName = userName;
-        this.moderatorName = moderatorName;
+        this.userId = userId;
+        this.moderatorId = moderatorId;
         this.recipeName = recipeName;
         this.description = description;
         this.calories = calories;
@@ -41,6 +41,7 @@ public class PostDTO {
         this.image = image;
         this.time = time;
         this.postStatus = postStatus;
+        this.recipeId = recipeId;
     }
 
     public String getPostId() {
@@ -51,20 +52,20 @@ public class PostDTO {
         this.postId = postId;
     }
 
-    public String getUserName() {
-        return userName;
+    public String getUserId() {
+        return userId;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
-    public String getModeratorName() {
-        return moderatorName;
+    public String getModeratorId() {
+        return moderatorId;
     }
 
-    public void setModeratorName(String moderatorName) {
-        this.moderatorName = moderatorName;
+    public void setModeratorId(String moderatorId) {
+        this.moderatorId = moderatorId;
     }
 
     public String getRecipeName() {

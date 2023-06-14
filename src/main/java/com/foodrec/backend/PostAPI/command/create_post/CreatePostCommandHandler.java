@@ -40,15 +40,15 @@ public class CreatePostCommandHandler implements Command.Handler<CreatePostComma
     public PostDTO handle(CreatePostCommand command) {
         CreatePostDTO createPostDTO = command.getCreatePostDTO();
         LocalDateTime localDateTime = LocalDateTime.now();
-        if (createPostDTO.getRecipeId() == null || createPostDTO.getUserName() == null) {
+        if (createPostDTO.getRecipeId() == null || createPostDTO.getUserId() == null) {
             throw new InvalidDataExceptionHandler("Invalid post!");
         }
         Post post = new Post();
         Optional<Recipe> optionalRecipe = recipeRepository.findById(createPostDTO.getRecipeId());
-        if (optionalRecipe.isEmpty()) {
+        if (optionalRecipe.isEmpty() || !optionalRecipe.get().isStatus()) {
             throw new NotFoundExceptionHandler("Recipe not found!");
         }
-        if (!Objects.equals(createPostDTO.getUserName(), optionalRecipe.get().getUserName())) {
+        if (!Objects.equals(createPostDTO.getUserId(), optionalRecipe.get().getUserId())) {
             throw new UnauthorizedExceptionHandler("You are not allowed to create post!");
         }
         List<Post> posts  = postRepository.findPostByRecipeId(createPostDTO.getRecipeId());
@@ -61,7 +61,7 @@ public class CreatePostCommandHandler implements Command.Handler<CreatePostComma
         // Add new data for Post entity
         String postId = IdGenerator.generateNextId(Post.class, "postId");
         post.setPostId(postId);
-        post.setUserName(createPostDTO.getUserName());
+        post.setUserId(createPostDTO.getUserId());
         post.setRecipeId(createPostDTO.getRecipeId());
         post.setTime(localDateTime);
         post.setStatus(PostStatus.PENDING_APPROVAL.getValue());

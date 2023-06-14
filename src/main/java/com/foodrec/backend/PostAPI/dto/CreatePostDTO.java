@@ -1,19 +1,15 @@
 package com.foodrec.backend.PostAPI.dto;
 
-
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 public class CreatePostDTO {
     private String recipeId;
-    @JsonProperty("username")
-    private String userName;
+    private String userId;
 
     public CreatePostDTO() {
     }
 
-    public CreatePostDTO(String recipeId, String userName) {
+    public CreatePostDTO(String recipeId, String userId) {
         this.recipeId = recipeId;
-        this.userName = userName;
+        this.userId = userId;
     }
 
     public String getRecipeId() {
@@ -24,11 +20,11 @@ public class CreatePostDTO {
         this.recipeId = recipeId;
     }
 
-    public String getUserName() {
-        return userName;
+    public String getUserId() {
+        return userId;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 }

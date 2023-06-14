@@ -32,16 +32,16 @@ SET default_tablespace = '';
 -- Data for Name: recipe; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-INSERT INTO public.recipe (recipeid, recipename, description, calories, username, duration, image, status) VALUES ('REC000001', 'bánh xèo', '1 loại bánh ngon vcl', 50, 'namsieuquay', 120, '\x00', true);
-INSERT INTO public.recipe (recipeid, recipename, description, calories, username, duration, image, status) VALUES ('REC000002', 'bánh xèo A', '1 loại bánh ngon vcl', 50, 'namsieuquay', 120, '\x00', true);
-INSERT INTO public.recipe (recipeid, recipename, description, calories, username, duration, image, status) VALUES ('REC000003', 'bánh xèo B', '1 loại bánh ngon vcl', 50, 'namsieuquay', 120, '\x00', true);
-INSERT INTO public.recipe (recipeid, recipename, description, calories, username, duration, image, status) VALUES ('REC000004', 'bánh xèo C', '1 loại bánh ngon vcl', 50, 'namsieuquay', 120, '\x00', true);
-INSERT INTO public.recipe (recipeid, recipename, description, calories, username, duration, image, status) VALUES ('REC000005', 'bánh xèo D', '1 loại bánh ngon vcl', 50, 'namsieuquay', 120, '\x00', true);
-INSERT INTO public.recipe (recipeid, recipename, description, calories, username, duration, image, status) VALUES ('REC000006', 'bánh xèo E', '1 loại bánh ngon vcl', 50, 'namsieuquay', 120, '\x00', true);
-INSERT INTO public.recipe (recipeid, recipename, description, calories, username, duration, image, status) VALUES ('REC000007', 'bánh xèo F', '1 loại bánh ngon vcl', 50, 'namsieuquay', 120, '\x00', true);
-INSERT INTO public.recipe (recipeid, recipename, description, calories, username, duration, image, status) VALUES ('REC000008', 'bánh xèo G', '1 loại bánh ngon vcl', 50, 'namsieuquay', 120, '\x00', true);
-INSERT INTO public.recipe (recipeid, recipename, description, calories, username, duration, image, status) VALUES ('REC000009', 'bánh xèo H', '1 loại bánh ngon vcl', 50, 'namsieuquay', 120, '\x00', true);
-INSERT INTO public.recipe (recipeid, recipename, description, calories, username, duration, image, status) VALUES ('REC000010', 'bánh xèo I', '1 loại bánh ngon vcl', 50, 'namsieuquay', 120, '\x00', true);
+INSERT INTO public.recipe (recipeid, recipename, description, calories, userid, duration, image, status) VALUES ('REC000001', 'bánh xèo', '1 loại bánh ngon vcl', 50, 'ACC000001', 120, '\x00', true);
+INSERT INTO public.recipe (recipeid, recipename, description, calories, userid, duration, image, status) VALUES ('REC000002', 'bánh xèo A', '1 loại bánh ngon vcl', 50, 'ACC000002', 120, '\x00', true);
+INSERT INTO public.recipe (recipeid, recipename, description, calories, userid, duration, image, status) VALUES ('REC000003', 'bánh xèo B', '1 loại bánh ngon vcl', 50, 'ACC000003', 120, '\x00', true);
+INSERT INTO public.recipe (recipeid, recipename, description, calories, userid, duration, image, status) VALUES ('REC000004', 'bánh xèo C', '1 loại bánh ngon vcl', 50, 'ACC000001', 120, '\x00', true);
+INSERT INTO public.recipe (recipeid, recipename, description, calories, userid, duration, image, status) VALUES ('REC000005', 'bánh xèo D', '1 loại bánh ngon vcl', 50, 'ACC000001', 120, '\x00', true);
+INSERT INTO public.recipe (recipeid, recipename, description, calories, userid, duration, image, status) VALUES ('REC000006', 'bánh xèo E', '1 loại bánh ngon vcl', 50, 'ACC000003', 120, '\x00', true);
+INSERT INTO public.recipe (recipeid, recipename, description, calories, userid, duration, image, status) VALUES ('REC000007', 'bánh xèo F', '1 loại bánh ngon vcl', 50, 'ACC000002', 120, '\x00', true);
+INSERT INTO public.recipe (recipeid, recipename, description, calories, userid, duration, image, status) VALUES ('REC000008', 'bánh xèo G', '1 loại bánh ngon vcl', 50, 'ACC000003', 120, '\x00', true);
+INSERT INTO public.recipe (recipeid, recipename, description, calories, userid, duration, image, status) VALUES ('REC000009', 'bánh xèo H', '1 loại bánh ngon vcl', 50, 'ACC000001', 120, '\x00', true);
+INSERT INTO public.recipe (recipeid, recipename, description, calories, userid, duration, image, status) VALUES ('REC000010', 'bánh xèo I', '1 loại bánh ngon vcl', 50, 'ACC000002', 120, '\x00', true);
 
 
 --
