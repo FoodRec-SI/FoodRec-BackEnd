@@ -42,7 +42,7 @@ public class DeletePostCommandHandlerTests {
     public void testDeletePostSuccessfully() {
         DeletePostDTO deletePostDTO = new DeletePostDTO();
         deletePostDTO.setPostId("POS000001");
-        deletePostDTO.setUserName("namsieuquay");
+        deletePostDTO.setUserId("ACC000001");
         DeletePostCommand command = new DeletePostCommand(deletePostDTO);
         Boolean testPost = pipeline.send(command);
         assertTrue(testPost);
@@ -52,7 +52,7 @@ public class DeletePostCommandHandlerTests {
     public void testNullDataDeletePostByUser() {
         DeletePostDTO deletePostDTO = new DeletePostDTO();
         deletePostDTO.setPostId(null);
-        deletePostDTO.setUserName(null);
+        deletePostDTO.setUserId(null);
         DeletePostCommand command = new DeletePostCommand(deletePostDTO);
         Exception exception = assertThrows(InvalidDataExceptionHandler.class, () -> {
             pipeline.send(command);
@@ -65,8 +65,8 @@ public class DeletePostCommandHandlerTests {
     @Test
     public void testWrongUserNameDataDeletePostByUser() {
         DeletePostDTO deletePostDTO = new DeletePostDTO();
-        deletePostDTO.setPostId("POS000004");
-        deletePostDTO.setUserName("namsieuquay1");
+        deletePostDTO.setPostId("POS000002");
+        deletePostDTO.setUserId("ACC000003");
         DeletePostCommand command = new DeletePostCommand(deletePostDTO);
         Exception exception = assertThrows(UnauthorizedExceptionHandler.class, () -> {
             pipeline.send(command);
@@ -80,7 +80,7 @@ public class DeletePostCommandHandlerTests {
     public void testWrongPostDataDeletePostByUser() {
         DeletePostDTO deletePostDTO = new DeletePostDTO();
         deletePostDTO.setPostId("POS000009");
-        deletePostDTO.setUserName("namsieuquay");
+        deletePostDTO.setUserId("ACC000001");
         DeletePostCommand command = new DeletePostCommand(deletePostDTO);
         Exception exception = assertThrows(NotFoundExceptionHandler.class, () -> {
             pipeline.send(command);

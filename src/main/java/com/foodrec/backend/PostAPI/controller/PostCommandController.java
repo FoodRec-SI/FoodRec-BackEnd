@@ -48,7 +48,7 @@ public class PostCommandController {
     }
 
     @Operation(security = {@SecurityRequirement(name = BEARER_KEY_SECURITY_SCHEME)})
-    @RequestMapping(value = "/api/moderator/post", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/api/member/post", method = RequestMethod.DELETE)
     public ResponseEntity<String> removePostByUser(@RequestBody DeletePostDTO deletePostDTO) {
         try {
             DeletePostCommand command = new DeletePostCommand(deletePostDTO);
@@ -67,7 +67,7 @@ public class PostCommandController {
     }
 
     @Operation(security = {@SecurityRequirement(name = BEARER_KEY_SECURITY_SCHEME)})
-    @RequestMapping(value = "/api/member/post", method = RequestMethod.PUT)
+    @RequestMapping(value = "/api/moderator/post", method = RequestMethod.PUT)
     public ResponseEntity updatePostStatus(@RequestBody UpdatePostDTO updatePostDTO) {
         ResponseEntity responseEntity = null;
         try {

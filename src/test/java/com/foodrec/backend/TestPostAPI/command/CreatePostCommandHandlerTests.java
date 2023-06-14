@@ -49,12 +49,12 @@ public class CreatePostCommandHandlerTests {
     public void testCreatePostSuccessfully() {
         CreatePostDTO createPostDTO = new CreatePostDTO();
         createPostDTO.setRecipeId("REC000003");
-        createPostDTO.setUserName("namsieuquay");
+        createPostDTO.setUserId("ACC000003");
         CreatePostCommand command = new CreatePostCommand(createPostDTO);
         PostDTO postDTOTest = pipeline.send(command);
         Optional<Post> post = postRepository.findById(postDTOTest.getPostId());
         assertEquals(createPostDTO.getRecipeId(), post.get().getRecipeId());
-        assertEquals(createPostDTO.getUserName(), post.get().getUserName());
+        assertEquals(createPostDTO.getUserId(), post.get().getUserId());
         assertEquals(postDTOTest.getRecipeName(), post.get().getRecipeName());
     }
 
@@ -62,7 +62,7 @@ public class CreatePostCommandHandlerTests {
     public void testNullDataCreatePost() {
         CreatePostDTO createPostDTO = new CreatePostDTO();
         createPostDTO.setRecipeId(null);
-        createPostDTO.setUserName(null);
+        createPostDTO.setUserId(null);
         CreatePostCommand command = new CreatePostCommand(createPostDTO);
         Exception exception = assertThrows(InvalidDataExceptionHandler.class, () -> {
             pipeline.send(command);
@@ -76,7 +76,7 @@ public class CreatePostCommandHandlerTests {
     public void testDuplicateRecipeData(){
         CreatePostDTO createPostDTO = new CreatePostDTO();
         createPostDTO.setRecipeId("REC000001");
-        createPostDTO.setUserName("namsieuquay");
+        createPostDTO.setUserId("ACC000001");
         CreatePostCommand command = new CreatePostCommand(createPostDTO);
         Exception exception = assertThrows(DuplicateExceptionHandler.class, () -> {
             pipeline.send(command);
@@ -90,7 +90,7 @@ public class CreatePostCommandHandlerTests {
     public void testWrongRecipeData(){
         CreatePostDTO createPostDTO = new CreatePostDTO();
         createPostDTO.setRecipeId("REC00000");
-        createPostDTO.setUserName("namsieuquay");
+        createPostDTO.setUserId("ACC000003");
         CreatePostCommand command = new CreatePostCommand(createPostDTO);
         Exception exception = assertThrows(NotFoundExceptionHandler.class, () -> {
             pipeline.send(command);
@@ -104,7 +104,7 @@ public class CreatePostCommandHandlerTests {
     public void testWrongUserNameData(){
         CreatePostDTO createPostDTO = new CreatePostDTO();
         createPostDTO.setRecipeId("REC000004");
-        createPostDTO.setUserName("namsieuquay3");
+        createPostDTO.setUserId("ACC000003");
         CreatePostCommand command = new CreatePostCommand(createPostDTO);
         Exception exception = assertThrows(UnauthorizedExceptionHandler.class, () -> {
             pipeline.send(command);

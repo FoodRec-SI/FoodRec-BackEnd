@@ -37,12 +37,17 @@ dependencies {
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation "org.flywaydb:flyway-core"
 }
+
+bootJar {
+    archiveFileName = 'foodrec.jar'
+    archiveBaseName = 'foodrec'
+}
 configurations {
     compile.exclude module: "jackson-core"
     compile.exclude module: "jackson-databind"
     compile.exclude module: "jackson-annotations"
 }
 
-tasks.withType(Test) {
+tasks.withType(Test).configureEach {
     useJUnitPlatform()
 }
