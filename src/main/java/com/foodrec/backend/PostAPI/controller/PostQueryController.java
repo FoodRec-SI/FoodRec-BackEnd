@@ -11,7 +11,6 @@ import com.foodrec.backend.PostAPI.query.get_posts_by_status_by_moderator.GetPos
 import com.foodrec.backend.Exception.InvalidDataExceptionHandler;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
-import com.foodrec.backend.Exception.InvalidDataExceptionHandler;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;

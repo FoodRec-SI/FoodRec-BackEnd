@@ -18,11 +18,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.HttpClientErrorException;
 
 import static com.foodrec.backend.Config.SwaggerConfig.BEARER_KEY_SECURITY_SCHEME;
 
-@Tag(name = "RatingAPI")
+@Tag(name = "RecipeAPI")
 @RestController
 public class RecipeCommandController {
     final Pipeline pipeline;

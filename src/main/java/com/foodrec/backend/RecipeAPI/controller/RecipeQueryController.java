@@ -4,7 +4,6 @@ import an.awesome.pipelinr.Pipeline;
 import com.foodrec.backend.RecipeAPI.dto.RecipeDTO;
 import com.foodrec.backend.RecipeAPI.query.get_recipe_by_id.GetRecipeByUserIdQuery;
 import com.foodrec.backend.Exception.InvalidPageInfoException;
-import com.foodrec.backend.RecipeAPI.query.get_recipe_by_id.GetRecipeByUserIdQuery;
 import com.foodrec.backend.Utils.GetCurrentUserData;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -15,9 +14,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
-
-import java.security.Principal;
 
 import static com.foodrec.backend.Config.SwaggerConfig.BEARER_KEY_SECURITY_SCHEME;
 

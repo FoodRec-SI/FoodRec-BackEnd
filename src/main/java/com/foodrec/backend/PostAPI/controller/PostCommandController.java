@@ -12,7 +12,7 @@ import com.foodrec.backend.Exception.DuplicateExceptionHandler;
 import com.foodrec.backend.Exception.InvalidDataExceptionHandler;
 import com.foodrec.backend.Exception.NotFoundExceptionHandler;
 import com.foodrec.backend.Exception.UnauthorizedExceptionHandler;
-import com.foodrec.backend.Utils.GetCurrentUserId;
+import com.foodrec.backend.Utils.GetCurrentUserData;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -40,7 +40,7 @@ public class PostCommandController {
         Authentication authentication = null;
         try {
             authentication = SecurityContextHolder.getContext().getAuthentication();
-            String userId = GetCurrentUserId.getCurrentUserId(authentication);
+            String userId = GetCurrentUserData.getCurrentUserId(authentication);
             createPostDTO.setUserId(userId);
             CreatePostCommand command = new CreatePostCommand(createPostDTO);
             PostDTO postDTO = pipeline.send(command);
