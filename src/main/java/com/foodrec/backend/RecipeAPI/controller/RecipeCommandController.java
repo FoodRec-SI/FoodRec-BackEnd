@@ -8,12 +8,21 @@ import com.foodrec.backend.RecipeAPI.command.update_recipe.UpdateRecipeCommand;
 import com.foodrec.backend.RecipeAPI.dto.CreateRecipeDTO;
 import com.foodrec.backend.RecipeAPI.dto.RecipeDTO;
 import com.foodrec.backend.RecipeAPI.dto.UpdateRecipeDTO;
-import com.foodrec.backend.exception.*;
+import com.foodrec.backend.Exception.*;
+import com.foodrec.backend.Utils.GetCurrentUserId;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.HttpClientErrorException;
 
+import static com.foodrec.backend.Config.SwaggerConfig.BEARER_KEY_SECURITY_SCHEME;
+
+@Tag(name = "RatingAPI")
 @RestController
 public class RecipeCommandController {
     final Pipeline pipeline;
@@ -29,7 +38,7 @@ public class RecipeCommandController {
                         "recipename":"Bánh Xèo Miền Tây",
                         "description":"Là 1 loại bánh ngon vl",
                         "calories":30,
-                        "userid":"1",
+                        "userId":"1",
                         "duration":120,
                         "image":"\\0",
                         "hidden":false
@@ -39,12 +48,17 @@ public class RecipeCommandController {
             sau đó đối chiếu xem, trong Recipe(Model) có thuộc tính nào tên là "recipename" không. Nếu có thì đem
             giá trị "Bánh Xèo Miền Tây" gài vào thuộc tính recipename, của Recipe(Model) đó.
         * */
-    @RequestMapping(value = "/recipe", method = RequestMethod.POST)//cách để gọi hàm controller này.
+    @Operation(
+            description = "Create a Recipe of 1 User",
+            security = {@SecurityRequirement(name = BEARER_KEY_SECURITY_SCHEME)})
+    @RequestMapping(value = "/api/member/recipe", method = RequestMethod.POST)//cách để gọi hàm controller này.
     public ResponseEntity createRecipe(@RequestBody CreateRecipeDTO newRec) {
         ResponseEntity result = null;
+        Authentication authentication = null;
         try {
-
-            CreateRecipeCommand createRecipeCommand = new CreateRecipeCommand(newRec);
+            authentication = SecurityContextHolder.getContext().getAuthentication();
+            String userId = GetCurrentUserId.getCurrentUserId(authentication);
+            CreateRecipeCommand createRecipeCommand = new CreateRecipeCommand(newRec, userId);
             RecipeDTO recipeDTO = pipeline.send(createRecipeCommand);
             if (recipeDTO == null) {
                 result = new ResponseEntity<String>("Couldn't add recipe. " +
@@ -61,12 +75,17 @@ public class RecipeCommandController {
         return result;
     }
 
-    @RequestMapping(value = "/recipe", method = RequestMethod.PUT)
+    @Operation(
+            description = "Updates the Recipe Details of 1 USER",
+            security = {@SecurityRequirement(name = BEARER_KEY_SECURITY_SCHEME)})
+    @RequestMapping(value = "/api/member/recipe", method = RequestMethod.PUT)
     public ResponseEntity updateRecipeById(@RequestBody UpdateRecipeDTO rec) {
-
         ResponseEntity result = null;
+        Authentication authentication = null;
         try {
-            UpdateRecipeCommand updateRecipeCommand = new UpdateRecipeCommand(rec);
+            authentication = SecurityContextHolder.getContext().getAuthentication();
+            String userId = GetCurrentUserId.getCurrentUserId(authentication);
+            UpdateRecipeCommand updateRecipeCommand = new UpdateRecipeCommand(rec,userId);
             RecipeDTO updatedRecipe = pipeline.send(updateRecipeCommand);
             if (updatedRecipe == null) {
                 result = new ResponseEntity<String>("Something went wrong with the server and" +
@@ -84,19 +103,26 @@ public class RecipeCommandController {
         return result;
     }
 
-    @RequestMapping(value = "/recipe/{id}", method = RequestMethod.DELETE)
-    public ResponseEntity deleteRecipeById(@PathVariable String id) {
+    @Operation(
+            description = "Deletes the Recipe Details of 1 USER",
+            security = {@SecurityRequirement(name = BEARER_KEY_SECURITY_SCHEME)})
+    @RequestMapping(value = "/api/member/recipe/{id}", method = RequestMethod.DELETE)
+    public ResponseEntity deleteRecipeById(@PathVariable String recipeId) {
         ResponseEntity result = null;
+        Authentication authentication = null;
+
         try {
-            DeleteRecipeCommand command = new DeleteRecipeCommand(id);
+            authentication = SecurityContextHolder.getContext().getAuthentication();
+            String userId = GetCurrentUserId.getCurrentUserId(authentication);
+            DeleteRecipeCommand command = new DeleteRecipeCommand(recipeId,userId);
             boolean isDeleted = pipeline.send(command);
             if (isDeleted == false)
                 result = new ResponseEntity<String>("Recipe with id " +
-                        id + " might be deleted or non-existent. Please try again.",
+                        recipeId + " might be deleted or non-existent. Please try again.",
                         HttpStatus.BAD_REQUEST);
             else {
                 result = new ResponseEntity<String>("Successfully deleted recipe with id " +
-                        id, HttpStatus.OK);
+                        recipeId, HttpStatus.OK);
             }
 
         } catch (InvalidDataExceptionHandler e) {

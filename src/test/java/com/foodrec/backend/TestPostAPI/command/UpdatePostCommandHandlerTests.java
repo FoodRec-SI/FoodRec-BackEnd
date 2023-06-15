@@ -7,9 +7,9 @@ import com.foodrec.backend.PostAPI.dto.UpdatePostDTO;
 import com.foodrec.backend.PostAPI.entity.Post;
 import com.foodrec.backend.PostAPI.entity.PostStatus;
 import com.foodrec.backend.PostAPI.repository.PostRepository;
-import com.foodrec.backend.exception.DuplicateExceptionHandler;
-import com.foodrec.backend.exception.InvalidDataExceptionHandler;
-import com.foodrec.backend.exception.NotFoundExceptionHandler;
+import com.foodrec.backend.Exception.DuplicateExceptionHandler;
+import com.foodrec.backend.Exception.InvalidDataExceptionHandler;
+import com.foodrec.backend.Exception.NotFoundExceptionHandler;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -48,29 +48,29 @@ public class UpdatePostCommandHandlerTests {
     @Test
     public void testUpdatePostApprovedByModeratorSuccessfully() {
         UpdatePostDTO updatePostDTO = new UpdatePostDTO();
-        updatePostDTO.setPostId("POS000004");
+        updatePostDTO.setPostId("POS000002");
         updatePostDTO.setStatus(PostStatus.APPROVED);
-        updatePostDTO.setModeratorName("namsieuquay2");
+        updatePostDTO.setModeratorId("ACC000004");
         UpdatePostCommand command = new UpdatePostCommand(updatePostDTO);
         PostDTO postDTOTest = pipeline.send(command);
         Optional<Post> post = postRepository.findById(postDTOTest.getPostId());
         assertEquals(updatePostDTO.getPostId(), post.get().getPostId());
         assertEquals(updatePostDTO.getStatus().getValue(), post.get().getStatus());
-        assertEquals(updatePostDTO.getModeratorName(), post.get().getModeratorName());
+        assertEquals(updatePostDTO.getModeratorId(), post.get().getModeratorId());
     }
 
     @Test
     public void testUpdatePostDeletedByModeratorSuccessfully() {
         UpdatePostDTO updatePostDTO = new UpdatePostDTO();
-        updatePostDTO.setPostId("POS000004");
+        updatePostDTO.setPostId("POS000002");
         updatePostDTO.setStatus(PostStatus.DELETED);
-        updatePostDTO.setModeratorName("namsieuquay2");
+        updatePostDTO.setModeratorId("ACC000004");
         UpdatePostCommand command = new UpdatePostCommand(updatePostDTO);
         PostDTO postDTOTest = pipeline.send(command);
         Optional<Post> post = postRepository.findById(postDTOTest.getPostId());
         assertEquals(updatePostDTO.getPostId(), post.get().getPostId());
         assertEquals(updatePostDTO.getStatus().getValue(), post.get().getStatus());
-        assertEquals(updatePostDTO.getModeratorName(), post.get().getModeratorName());
+        assertEquals(updatePostDTO.getModeratorId(), post.get().getModeratorId());
     }
 
     @Test
@@ -78,7 +78,7 @@ public class UpdatePostCommandHandlerTests {
         UpdatePostDTO updatePostDTO = new UpdatePostDTO();
         updatePostDTO.setPostId(null);
         updatePostDTO.setStatus(null);
-        updatePostDTO.setModeratorName(null);
+        updatePostDTO.setModeratorId(null);
         UpdatePostCommand command = new UpdatePostCommand(updatePostDTO);
         Exception exception = assertThrows(InvalidDataExceptionHandler.class, () -> {
             pipeline.send(command);
@@ -93,7 +93,7 @@ public class UpdatePostCommandHandlerTests {
         UpdatePostDTO updatePostDTO = new UpdatePostDTO();
         updatePostDTO.setPostId("POS000005");
         updatePostDTO.setStatus(PostStatus.APPROVED);
-        updatePostDTO.setModeratorName("namsieuquay2");
+        updatePostDTO.setModeratorId("ACC000004");
         UpdatePostCommand command = new UpdatePostCommand(updatePostDTO);
         Exception exception = assertThrows(NotFoundExceptionHandler.class, () -> {
             pipeline.send(command);
@@ -108,7 +108,7 @@ public class UpdatePostCommandHandlerTests {
         UpdatePostDTO updatePostDTO = new UpdatePostDTO();
         updatePostDTO.setPostId("POS000001");
         updatePostDTO.setStatus(PostStatus.PENDING_APPROVAL);
-        updatePostDTO.setModeratorName("namsieuquay2");
+        updatePostDTO.setModeratorId("ACC000004");
         UpdatePostCommand command = new UpdatePostCommand(updatePostDTO);
         Exception exception = assertThrows(InvalidDataExceptionHandler.class, () -> {
             pipeline.send(command);
@@ -123,7 +123,7 @@ public class UpdatePostCommandHandlerTests {
         UpdatePostDTO updatePostDTO = new UpdatePostDTO();
         updatePostDTO.setPostId("POS000001");
         updatePostDTO.setStatus(PostStatus.APPROVED);
-        updatePostDTO.setModeratorName("namsieuquay2");
+        updatePostDTO.setModeratorId("ACC000004");
         UpdatePostCommand command = new UpdatePostCommand(updatePostDTO);
         Exception exception = assertThrows(DuplicateExceptionHandler.class, () -> {
             pipeline.send(command);

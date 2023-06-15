@@ -32,11 +32,10 @@ SET default_tablespace = '';
 -- Data for Name: account; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-INSERT INTO public.account (username, password, role, description, status) VALUES ('namsieuquay', '123456', '0', 'This account use for test DB', true);
-INSERT INTO public.account (username, password, role, description, status) VALUES ('namsieuquay1', '123456', '0', 'This account use for test DB', true);
-INSERT INTO public.account (username, password, role, description, status) VALUES ('namsieuquay2', '123456', '0', 'This account use for test DB', true);
-INSERT INTO public.account (username, password, role, description, status) VALUES ('vathuglife', 'hahaha', 'US', 'This account use for test DB', true);
-
+INSERT INTO public.account (userid, description) VALUES ('ACC000001', 'This account use for test DB');
+INSERT INTO public.account (userid, description) VALUES ('ACC000002', 'This account use for test DB');
+INSERT INTO public.account (userid, description) VALUES ('ACC000003', 'This account use for test DB');
+INSERT INTO public.account (userid, description) VALUES ('ACC000004', 'This account use for test DB');
 --
 -- TOC entry 3223 (class 2606 OID 21632)
 -- Name: account account_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres

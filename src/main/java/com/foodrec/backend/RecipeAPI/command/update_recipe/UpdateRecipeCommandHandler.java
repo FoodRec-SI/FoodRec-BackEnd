@@ -5,8 +5,8 @@ import com.foodrec.backend.RecipeAPI.dto.RecipeDTO;
 import com.foodrec.backend.RecipeAPI.entity.Recipe;
 import com.foodrec.backend.RecipeAPI.repository.RecipeRepository;
 import com.foodrec.backend.Utils.RecipeUtils;
-import com.foodrec.backend.exception.InvalidDataExceptionHandler;
-import com.foodrec.backend.exception.NotFoundExceptionHandler;
+import com.foodrec.backend.Exception.InvalidDataExceptionHandler;
+import com.foodrec.backend.Exception.NotFoundExceptionHandler;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 
@@ -62,7 +62,7 @@ public class UpdateRecipeCommandHandler implements Command.Handler<UpdateRecipeC
         }
 
         Recipe recEntity = modelMapper.map(updateRecipeCommand.getUpdateRecipeDTO(), Recipe.class);
-        recEntity.setUserName("vathuglife");
+        recEntity.setUserId("vathuglife");
         recEntity.setStatus(true);
         recipeRepository.save(recEntity);
         recipeDTO = modelMapper.map(recEntity, RecipeDTO.class);

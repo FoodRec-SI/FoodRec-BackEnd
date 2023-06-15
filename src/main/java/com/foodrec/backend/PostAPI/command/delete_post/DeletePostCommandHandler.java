@@ -4,9 +4,9 @@ import an.awesome.pipelinr.Command;
 import com.foodrec.backend.PostAPI.dto.DeletePostDTO;
 import com.foodrec.backend.PostAPI.entity.Post;
 import com.foodrec.backend.PostAPI.repository.PostRepository;
-import com.foodrec.backend.exception.InvalidDataExceptionHandler;
-import com.foodrec.backend.exception.NotFoundExceptionHandler;
-import com.foodrec.backend.exception.UnauthorizedExceptionHandler;
+import com.foodrec.backend.Exception.InvalidDataExceptionHandler;
+import com.foodrec.backend.Exception.NotFoundExceptionHandler;
+import com.foodrec.backend.Exception.UnauthorizedExceptionHandler;
 import org.springframework.stereotype.Component;
 
 import java.util.Optional;
@@ -23,7 +23,7 @@ public class DeletePostCommandHandler implements Command.Handler<DeletePostComma
     @Override
     public Boolean handle(DeletePostCommand command) {
         DeletePostDTO deletePostDTO = command.getDeletePostDTO();
-        if (deletePostDTO.getPostId() == null || deletePostDTO.getUserName() == null) {
+        if (deletePostDTO.getPostId() == null || deletePostDTO.getUserId() == null) {
             throw new InvalidDataExceptionHandler("Invalid post!");
         }
         //Check if the postid is not exist
@@ -32,7 +32,7 @@ public class DeletePostCommandHandler implements Command.Handler<DeletePostComma
             throw new NotFoundExceptionHandler("Post cannot found!");
         }
         //Check if the user is authorized to delete this post
-        if (!postOptional.get().getUserName().equals(deletePostDTO.getUserName())) {
+        if (!postOptional.get().getUserId().equals(deletePostDTO.getUserId())) {
             throw new UnauthorizedExceptionHandler("You are not authorized to delete this post!");
         }
         postRepository.deleteById(deletePostDTO.getPostId());

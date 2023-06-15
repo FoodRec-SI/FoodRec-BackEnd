@@ -4,7 +4,7 @@ import an.awesome.pipelinr.Command;
 import com.foodrec.backend.RecipeAPI.entity.Recipe;
 import com.foodrec.backend.RecipeAPI.repository.RecipeRepository;
 import com.foodrec.backend.Utils.RecipeUtils;
-import com.foodrec.backend.exception.InvalidDataExceptionHandler;
+import com.foodrec.backend.Exception.InvalidDataExceptionHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -24,18 +24,18 @@ public class DeleteRecipeCommandHandler implements Command.Handler<DeleteRecipeC
 
     @Override
     public Boolean handle(DeleteRecipeCommand deleteRecipeCommand) throws InvalidDataExceptionHandler {
-        boolean isValidRecId = recipeUtils.validateRecipeId(deleteRecipeCommand.getRecipeid());
+        boolean isValidRecId = recipeUtils.validateRecipeId(deleteRecipeCommand.getRecipeId());
         if (!isValidRecId)
             throw new InvalidDataExceptionHandler
                     ("Invalid Recipe Id detected. Please try again.");
-        Optional<Recipe> foundRecipe = recipeRepository.findById(deleteRecipeCommand.getRecipeid());
+        Optional<Recipe> foundRecipe = recipeRepository.findById(deleteRecipeCommand.getRecipeId());
         if (foundRecipe.isEmpty()) {
             return false;
         }
         if (foundRecipe.get().isStatus() == false) {
             return false;
         }
-        recipeRepository.updateRecipeStatusById(deleteRecipeCommand.getRecipeid());
+        recipeRepository.updateRecipeStatusById(deleteRecipeCommand.getRecipeId());
         return true;
     }
 }

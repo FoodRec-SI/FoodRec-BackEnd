@@ -15,10 +15,10 @@ public class Post {
 
     @Column(name = "status")
     private int status;
-    @Column(name = "username")
-    private String userName;
-    @Column(name = "moderatorname")
-    private String moderatorName;
+    @Column(name = "userid")
+    private String userId;
+    @Column(name = "moderatorid")
+    private String moderatorId;
     @Column(name = "recipeid")
     private String recipeId;
     @Column(name = "recipename")
@@ -33,11 +33,23 @@ public class Post {
     private byte[] image;
     @Column(name = "time")
     private LocalDateTime time;
-    @ManyToOne
-    @JoinColumn
-    private Recipe recipe;
 
     public Post() {
+    }
+
+    public Post(String postId, int status, String userId, String moderatorId, String recipeId, String recipeName,
+                String description, int calories, int duration, byte[] image, LocalDateTime time) {
+        this.postId = postId;
+        this.status = status;
+        this.userId = userId;
+        this.moderatorId = moderatorId;
+        this.recipeId = recipeId;
+        this.recipeName = recipeName;
+        this.description = description;
+        this.calories = calories;
+        this.duration = duration;
+        this.image = image;
+        this.time = time;
     }
 
     public String getPostId() {
@@ -56,20 +68,20 @@ public class Post {
         this.status = status;
     }
 
-    public String getUserName() {
-        return userName;
+    public String getUserId() {
+        return userId;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
-    public String getModeratorName() {
-        return moderatorName;
+    public String getModeratorId() {
+        return moderatorId;
     }
 
-    public void setModeratorName(String moderatorName) {
-        this.moderatorName = moderatorName;
+    public void setModeratorId(String moderatorId) {
+        this.moderatorId = moderatorId;
     }
 
     public String getRecipeId() {
@@ -126,14 +138,6 @@ public class Post {
 
     public void setTime(LocalDateTime time) {
         this.time = time;
-    }
-
-    public Recipe getRecipe() {
-        return recipe;
-    }
-
-    public void setRecipe(Recipe recipe) {
-        this.recipe = recipe;
     }
 }
 

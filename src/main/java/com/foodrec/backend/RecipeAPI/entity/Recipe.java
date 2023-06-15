@@ -14,24 +14,21 @@ import java.util.Set;
 public class Recipe {
     @Id
     @Column(name = "recipeid")
-    private String recipeId; //recipeId
+    private String recipeId;
     @Column(name = "recipename")
     private String recipeName;
     @Column(name = "description")
     private String description;
     @Column(name = "calories")
     private int calories;
-    @Column(name = "username")
-    private String userName;
+    @Column(name = "userid")
+    private String userId;
     @Column(name = "duration")
     private int duration;
     @Column(name = "image")
     private byte[] image;
     @Column(name = "status")
     private boolean status;
-
-    @OneToMany(mappedBy = "recipe")
-    private List<Post> posts = new ArrayList<>();
 
     @ManyToMany
     @JoinTable(
@@ -84,8 +81,12 @@ public class Recipe {
         this.calories = calories;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
     public int getDuration() {
@@ -110,17 +111,5 @@ public class Recipe {
 
     public void setStatus(boolean status) {
         this.status = status;
-    }
-
-    public String getUserName() {
-        return userName;
-    }
-
-    public List<Post> getPosts() {
-        return posts;
-    }
-
-    public void setPosts(List<Post> posts) {
-        this.posts = posts;
     }
 }

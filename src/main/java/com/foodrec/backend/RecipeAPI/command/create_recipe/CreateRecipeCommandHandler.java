@@ -7,7 +7,7 @@ import com.foodrec.backend.RecipeAPI.entity.Recipe;
 import com.foodrec.backend.RecipeAPI.repository.RecipeRepository;
 import com.foodrec.backend.Utils.IdGenerator;
 import com.foodrec.backend.Utils.RecipeUtils;
-import com.foodrec.backend.exception.InvalidDataExceptionHandler;
+import com.foodrec.backend.Exception.InvalidDataExceptionHandler;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -48,7 +48,7 @@ public class CreateRecipeCommandHandler implements Command.Handler<CreateRecipeC
         }
         Recipe recEntity = modelMapper.map(createRecipeCommand.getCreateRecipeDTO(), Recipe.class);
         recEntity.setRecipeId(IdGenerator.generateNextId(Recipe.class,"recipeId"));
-        recEntity.setUserName("vathuglife");
+        recEntity.setUserId(createRecipeCommand.getUserid());
         recEntity.setStatus(true);
         recipeRepository.save(recEntity);
         Optional<Recipe> isAddedRec = recipeRepository.findById(recEntity.getRecipeId());

@@ -1,4 +1,4 @@
-package com.foodrec.backend.exception;
+package com.foodrec.backend.Exception;
 
 public class InvalidPageInfoException extends RuntimeException {
 
