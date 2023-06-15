@@ -106,7 +106,7 @@ public class RecipeCommandController {
     @Operation(
             description = "Deletes the Recipe Details of 1 USER",
             security = {@SecurityRequirement(name = BEARER_KEY_SECURITY_SCHEME)})
-    @RequestMapping(value = "/api/member/recipe/{id}", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/api/member/recipe/{recipeId}", method = RequestMethod.DELETE)
     public ResponseEntity deleteRecipeById(@PathVariable String recipeId) {
         ResponseEntity result = null;
         Authentication authentication = null;
