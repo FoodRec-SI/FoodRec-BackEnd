@@ -2,7 +2,6 @@ package com.foodrec.backend.AccountAPI.entity;
 
 import com.foodrec.backend.TagAPI.entity.Tag;
 import jakarta.persistence.*;
-
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -14,6 +13,8 @@ public class Account {
     @Id
     @Column(name = "userid")
     private String userId;
+    @Column(name = "name")
+    private String name;
     @Column(name = "description")
     private String description;
     @Column(name = "profile-image")
@@ -29,9 +30,9 @@ public class Account {
     public Account() {
     }
 
-    public Account(String userId, String description, byte[] profileImage,
-                   byte[] backgroundImage, List<Tag> tagAndAccountList) {
+    public Account(String userId, String name, String description, byte[] profileImage, byte[] backgroundImage) {
         this.userId = userId;
+        this.name = name;
         this.description = description;
         this.profileImage = profileImage;
         this.backgroundImage = backgroundImage;
@@ -45,6 +46,10 @@ public class Account {
     public void setUserId(String userId) {
         this.userId = userId;
     }
+
+    public String getName() {return name;}
+
+    public void setName(String name) {this.name = name;}
 
     public String getDescription() {
         return description;

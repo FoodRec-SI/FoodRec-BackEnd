@@ -12,7 +12,6 @@ import java.util.Map;
 
 @Configuration
 public class ErrorAttributesConfig {
-
     @Bean
     public ErrorAttributes errorAttributes() {
         return new DefaultErrorAttributes() {

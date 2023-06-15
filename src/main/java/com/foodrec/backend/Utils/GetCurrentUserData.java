@@ -6,9 +6,16 @@ import org.springframework.stereotype.Component;
 import java.security.Principal;
 
 @Component
-public class GetCurrentUserId {
+public class GetCurrentUserData {
     public static String getCurrentUserId(Principal principal){
         JwtAuthenticationToken token = (JwtAuthenticationToken) principal;
         return (String) token.getTokenAttributes().get("sub");
+    }
+
+    public static String getCurrentUserName(Principal principal){
+        JwtAuthenticationToken token = (JwtAuthenticationToken) principal;
+        String givenName = (String) token.getTokenAttributes().get("given_name");
+        String familyName = (String) token.getTokenAttributes().get("family_name");
+        return String.join(" ",givenName,familyName);
     }
 }

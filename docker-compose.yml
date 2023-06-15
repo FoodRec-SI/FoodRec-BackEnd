@@ -9,11 +9,9 @@ services:
       SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/foodrec-db
       SPRING_DATASOURCE_USERNAME: postgres
       SPRING_DATASOURCE_PASSWORD: 12345
-    links:
-      - redis-server
     depends_on:
       - db
-#      - redis
+      - redis-server
 
   db:
     image: postgres:15-alpine
@@ -24,9 +22,11 @@ services:
       POSTGRES_DB: foodrec-db
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: 12345
+    volumes:
+      - /path/to/database/data:/var/lib/postgresql/data
 
   redis-server:
-#    hostname: localhost
+    hostname: redis
     container_name: redis
     image: redis:latest
     restart: always

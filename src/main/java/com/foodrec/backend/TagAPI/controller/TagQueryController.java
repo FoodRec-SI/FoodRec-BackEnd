@@ -24,7 +24,8 @@ public class TagQueryController {
         this.pipeline = pipeline;
     }
 
-    @Operation(security = {@SecurityRequirement(name = BEARER_KEY_SECURITY_SCHEME)})
+    @Operation(description = "Get all tags you have in database.",
+            security = {@SecurityRequirement(name = BEARER_KEY_SECURITY_SCHEME)})
     @GetMapping("/api/public/tag")
     public ResponseEntity getAllTag() {
         GetAllTagQuery query = new GetAllTagQuery();
