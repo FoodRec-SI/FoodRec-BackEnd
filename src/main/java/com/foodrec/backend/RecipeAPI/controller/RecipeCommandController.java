@@ -9,7 +9,7 @@ import com.foodrec.backend.RecipeAPI.dto.CreateRecipeDTO;
 import com.foodrec.backend.RecipeAPI.dto.RecipeDTO;
 import com.foodrec.backend.RecipeAPI.dto.UpdateRecipeDTO;
 import com.foodrec.backend.Exception.*;
-import com.foodrec.backend.Utils.GetCurrentUserId;
+import com.foodrec.backend.Utils.GetCurrentUserData;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -57,7 +57,7 @@ public class RecipeCommandController {
         Authentication authentication = null;
         try {
             authentication = SecurityContextHolder.getContext().getAuthentication();
-            String userId = GetCurrentUserId.getCurrentUserId(authentication);
+            String userId = GetCurrentUserData.getCurrentUserId(authentication);
             CreateRecipeCommand createRecipeCommand = new CreateRecipeCommand(newRec, userId);
             RecipeDTO recipeDTO = pipeline.send(createRecipeCommand);
             if (recipeDTO == null) {
@@ -84,7 +84,7 @@ public class RecipeCommandController {
         Authentication authentication = null;
         try {
             authentication = SecurityContextHolder.getContext().getAuthentication();
-            String userId = GetCurrentUserId.getCurrentUserId(authentication);
+            String userId = GetCurrentUserData.getCurrentUserId(authentication);
             UpdateRecipeCommand updateRecipeCommand = new UpdateRecipeCommand(rec,userId);
             RecipeDTO updatedRecipe = pipeline.send(updateRecipeCommand);
             if (updatedRecipe == null) {
@@ -113,7 +113,7 @@ public class RecipeCommandController {
 
         try {
             authentication = SecurityContextHolder.getContext().getAuthentication();
-            String userId = GetCurrentUserId.getCurrentUserId(authentication);
+            String userId = GetCurrentUserData.getCurrentUserId(authentication);
             DeleteRecipeCommand command = new DeleteRecipeCommand(recipeId,userId);
             boolean isDeleted = pipeline.send(command);
             if (isDeleted == false)
