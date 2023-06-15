@@ -6,7 +6,7 @@ import com.foodrec.backend.Exception.InvalidDataExceptionHandler;
 import com.foodrec.backend.RatingAPI.command.CreateRatingCommand;
 import com.foodrec.backend.RatingAPI.dto.CreateRatingDTO;
 import com.foodrec.backend.RatingAPI.dto.RatingDTO;
-import com.foodrec.backend.Utils.GetCurrentUserId;
+import com.foodrec.backend.Utils.GetCurrentUserData;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -38,7 +38,7 @@ public class RatingCommandController {
         Authentication authentication = null;
         try {
             authentication = SecurityContextHolder.getContext().getAuthentication();
-            String userId = GetCurrentUserId.getCurrentUserId(authentication);
+            String userId = GetCurrentUserData.getCurrentUserId(authentication);
             CreateRatingCommand createRatingCommand = new CreateRatingCommand(createRatingDTO, userId);
             RatingDTO ratingDTO = pipeline.send(createRatingCommand);
 

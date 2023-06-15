@@ -4,8 +4,7 @@ import an.awesome.pipelinr.Pipeline;
 import com.foodrec.backend.RecipeAPI.dto.RecipeDTO;
 import com.foodrec.backend.RecipeAPI.query.get_recipe_by_id.GetRecipeByUserIdQuery;
 import com.foodrec.backend.Exception.InvalidPageInfoException;
-import com.foodrec.backend.RecipeAPI.query.get_recipe_by_id.GetRecipeByUserIdQuery;
-import com.foodrec.backend.Utils.GetCurrentUserId;
+import com.foodrec.backend.Utils.GetCurrentUserData;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -15,9 +14,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
-
-import java.security.Principal;
 
 import static com.foodrec.backend.Config.SwaggerConfig.BEARER_KEY_SECURITY_SCHEME;
 
@@ -43,7 +39,7 @@ public class RecipeQueryController {
         Authentication authentication = null;
         try {
             authentication = SecurityContextHolder.getContext().getAuthentication();
-            String userid = GetCurrentUserId.getCurrentUserId(authentication);
+            String userid = GetCurrentUserData.getCurrentUserId(authentication);
             GetRecipeByUserIdQuery query = new GetRecipeByUserIdQuery(userid,pageNumber, pageSize);
             Page<RecipeDTO> result = pipeline.send(query);
             if (result == null) {
