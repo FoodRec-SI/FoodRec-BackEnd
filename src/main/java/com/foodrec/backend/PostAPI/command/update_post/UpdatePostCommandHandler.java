@@ -30,7 +30,7 @@ public class UpdatePostCommandHandler implements Command.Handler<UpdatePostComma
     public PostDTO handle(UpdatePostCommand command) {
         UpdatePostDTO updatePostDTO = command.getUpdatePostDTO();
         if (updatePostDTO.getStatus() == null || updatePostDTO.getPostId() == null ||
-                updatePostDTO.getModeratorId() == null || updatePostDTO.getStatus().equals(PostStatus.PENDING_APPROVAL)) {
+                command.getModeratorId() == null || updatePostDTO.getStatus().equals(PostStatus.PENDING_APPROVAL)) {
             throw new InvalidDataExceptionHandler("Invalid data!");
         }
         Optional<Post> optionalPost = postRepository.findById(updatePostDTO.getPostId());
@@ -43,7 +43,7 @@ public class UpdatePostCommandHandler implements Command.Handler<UpdatePostComma
 
         Post post = optionalPost.get();
         post.setStatus(updatePostDTO.getStatus().getValue());
-        post.setModeratorId(updatePostDTO.getModeratorId());
+        post.setModeratorId(command.getModeratorId());
         postRepository.save(post);
         return modelMapper.map(post, PostDTO.class);
     }

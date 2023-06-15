@@ -32,10 +32,12 @@ SET default_tablespace = '';
 -- Data for Name: account; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-INSERT INTO public.account (userid, description) VALUES ('ACC000001', 'This account use for test DB');
-INSERT INTO public.account (userid, description) VALUES ('ACC000002', 'This account use for test DB');
-INSERT INTO public.account (userid, description) VALUES ('ACC000003', 'This account use for test DB');
-INSERT INTO public.account (userid, description) VALUES ('ACC000004', 'This account use for test DB');
+INSERT INTO public.account (userid, description, "profile-image", "background-image", name) VALUES ('74007e14-840e-44f0-bc8c-99e3e9d1674c', 'Test account for DB', NULL, NULL, NULL);
+INSERT INTO public.account (userid, description, "profile-image", "background-image", name) VALUES ('d5fecf38-589e-42c2-bc2c-ec49cc300137', 'Test account for DB', NULL, NULL, NULL);
+INSERT INTO public.account (userid, description, "profile-image", "background-image", name) VALUES ('90ba5460-1798-4a8f-bdc0-62d065ca1c08', 'Test account for DB', NULL, NULL, NULL);
+INSERT INTO public.account (userid, description, "profile-image", "background-image", name) VALUES ('59b8fdc0-42df-4a28-bcb1-e0651dbb08a1', 'Test account for DB', NULL, NULL, NULL);
+INSERT INTO public.account (userid, description, "profile-image", "background-image", name) VALUES ('1f13ef69-46ad-42c7-aa00-04cd546c2164', 'Test account for DB', NULL, NULL, NULL);
+INSERT INTO public.account (userid, description, "profile-image", "background-image", name) VALUES ('ec1f01cf-1255-4987-bdd0-3ba039747648', 'Test account for DB', NULL, NULL, NULL);
 --
 -- TOC entry 3223 (class 2606 OID 21632)
 -- Name: account account_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres

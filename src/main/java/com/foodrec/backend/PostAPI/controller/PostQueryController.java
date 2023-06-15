@@ -32,7 +32,8 @@ public class PostQueryController {
         this.pipeline = pipeline;
     }
 
-    @Operation(security = {@SecurityRequirement(name = BEARER_KEY_SECURITY_SCHEME)})
+    @Operation(description = "Get all posts from database which were approved.",
+            security = {@SecurityRequirement(name = BEARER_KEY_SECURITY_SCHEME)})
     @GetMapping("/api/public/posts")
     public ResponseEntity getAllPostsApproved(@RequestParam(defaultValue = "0") int pageNumber,
                                                              @RequestParam(defaultValue = "6") int pageSize) {
@@ -49,7 +50,8 @@ public class PostQueryController {
 
     }
 
-    @Operation(security = {@SecurityRequirement(name = BEARER_KEY_SECURITY_SCHEME)})
+    @Operation(description = "Get all for moderator post by status: PENDING_APPROVAL OR APPROVED OR DELETED, you can choose 2 status.",
+            security = {@SecurityRequirement(name = BEARER_KEY_SECURITY_SCHEME)})
     @GetMapping("/api/moderator/posts")
     public ResponseEntity<Page<PostDTO>> getAllPostsByStatus(@RequestParam(defaultValue = "0") int pageNumber,
                                                              @RequestParam(defaultValue = "6") int pageSize,
@@ -65,7 +67,8 @@ public class PostQueryController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-    @Operation(security = {@SecurityRequirement(name = BEARER_KEY_SECURITY_SCHEME)})
+    @Operation(description = "Get posts by find recipename, but this function is not completed.",
+            security = {@SecurityRequirement(name = BEARER_KEY_SECURITY_SCHEME)})
     @GetMapping("/api/public/posts/search")
     public ResponseEntity getPostsByRecipeName(@RequestParam(defaultValue = "0") int pageNumber,
                                                @RequestParam(defaultValue = "6") int pageSize,
@@ -82,7 +85,8 @@ public class PostQueryController {
         }
     }
 
-    @Operation(security = {@SecurityRequirement(name = BEARER_KEY_SECURITY_SCHEME)})
+    @Operation(description = "Get some posts which have tag ID.",
+            security = {@SecurityRequirement(name = BEARER_KEY_SECURITY_SCHEME)})
     @GetMapping("/api/public/posts/{tagId}")
     public ResponseEntity getPostsByTagId(@RequestParam(defaultValue = "0") int pageNumber,
                                                @RequestParam(defaultValue = "6") int pageSize,
@@ -99,7 +103,8 @@ public class PostQueryController {
         }
     }
 
-    @Operation(security = {@SecurityRequirement(name = BEARER_KEY_SECURITY_SCHEME)})
+    @Operation(description = "Get post by post ID.",
+            security = {@SecurityRequirement(name = BEARER_KEY_SECURITY_SCHEME)})
     @GetMapping("/api/member/{postId}")
     public ResponseEntity getPostById(@PathVariable String postId) {
         try {

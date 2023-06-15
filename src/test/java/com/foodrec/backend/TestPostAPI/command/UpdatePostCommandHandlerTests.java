@@ -50,13 +50,13 @@ public class UpdatePostCommandHandlerTests {
         UpdatePostDTO updatePostDTO = new UpdatePostDTO();
         updatePostDTO.setPostId("POS000002");
         updatePostDTO.setStatus(PostStatus.APPROVED);
-        updatePostDTO.setModeratorId("ACC000004");
-        UpdatePostCommand command = new UpdatePostCommand(updatePostDTO);
+        String moderatorId = "1f13ef69-46ad-42c7-aa00-04cd546c2164";
+        UpdatePostCommand command = new UpdatePostCommand(updatePostDTO, moderatorId);
         PostDTO postDTOTest = pipeline.send(command);
         Optional<Post> post = postRepository.findById(postDTOTest.getPostId());
         assertEquals(updatePostDTO.getPostId(), post.get().getPostId());
         assertEquals(updatePostDTO.getStatus().getValue(), post.get().getStatus());
-        assertEquals(updatePostDTO.getModeratorId(), post.get().getModeratorId());
+        assertEquals(command.getModeratorId(), post.get().getModeratorId());
     }
 
     @Test
@@ -64,13 +64,13 @@ public class UpdatePostCommandHandlerTests {
         UpdatePostDTO updatePostDTO = new UpdatePostDTO();
         updatePostDTO.setPostId("POS000002");
         updatePostDTO.setStatus(PostStatus.DELETED);
-        updatePostDTO.setModeratorId("ACC000004");
-        UpdatePostCommand command = new UpdatePostCommand(updatePostDTO);
+        String moderatorId = "1f13ef69-46ad-42c7-aa00-04cd546c2164";
+        UpdatePostCommand command = new UpdatePostCommand(updatePostDTO, moderatorId);
         PostDTO postDTOTest = pipeline.send(command);
         Optional<Post> post = postRepository.findById(postDTOTest.getPostId());
         assertEquals(updatePostDTO.getPostId(), post.get().getPostId());
         assertEquals(updatePostDTO.getStatus().getValue(), post.get().getStatus());
-        assertEquals(updatePostDTO.getModeratorId(), post.get().getModeratorId());
+        assertEquals(command.getModeratorId(), post.get().getModeratorId());
     }
 
     @Test
@@ -78,8 +78,7 @@ public class UpdatePostCommandHandlerTests {
         UpdatePostDTO updatePostDTO = new UpdatePostDTO();
         updatePostDTO.setPostId(null);
         updatePostDTO.setStatus(null);
-        updatePostDTO.setModeratorId(null);
-        UpdatePostCommand command = new UpdatePostCommand(updatePostDTO);
+        UpdatePostCommand command = new UpdatePostCommand(updatePostDTO, null);
         Exception exception = assertThrows(InvalidDataExceptionHandler.class, () -> {
             pipeline.send(command);
         });
@@ -93,8 +92,8 @@ public class UpdatePostCommandHandlerTests {
         UpdatePostDTO updatePostDTO = new UpdatePostDTO();
         updatePostDTO.setPostId("POS000005");
         updatePostDTO.setStatus(PostStatus.APPROVED);
-        updatePostDTO.setModeratorId("ACC000004");
-        UpdatePostCommand command = new UpdatePostCommand(updatePostDTO);
+        String moderatorId = "1f13ef69-46ad-42c7-aa00-04cd546c2164";
+        UpdatePostCommand command = new UpdatePostCommand(updatePostDTO, moderatorId);
         Exception exception = assertThrows(NotFoundExceptionHandler.class, () -> {
             pipeline.send(command);
         });
@@ -108,8 +107,8 @@ public class UpdatePostCommandHandlerTests {
         UpdatePostDTO updatePostDTO = new UpdatePostDTO();
         updatePostDTO.setPostId("POS000001");
         updatePostDTO.setStatus(PostStatus.PENDING_APPROVAL);
-        updatePostDTO.setModeratorId("ACC000004");
-        UpdatePostCommand command = new UpdatePostCommand(updatePostDTO);
+        String moderatorId = "1f13ef69-46ad-42c7-aa00-04cd546c2164";
+        UpdatePostCommand command = new UpdatePostCommand(updatePostDTO, moderatorId);
         Exception exception = assertThrows(InvalidDataExceptionHandler.class, () -> {
             pipeline.send(command);
         });
@@ -123,8 +122,8 @@ public class UpdatePostCommandHandlerTests {
         UpdatePostDTO updatePostDTO = new UpdatePostDTO();
         updatePostDTO.setPostId("POS000001");
         updatePostDTO.setStatus(PostStatus.APPROVED);
-        updatePostDTO.setModeratorId("ACC000004");
-        UpdatePostCommand command = new UpdatePostCommand(updatePostDTO);
+        String moderatorId = "1f13ef69-46ad-42c7-aa00-04cd546c2164";
+        UpdatePostCommand command = new UpdatePostCommand(updatePostDTO, moderatorId);
         Exception exception = assertThrows(DuplicateExceptionHandler.class, () -> {
             pipeline.send(command);
         });
