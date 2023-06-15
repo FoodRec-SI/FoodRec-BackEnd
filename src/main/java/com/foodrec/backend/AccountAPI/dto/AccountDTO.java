@@ -1,47 +1,29 @@
-package com.foodrec.backend.AccountAPI.entity;
+package com.foodrec.backend.AccountAPI.dto;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+public class AccountDTO {
 
-@Table
-@Entity
-public class Account {
-    @Id
-    @Column(name = "userid")
-    private String userId;
-    @Column(name = "name")
     private String name;
-    @Column(name = "description")
     private String description;
-    @Column(name = "profile-image")
     private byte[] profileImage;
-    @Column(name = "background-image")
     private byte[] backgroundImage;
 
-    public Account() {
+    public AccountDTO() {
     }
 
-    public Account(String userId, String name, String description, byte[] profileImage, byte[] backgroundImage) {
-        this.userId = userId;
+    public AccountDTO(String name, String description, byte[] profileImage, byte[] backgroundImage) {
         this.name = name;
         this.description = description;
         this.profileImage = profileImage;
         this.backgroundImage = backgroundImage;
     }
 
-    public String getUserId() {
-        return userId;
+    public String getName() {
+        return name;
     }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
+    public void setName(String name) {
+        this.name = name;
     }
-
-    public String getName() {return name;}
-
-    public void setName(String name) {this.name = name;}
 
     public String getDescription() {
         return description;
