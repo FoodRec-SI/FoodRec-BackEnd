@@ -5,10 +5,11 @@ import com.foodrec.backend.Exception.NotFoundExceptionHandler;
 import com.foodrec.backend.PostAPI.dto.PostDTO;
 import com.foodrec.backend.PostAPI.entity.PostStatus;
 import com.foodrec.backend.PostAPI.query.get_all_posts.GetAllPostsApprovedQuery;
-import com.foodrec.backend.PostAPI.repository.get_post_by_id.GetPostById;
+import com.foodrec.backend.PostAPI.query.get_post_by_id.GetPostById;
 import com.foodrec.backend.PostAPI.query.get_posts_by_recipe_name.GetPostsByRecipeNameQuery;
 import com.foodrec.backend.PostAPI.query.get_posts_by_status_by_moderator.GetPostByStatusQuery;
 import com.foodrec.backend.Exception.InvalidDataExceptionHandler;
+import com.foodrec.backend.PostAPI.query.get_posts_by_tagId.GetPostsByTagIdQuery;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -65,7 +66,7 @@ public class PostQueryController {
         }
     }
     @Operation(security = {@SecurityRequirement(name = BEARER_KEY_SECURITY_SCHEME)})
-    @GetMapping("/api/public/post/search")
+    @GetMapping("/api/public/posts/search")
     public ResponseEntity getPostsByRecipeName(@RequestParam(defaultValue = "0") int pageNumber,
                                                @RequestParam(defaultValue = "6") int pageSize,
                                                @RequestParam String recipeName) {
@@ -80,6 +81,24 @@ public class PostQueryController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
     }
+
+    @Operation(security = {@SecurityRequirement(name = BEARER_KEY_SECURITY_SCHEME)})
+    @GetMapping("/api/public/posts/{tagId}")
+    public ResponseEntity getPostsByTagId(@RequestParam(defaultValue = "0") int pageNumber,
+                                               @RequestParam(defaultValue = "6") int pageSize,
+                                               @RequestParam String tagId) {
+        try {
+            GetPostsByTagIdQuery query = new GetPostsByTagIdQuery(pageNumber, pageSize, tagId);
+            Page<PostDTO> result = pipeline.send(query);
+            return new ResponseEntity<>(result, HttpStatus.OK);
+        } catch (InvalidDataExceptionHandler | NotFoundExceptionHandler e) {
+            HttpStatus status = e.getClass().getAnnotation(ResponseStatus.class).value();
+            return ResponseEntity.status(status).body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
+    }
+
     @Operation(security = {@SecurityRequirement(name = BEARER_KEY_SECURITY_SCHEME)})
     @GetMapping("/api/member/{postId}")
     public ResponseEntity getPostById(@PathVariable String postId) {

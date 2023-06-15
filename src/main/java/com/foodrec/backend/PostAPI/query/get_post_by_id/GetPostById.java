@@ -1,4 +1,4 @@
-package com.foodrec.backend.PostAPI.repository.get_post_by_id;
+package com.foodrec.backend.PostAPI.query.get_post_by_id;
 
 import an.awesome.pipelinr.Command;
 import com.foodrec.backend.PostAPI.dto.PostDTO;

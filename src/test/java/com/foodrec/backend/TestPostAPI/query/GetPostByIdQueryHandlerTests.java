@@ -5,7 +5,7 @@ import com.foodrec.backend.Exception.InvalidDataExceptionHandler;
 import com.foodrec.backend.Exception.NotFoundExceptionHandler;
 import com.foodrec.backend.PostAPI.dto.PostDTO;
 import com.foodrec.backend.PostAPI.entity.Post;
-import com.foodrec.backend.PostAPI.repository.get_post_by_id.GetPostById;
+import com.foodrec.backend.PostAPI.query.get_post_by_id.GetPostById;
 import com.foodrec.backend.PostAPI.repository.PostRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

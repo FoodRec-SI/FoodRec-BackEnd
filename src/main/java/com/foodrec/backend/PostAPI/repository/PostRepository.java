@@ -19,11 +19,15 @@ public interface PostRepository extends JpaRepository<Post, String> {
     List<Post> findPostByRecipeId(String recipeid);
 
     Page<Post> findAllByStatusIn(List<Integer> statuses, Pageable pageable);
+
     Optional<Post> findPostByPostIdAndStatus(String postId, int status);
+
     Page<Post> findPostsByRecipeNameContainingIgnoreCaseAndStatus(String recipeName, int status, Pageable pageable);
-//    @Query(value = "SELECT p.postid, p.userid, p.moderatorid, p.recipename, p.description, p.calories, p.duration, p.image, p.time " +
+
+    //    @Query(value = "SELECT p.postid, p.userid, p.moderatorid, p.recipename, p.description, p.calories, p.duration, p.image, p.time " +
 //            "FROM post p " +
 //            "INNER JOIN p.recipe r ON p.recipeid = r.recipeid " +
 //            "INNER JOIN r.tag t WHERE t.tagid IN :tagIds AND p.status = 2")
 //    Page<Post> findPostsByTagIds(@Param("tagIds") List<String> tagIds);
+    Page<Post> findPostsByRecipeIdInAndStatus(List<String> recipeIds, int status, Pageable pageable);
 }

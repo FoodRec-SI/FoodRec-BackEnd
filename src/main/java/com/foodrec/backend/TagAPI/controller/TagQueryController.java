@@ -25,7 +25,7 @@ public class TagQueryController {
     }
 
     @Operation(security = {@SecurityRequirement(name = BEARER_KEY_SECURITY_SCHEME)})
-    @GetMapping("/api/member/tag")
+    @GetMapping("/api/public/tag")
     public ResponseEntity getAllTag() {
         GetAllTagQuery query = new GetAllTagQuery();
         List<TagDTO> result = pipeline.send(query);

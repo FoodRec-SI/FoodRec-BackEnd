@@ -1,12 +1,9 @@
 package com.foodrec.backend.RecipeAPI.entity;
 
-import com.foodrec.backend.PostAPI.entity.Post;
 import com.foodrec.backend.TagAPI.entity.Tag;
 import jakarta.persistence.*;
 
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @Table(name = "recipe")
@@ -36,13 +33,12 @@ public class Recipe {
             joinColumns = @JoinColumn(name = "recipeid"),
             inverseJoinColumns = @JoinColumn(name = "tagid")
     )
-    private List<Tag> tagAndRecipeList = new ArrayList<>();
+    private Set<Tag> tag = new HashSet<>();
 
     public Recipe() {
     }
 
-    public Recipe(String recipeId, String recipeName, String description, int calories, String userId,
-                  int duration, byte[] image, boolean status, List<Tag> tagAndRecipeList) {
+    public Recipe(String recipeId, String recipeName, String description, int calories, String userId, int duration, byte[] image, boolean status, Set<Tag> tag) {
         this.recipeId = recipeId;
         this.recipeName = recipeName;
         this.description = description;
@@ -51,7 +47,7 @@ public class Recipe {
         this.duration = duration;
         this.image = image;
         this.status = status;
-        this.tagAndRecipeList = tagAndRecipeList;
+        this.tag = tag;
     }
 
     public String getRecipeId() {
@@ -118,11 +114,11 @@ public class Recipe {
         this.status = status;
     }
 
-    public List<Tag> getTagAndRecipeList() {
-        return tagAndRecipeList;
+    public Set<Tag> getTag() {
+        return tag;
     }
 
-    public void setTagAndRecipeList(List<Tag> tagAndRecipeList) {
-        this.tagAndRecipeList = tagAndRecipeList;
+    public void setTag(Set<Tag> tag) {
+        this.tag = tag;
     }
 }
