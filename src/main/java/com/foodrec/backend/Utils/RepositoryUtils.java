@@ -21,6 +21,7 @@ public class RepositoryUtils {
         String queryString = String.format("SELECT p.%s FROM %s p ORDER BY p.%s DESC LIMIT 1", idColumnName, tableName, idColumnName);
         Query query = entityManager.createQuery(queryString);
         query.setMaxResults(1);
+        if(query.getSingleResult()==null) return null;
         return (String) query.getSingleResult();
     }
 }

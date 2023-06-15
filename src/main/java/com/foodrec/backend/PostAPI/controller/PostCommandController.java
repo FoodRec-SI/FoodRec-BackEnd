@@ -12,11 +12,14 @@ import com.foodrec.backend.Exception.DuplicateExceptionHandler;
 import com.foodrec.backend.Exception.InvalidDataExceptionHandler;
 import com.foodrec.backend.Exception.NotFoundExceptionHandler;
 import com.foodrec.backend.Exception.UnauthorizedExceptionHandler;
+import com.foodrec.backend.Utils.GetCurrentUserId;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import static com.foodrec.backend.Config.SwaggerConfig.BEARER_KEY_SECURITY_SCHEME;
@@ -34,7 +37,11 @@ public class PostCommandController {
     @RequestMapping(value = "/api/member/post", method = RequestMethod.POST)
     public ResponseEntity createPost(@RequestBody CreatePostDTO createPostDTO) {
         ResponseEntity responseEntity = null;
+        Authentication authentication = null;
         try {
+            authentication = SecurityContextHolder.getContext().getAuthentication();
+            String userId = GetCurrentUserId.getCurrentUserId(authentication);
+            createPostDTO.setUserId(userId);
             CreatePostCommand command = new CreatePostCommand(createPostDTO);
             PostDTO postDTO = pipeline.send(command);
             responseEntity = new ResponseEntity<>(postDTO, HttpStatus.OK);
