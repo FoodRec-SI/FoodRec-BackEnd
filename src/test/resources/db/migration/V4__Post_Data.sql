@@ -39,13 +39,13 @@ SET default_tablespace = '';
 --
 
 INSERT INTO public.post (postid, status, userid, moderatorid, recipename, description, calories, duration, image, "time", recipeid)
-VALUES ('POS000001', 2, 'ACC000001', 'ACC000004', 'bánh xèo', '1 loại bánh ngon vcl', 50, 120, '\x00', '2023-06-06 13:54:25.306751', 'REC000001');
+VALUES ('POS000001', 2, '74007e14-840e-44f0-bc8c-99e3e9d1674c', 'ec1f01cf-1255-4987-bdd0-3ba039747648', 'cafe sữa đá', '1 loại cafe đặc trưng của Việt Nam', 67, 200, '\x00', '2023-06-06 13:54:25.306751', 'REC000023');
 
 INSERT INTO public.post (postid, status, userid, moderatorid, recipename, description, calories, duration, image, "time", recipeid)
-VALUES ('POS000002', 1, 'ACC000001', null, 'bánh xèo C', '1 loại bánh ngon vcl', 50, 120, '\x00', '2023-06-06 13:54:25.306751', 'REC000004');
+VALUES ('POS000002', 1, '74007e14-840e-44f0-bc8c-99e3e9d1674c', null, 'bánh xèo', '1 loại bánh', 87, 200, '\x00', '2023-06-06 13:54:25.306751', 'REC000016');
 
 INSERT INTO public.post (postid, status, userid, moderatorid, recipename, description, calories, duration, image, "time", recipeid)
-VALUES ('POS000003', 2, 'ACC000001', 'ACC000004', 'bánh xèo BA', '1 loại bánh ngon vcl', 50, 120, '\x00', '2023-06-06 13:54:25.306751', 'REC000003');
+VALUES ('POS000003', 2, '74007e14-840e-44f0-bc8c-99e3e9d1674c', 'ec1f01cf-1255-4987-bdd0-3ba039747648', 'cơm xèo', '1 loại cơm ngon', 47, 200, '\x00', '2023-06-06 13:54:25.306751', 'REC000019');
 
 
 --

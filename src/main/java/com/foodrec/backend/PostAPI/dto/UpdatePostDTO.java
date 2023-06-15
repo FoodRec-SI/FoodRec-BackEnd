@@ -5,15 +5,13 @@ import com.foodrec.backend.PostAPI.entity.PostStatus;
 public class UpdatePostDTO {
     private String postId;
     private PostStatus status;
-    private String moderatorId;
 
     public UpdatePostDTO() {
     }
 
-    public UpdatePostDTO(String postId, PostStatus status, String moderatorId) {
+    public UpdatePostDTO(String postId, PostStatus status) {
         this.postId = postId;
         this.status = status;
-        this.moderatorId = moderatorId;
     }
 
     public String getPostId() {
@@ -30,13 +28,5 @@ public class UpdatePostDTO {
 
     public void setStatus(PostStatus status) {
         this.status = status;
-    }
-
-    public String getModeratorId() {
-        return moderatorId;
-    }
-
-    public void setModeratorId(String moderatorId) {
-        this.moderatorId = moderatorId;
     }
 }

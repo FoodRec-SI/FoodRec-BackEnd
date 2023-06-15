@@ -7,9 +7,9 @@ import com.foodrec.backend.RecipeAPI.dto.RecipeDTO;
 
 public class CreateRecipeCommand implements Command<RecipeDTO> {
     private final CreateRecipeDTO createRecipeDTO;
-    private String userId ;
+    private String userId;
 
-    public CreateRecipeCommand(CreateRecipeDTO createRecipeDTO,String userId) {
+    public CreateRecipeCommand(CreateRecipeDTO createRecipeDTO, String userId) {
         this.createRecipeDTO = createRecipeDTO;
         this.userId = userId;
     }

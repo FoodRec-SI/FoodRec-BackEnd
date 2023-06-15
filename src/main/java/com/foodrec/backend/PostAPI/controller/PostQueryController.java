@@ -9,6 +9,7 @@ import com.foodrec.backend.PostAPI.query.get_post_by_id.GetPostById;
 import com.foodrec.backend.PostAPI.query.get_posts_by_recipe_name.GetPostsByRecipeNameQuery;
 import com.foodrec.backend.PostAPI.query.get_posts_by_status_by_moderator.GetPostByStatusQuery;
 import com.foodrec.backend.Exception.InvalidDataExceptionHandler;
+import com.foodrec.backend.PostAPI.query.get_posts_by_tagId.GetPostsByTagIdQuery;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -31,8 +32,9 @@ public class PostQueryController {
         this.pipeline = pipeline;
     }
 
-    @Operation(security = {@SecurityRequirement(name = BEARER_KEY_SECURITY_SCHEME)})
-    @GetMapping("/api/member/posts")
+    @Operation(description = "Get all posts from database which were approved.",
+            security = {@SecurityRequirement(name = BEARER_KEY_SECURITY_SCHEME)})
+    @GetMapping("/api/public/posts")
     public ResponseEntity getAllPostsApproved(@RequestParam(defaultValue = "0") int pageNumber,
                                                              @RequestParam(defaultValue = "6") int pageSize) {
         try {
@@ -48,7 +50,8 @@ public class PostQueryController {
 
     }
 
-    @Operation(security = {@SecurityRequirement(name = BEARER_KEY_SECURITY_SCHEME)})
+    @Operation(description = "Get all for moderator post by status: PENDING_APPROVAL OR APPROVED OR DELETED, you can choose 2 status.",
+            security = {@SecurityRequirement(name = BEARER_KEY_SECURITY_SCHEME)})
     @GetMapping("/api/moderator/posts")
     public ResponseEntity<Page<PostDTO>> getAllPostsByStatus(@RequestParam(defaultValue = "0") int pageNumber,
                                                              @RequestParam(defaultValue = "6") int pageSize,
@@ -64,8 +67,9 @@ public class PostQueryController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-    @Operation(security = {@SecurityRequirement(name = BEARER_KEY_SECURITY_SCHEME)})
-    @GetMapping("/api/member/post/search")
+    @Operation(description = "Get posts by find recipename, but this function is not completed.",
+            security = {@SecurityRequirement(name = BEARER_KEY_SECURITY_SCHEME)})
+    @GetMapping("/api/public/posts/search")
     public ResponseEntity getPostsByRecipeName(@RequestParam(defaultValue = "0") int pageNumber,
                                                @RequestParam(defaultValue = "6") int pageSize,
                                                @RequestParam String recipeName) {
@@ -80,7 +84,27 @@ public class PostQueryController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
     }
-    @Operation(security = {@SecurityRequirement(name = BEARER_KEY_SECURITY_SCHEME)})
+
+    @Operation(description = "Get some posts which have tag ID.",
+            security = {@SecurityRequirement(name = BEARER_KEY_SECURITY_SCHEME)})
+    @GetMapping("/api/public/posts/{tagId}")
+    public ResponseEntity getPostsByTagId(@RequestParam(defaultValue = "0") int pageNumber,
+                                               @RequestParam(defaultValue = "6") int pageSize,
+                                               @RequestParam String tagId) {
+        try {
+            GetPostsByTagIdQuery query = new GetPostsByTagIdQuery(pageNumber, pageSize, tagId);
+            Page<PostDTO> result = pipeline.send(query);
+            return new ResponseEntity<>(result, HttpStatus.OK);
+        } catch (InvalidDataExceptionHandler | NotFoundExceptionHandler e) {
+            HttpStatus status = e.getClass().getAnnotation(ResponseStatus.class).value();
+            return ResponseEntity.status(status).body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
+    }
+
+    @Operation(description = "Get post by post ID.",
+            security = {@SecurityRequirement(name = BEARER_KEY_SECURITY_SCHEME)})
     @GetMapping("/api/member/{postId}")
     public ResponseEntity getPostById(@PathVariable String postId) {
         try {

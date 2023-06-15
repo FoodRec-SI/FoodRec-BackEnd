@@ -32,16 +32,19 @@ SET default_tablespace = '';
 -- Data for Name: recipe; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-INSERT INTO public.recipe (recipeid, recipename, description, calories, userid, duration, image, status) VALUES ('REC000001', 'bánh xèo', '1 loại bánh ngon vcl', 50, 'ACC000001', 120, '\x00', true);
-INSERT INTO public.recipe (recipeid, recipename, description, calories, userid, duration, image, status) VALUES ('REC000002', 'bánh xèo A', '1 loại bánh ngon vcl', 50, 'ACC000002', 120, '\x00', true);
-INSERT INTO public.recipe (recipeid, recipename, description, calories, userid, duration, image, status) VALUES ('REC000003', 'bánh xèo B', '1 loại bánh ngon vcl', 50, 'ACC000003', 120, '\x00', true);
-INSERT INTO public.recipe (recipeid, recipename, description, calories, userid, duration, image, status) VALUES ('REC000004', 'bánh xèo C', '1 loại bánh ngon vcl', 50, 'ACC000001', 120, '\x00', true);
-INSERT INTO public.recipe (recipeid, recipename, description, calories, userid, duration, image, status) VALUES ('REC000005', 'bánh xèo D', '1 loại bánh ngon vcl', 50, 'ACC000001', 120, '\x00', true);
-INSERT INTO public.recipe (recipeid, recipename, description, calories, userid, duration, image, status) VALUES ('REC000006', 'bánh xèo E', '1 loại bánh ngon vcl', 50, 'ACC000003', 120, '\x00', true);
-INSERT INTO public.recipe (recipeid, recipename, description, calories, userid, duration, image, status) VALUES ('REC000007', 'bánh xèo F', '1 loại bánh ngon vcl', 50, 'ACC000002', 120, '\x00', true);
-INSERT INTO public.recipe (recipeid, recipename, description, calories, userid, duration, image, status) VALUES ('REC000008', 'bánh xèo G', '1 loại bánh ngon vcl', 50, 'ACC000003', 120, '\x00', true);
-INSERT INTO public.recipe (recipeid, recipename, description, calories, userid, duration, image, status) VALUES ('REC000009', 'bánh xèo H', '1 loại bánh ngon vcl', 50, 'ACC000001', 120, '\x00', true);
-INSERT INTO public.recipe (recipeid, recipename, description, calories, userid, duration, image, status) VALUES ('REC000010', 'bánh xèo I', '1 loại bánh ngon vcl', 50, 'ACC000002', 120, '\x00', true);
+INSERT INTO public.recipe (recipeid, recipename, description, calories, userid, duration, image, status, username) VALUES ('REC000019', 'cơm xèo', '1 loại cơm ngon', 47, '74007e14-840e-44f0-bc8c-99e3e9d1674c', 200, '\x00', true, NULL);
+INSERT INTO public.recipe (recipeid, recipename, description, calories, userid, duration, image, status, username) VALUES ('REC000021', 'bún riêu cua', '1 loại bún truyền thống', 76, '74007e14-840e-44f0-bc8c-99e3e9d1674c', 200, '\x00', true, NULL);
+INSERT INTO public.recipe (recipeid, recipename, description, calories, userid, duration, image, status, username) VALUES ('REC000023', 'cafe sữa đá', '1 loại cafe đặc trưng của Việt Nam', 67, '74007e14-840e-44f0-bc8c-99e3e9d1674c', 200, '\x00', true, NULL);
+INSERT INTO public.recipe (recipeid, recipename, description, calories, userid, duration, image, status, username) VALUES ('REC000016', 'bánh xèo', '1 loại bánh', 87, '74007e14-840e-44f0-bc8c-99e3e9d1674c', 200, '\x00', true, NULL);
+INSERT INTO public.recipe (recipeid, recipename, description, calories, userid, duration, image, status, username) VALUES ('REC000017', 'bánh bao', '1 loại bánh bao', 79, '74007e14-840e-44f0-bc8c-99e3e9d1674c', 200, '\x00', true, NULL);
+INSERT INTO public.recipe (recipeid, recipename, description, calories, userid, duration, image, status, username) VALUES ('REC000018', 'cơm chiên', '1 loại cơm chiên', 76, '74007e14-840e-44f0-bc8c-99e3e9d1674c', 200, '\x00', true, NULL);
+INSERT INTO public.recipe (recipeid, recipename, description, calories, userid, duration, image, status, username) VALUES ('REC000020', 'mì quảng', '1 loại mì siêu đỉnh', 47, '74007e14-840e-44f0-bc8c-99e3e9d1674c', 200, '\x00', true, NULL);
+INSERT INTO public.recipe (recipeid, recipename, description, calories, userid, duration, image, status, username) VALUES ('REC000022', 'sinh tố xoài', '1 loại sinh tố thơm ngon', 76, '74007e14-840e-44f0-bc8c-99e3e9d1674c', 200, '\x00', true, NULL);
+INSERT INTO public.recipe (recipeid, recipename, description, calories, userid, duration, image, status, username) VALUES ('REC000024', 'trà sữa', '1 loại trà cực ngon', 34, '74007e14-840e-44f0-bc8c-99e3e9d1674c', 200, '\x00', true, NULL);
+INSERT INTO public.recipe (recipeid, recipename, description, calories, userid, duration, image, status, username) VALUES ('REC000025', 'bánh xèo', '1 loại bánh siêu mềm', 7, '74007e14-840e-44f0-bc8c-99e3e9d1674c', 200, '\x00', true, NULL);
+INSERT INTO public.recipe (recipeid, recipename, description, calories, userid, duration, image, status, username) VALUES ('REC000026', 'bánh kem ABC', '1 loại bánh kem cực cuốn', 8, '74007e14-840e-44f0-bc8c-99e3e9d1674c', 200, '\x00', true, NULL);
+INSERT INTO public.recipe (recipeid, recipename, description, calories, userid, duration, image, status, username) VALUES ('REC000027', 'cơm niêu quảng ninh', 'cơm niêu không thể thiếu của mọi nhà', 22, '74007e14-840e-44f0-bc8c-99e3e9d1674c', 200, '\x00', true, NULL);
+
 
 
 --

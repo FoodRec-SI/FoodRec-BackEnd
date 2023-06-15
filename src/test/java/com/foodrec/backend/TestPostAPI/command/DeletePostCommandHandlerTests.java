@@ -15,6 +15,7 @@ import org.springframework.test.context.DynamicPropertySource;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 @Testcontainers
@@ -38,12 +39,13 @@ public class DeletePostCommandHandlerTests {
         registry.add("spring.datasource.username", postgreSQLContainer::getUsername);
         registry.add("spring.datasource.password", postgreSQLContainer::getPassword);
     }
+
     @Test
     public void testDeletePostSuccessfully() {
         DeletePostDTO deletePostDTO = new DeletePostDTO();
         deletePostDTO.setPostId("POS000001");
-        deletePostDTO.setUserId("ACC000001");
-        DeletePostCommand command = new DeletePostCommand(deletePostDTO);
+        String userId = "74007e14-840e-44f0-bc8c-99e3e9d1674c";
+        DeletePostCommand command = new DeletePostCommand(deletePostDTO, userId);
         Boolean testPost = pipeline.send(command);
         assertTrue(testPost);
     }
@@ -52,8 +54,7 @@ public class DeletePostCommandHandlerTests {
     public void testNullDataDeletePostByUser() {
         DeletePostDTO deletePostDTO = new DeletePostDTO();
         deletePostDTO.setPostId(null);
-        deletePostDTO.setUserId(null);
-        DeletePostCommand command = new DeletePostCommand(deletePostDTO);
+        DeletePostCommand command = new DeletePostCommand(deletePostDTO, null);
         Exception exception = assertThrows(InvalidDataExceptionHandler.class, () -> {
             pipeline.send(command);
         });
@@ -66,8 +67,8 @@ public class DeletePostCommandHandlerTests {
     public void testWrongUserNameDataDeletePostByUser() {
         DeletePostDTO deletePostDTO = new DeletePostDTO();
         deletePostDTO.setPostId("POS000002");
-        deletePostDTO.setUserId("ACC000003");
-        DeletePostCommand command = new DeletePostCommand(deletePostDTO);
+        String userId = "59b8fdc0-42df-4a28-bcb1-e0651dbb08a1";
+        DeletePostCommand command = new DeletePostCommand(deletePostDTO, userId);
         Exception exception = assertThrows(UnauthorizedExceptionHandler.class, () -> {
             pipeline.send(command);
         });
@@ -80,8 +81,8 @@ public class DeletePostCommandHandlerTests {
     public void testWrongPostDataDeletePostByUser() {
         DeletePostDTO deletePostDTO = new DeletePostDTO();
         deletePostDTO.setPostId("POS000009");
-        deletePostDTO.setUserId("ACC000001");
-        DeletePostCommand command = new DeletePostCommand(deletePostDTO);
+        String userId = "74007e14-840e-44f0-bc8c-99e3e9d1674c";
+        DeletePostCommand command = new DeletePostCommand(deletePostDTO, userId);
         Exception exception = assertThrows(NotFoundExceptionHandler.class, () -> {
             pipeline.send(command);
         });

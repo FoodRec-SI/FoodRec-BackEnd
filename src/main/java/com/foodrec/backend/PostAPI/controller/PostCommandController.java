@@ -33,16 +33,15 @@ public class PostCommandController {
         this.pipeline = pipeline;
     }
 
-    @Operation(security = {@SecurityRequirement(name = BEARER_KEY_SECURITY_SCHEME)})
+    @Operation(description = "Create new post by user who create recipe. You must give recipe ID.",
+            security = {@SecurityRequirement(name = BEARER_KEY_SECURITY_SCHEME)})
     @RequestMapping(value = "/api/member/post", method = RequestMethod.POST)
     public ResponseEntity createPost(@RequestBody CreatePostDTO createPostDTO) {
         ResponseEntity responseEntity = null;
-        Authentication authentication = null;
         try {
-            authentication = SecurityContextHolder.getContext().getAuthentication();
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             String userId = GetCurrentUserData.getCurrentUserId(authentication);
-            createPostDTO.setUserId(userId);
-            CreatePostCommand command = new CreatePostCommand(createPostDTO);
+            CreatePostCommand command = new CreatePostCommand(createPostDTO, userId);
             PostDTO postDTO = pipeline.send(command);
             responseEntity = new ResponseEntity<>(postDTO, HttpStatus.OK);
         } catch (InvalidDataExceptionHandler | DuplicateExceptionHandler | UnauthorizedExceptionHandler e) {
@@ -54,11 +53,14 @@ public class PostCommandController {
         return responseEntity;
     }
 
-    @Operation(security = {@SecurityRequirement(name = BEARER_KEY_SECURITY_SCHEME)})
+    @Operation(description = "Delete post by user who create post. You must give post ID.",
+            security = {@SecurityRequirement(name = BEARER_KEY_SECURITY_SCHEME)})
     @RequestMapping(value = "/api/member/post", method = RequestMethod.DELETE)
     public ResponseEntity<String> removePostByUser(@RequestBody DeletePostDTO deletePostDTO) {
         try {
-            DeletePostCommand command = new DeletePostCommand(deletePostDTO);
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            String userId = GetCurrentUserData.getCurrentUserId(authentication);
+            DeletePostCommand command = new DeletePostCommand(deletePostDTO, userId);
             boolean isRemoved = pipeline.send(command);
             if (isRemoved) {
                 return ResponseEntity.ok("Post delete successfully!");
@@ -73,12 +75,15 @@ public class PostCommandController {
         }
     }
 
-    @Operation(security = {@SecurityRequirement(name = BEARER_KEY_SECURITY_SCHEME)})
+    @Operation(description = "Update status(PENDING_APPROVAL, APPROVED, DELETED) by moderator. You must give post ID and post status.",
+            security = {@SecurityRequirement(name = BEARER_KEY_SECURITY_SCHEME)})
     @RequestMapping(value = "/api/moderator/post", method = RequestMethod.PUT)
     public ResponseEntity updatePostStatus(@RequestBody UpdatePostDTO updatePostDTO) {
         ResponseEntity responseEntity = null;
         try {
-            UpdatePostCommand command = new UpdatePostCommand(updatePostDTO);
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            String moderatorId = GetCurrentUserData.getCurrentUserId(authentication);
+            UpdatePostCommand command = new UpdatePostCommand(updatePostDTO, moderatorId);
             PostDTO postDTO = pipeline.send(command);
             responseEntity = new ResponseEntity<>(postDTO, HttpStatus.OK);
         } catch (InvalidDataExceptionHandler | NotFoundExceptionHandler | UnauthorizedExceptionHandler e) {

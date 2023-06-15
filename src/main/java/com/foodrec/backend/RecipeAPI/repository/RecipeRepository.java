@@ -22,6 +22,7 @@ public interface RecipeRepository extends JpaRepository<Recipe,String> {
 
     @Query(value="SELECT * FROM recipe WHERE status = true",nativeQuery = true)
     List<Recipe> findAllRecipes(Pageable pageable);
-    @Query(value="SELECT * FROM recipe WHERE recipeid = :recipeid AND status = true",nativeQuery = true)
+    @Query(value="SELECT * FROM Recipe WHERE recipeid = :recipeid AND status = true",nativeQuery = true)
     Recipe findRecipeByRecipeId(@Param("recipeid") String recipeid);
+    List<Recipe> findRecipesByTagTagId(String tagId);
 }
