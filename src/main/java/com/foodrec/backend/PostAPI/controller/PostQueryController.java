@@ -7,9 +7,10 @@ import com.foodrec.backend.PostAPI.entity.PostStatus;
 import com.foodrec.backend.PostAPI.query.get_all_posts.GetAllPostsApprovedQuery;
 import com.foodrec.backend.PostAPI.query.get_post_by_id.GetPostById;
 import com.foodrec.backend.PostAPI.query.get_posts_by_recipe_name.GetPostsByRecipeNameQuery;
-import com.foodrec.backend.PostAPI.query.get_posts_by_status_by_moderator.GetPostByStatusQuery;
+import com.foodrec.backend.PostAPI.query.get_posts_by_recipe_name.get_posts_by_status_by_moderator.GetPostByStatusQuery;
 import com.foodrec.backend.Exception.InvalidDataExceptionHandler;
 import com.foodrec.backend.PostAPI.query.get_posts_by_tagId.GetPostsByTagIdQuery;
+import com.foodrec.backend.PostAPI.query.get_posts_by_tagIds.GetPostsByTagIdsQuery;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -18,6 +19,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collection;
 import java.util.List;
 
 import static com.foodrec.backend.Config.SwaggerConfig.BEARER_KEY_SECURITY_SCHEME;
@@ -36,7 +38,7 @@ public class PostQueryController {
             security = {@SecurityRequirement(name = BEARER_KEY_SECURITY_SCHEME)})
     @GetMapping("/api/public/posts")
     public ResponseEntity getAllPostsApproved(@RequestParam(defaultValue = "0") int pageNumber,
-                                                             @RequestParam(defaultValue = "6") int pageSize) {
+                                              @RequestParam(defaultValue = "6") int pageSize) {
         try {
             GetAllPostsApprovedQuery query = new GetAllPostsApprovedQuery(pageNumber, pageSize);
             Page<PostDTO> result = pipeline.send(query);
@@ -67,6 +69,7 @@ public class PostQueryController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
     @Operation(description = "Get posts by find recipename, but this function is not completed.",
             security = {@SecurityRequirement(name = BEARER_KEY_SECURITY_SCHEME)})
     @GetMapping("/api/public/posts/search")
@@ -89,10 +92,28 @@ public class PostQueryController {
             security = {@SecurityRequirement(name = BEARER_KEY_SECURITY_SCHEME)})
     @GetMapping("/api/public/posts/{tagId}")
     public ResponseEntity getPostsByTagId(@RequestParam(defaultValue = "0") int pageNumber,
-                                               @RequestParam(defaultValue = "6") int pageSize,
-                                               @RequestParam String tagId) {
+                                          @RequestParam(defaultValue = "6") int pageSize,
+                                          @RequestParam String tagId) {
         try {
             GetPostsByTagIdQuery query = new GetPostsByTagIdQuery(pageNumber, pageSize, tagId);
+            Page<PostDTO> result = pipeline.send(query);
+            return new ResponseEntity<>(result, HttpStatus.OK);
+        } catch (InvalidDataExceptionHandler | NotFoundExceptionHandler e) {
+            HttpStatus status = e.getClass().getAnnotation(ResponseStatus.class).value();
+            return ResponseEntity.status(status).body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
+    }
+
+    @Operation(description = "Get some posts which have some tags.",
+            security = {@SecurityRequirement(name = BEARER_KEY_SECURITY_SCHEME)})
+    @GetMapping("/api/public/posts/some/{tagIds}")
+    public ResponseEntity getPostsByTagIds(@RequestParam(defaultValue = "0") int pageNumber,
+                                          @RequestParam(defaultValue = "6") int pageSize,
+                                          @RequestParam Collection<String> tagIds) {
+        try {
+            GetPostsByTagIdsQuery query = new GetPostsByTagIdsQuery(pageNumber, pageSize, tagIds);
             Page<PostDTO> result = pipeline.send(query);
             return new ResponseEntity<>(result, HttpStatus.OK);
         } catch (InvalidDataExceptionHandler | NotFoundExceptionHandler e) {

@@ -27,7 +27,6 @@ services:
 
   redis-server:
     hostname: redis
-    container_name: redis
     image: redis:latest
     restart: always
     ports:
