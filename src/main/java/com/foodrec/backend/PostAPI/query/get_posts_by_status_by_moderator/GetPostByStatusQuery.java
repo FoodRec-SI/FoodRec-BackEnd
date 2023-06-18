@@ -10,7 +10,6 @@ import java.util.List;
 public class GetPostByStatusQuery implements Command<Page<PostDTO>> {
     private int pageNumber;
     private int pageSize;
-
     private List<PostStatus> postStatuses;
 
     public GetPostByStatusQuery() {

@@ -1,4 +1,4 @@
-package com.foodrec.backend.PostAPI.query.get_posts_by_tagId;
+package com.foodrec.backend.PostAPI.query.get_posts_by_tagIds;
 
 import an.awesome.pipelinr.Command;
 import com.foodrec.backend.Exception.InvalidDataExceptionHandler;
@@ -16,27 +16,29 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
-@Component
-public class GetPostsByTagIdQueryHandler implements Command.Handler<GetPostsByTagIdQuery, Page<PostDTO>> {
-    private final PostRepository postRepository;
-    private final RecipeRepository recipeRepository;
-    private final ModelMapper modelMapper;
 
-    public GetPostsByTagIdQueryHandler(PostRepository postRepository, RecipeRepository recipeRepository, ModelMapper modelMapper) {
+@Component
+public class GetPostsByTagIdsQueryHandler implements Command.Handler<GetPostsByTagIdsQuery, Page<PostDTO>> {
+    private final PostRepository postRepository;
+    private final ModelMapper modelMapper;
+    private final RecipeRepository recipeRepository;
+
+
+    public GetPostsByTagIdsQueryHandler(PostRepository postRepository, ModelMapper modelMapper, RecipeRepository recipeRepository) {
         this.postRepository = postRepository;
-        this.recipeRepository = recipeRepository;
         this.modelMapper = modelMapper;
+        this.recipeRepository = recipeRepository;
     }
 
     @Transactional
     @Override
-    public Page<PostDTO> handle(GetPostsByTagIdQuery query) {
+    public Page<PostDTO> handle(GetPostsByTagIdsQuery query) {
         if (query.getPageNumber() < 0 || query.getPageSize() < 1 ||
-                query.getTagId().isEmpty() || query.getTagId().equals("")) {
+                query.getTagIds().isEmpty() || query.getTagIds().equals("")) {
             throw new InvalidDataExceptionHandler("Invalid data!");
         }
         Pageable pageable = PageRequest.of(query.getPageNumber(), query.getPageSize(), Sort.by("time").descending());
-        List<Recipe> recipes = recipeRepository.findRecipesByTagTagId(query.getTagId());
+        List<Recipe> recipes = recipeRepository.findRecipesByTagTagIdIn(query.getTagIds());
         List<String> recipeIds = new ArrayList<>();
         for (Recipe recipe : recipes) {
             recipeIds.add(recipe.getRecipeId());

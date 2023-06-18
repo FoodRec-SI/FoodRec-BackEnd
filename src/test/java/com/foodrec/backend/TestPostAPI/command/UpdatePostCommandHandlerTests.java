@@ -50,13 +50,13 @@ public class UpdatePostCommandHandlerTests {
         UpdatePostDTO updatePostDTO = new UpdatePostDTO();
         updatePostDTO.setPostId("POS000002");
         updatePostDTO.setStatus(PostStatus.APPROVED);
-        String moderatorId = "1f13ef69-46ad-42c7-aa00-04cd546c2164";
-        UpdatePostCommand command = new UpdatePostCommand(updatePostDTO, moderatorId);
+        String userid = "1f13ef69-46ad-42c7-aa00-04cd546c2164";
+        UpdatePostCommand command = new UpdatePostCommand(updatePostDTO, userid);
         PostDTO postDTOTest = pipeline.send(command);
         Optional<Post> post = postRepository.findById(postDTOTest.getPostId());
         assertEquals(updatePostDTO.getPostId(), post.get().getPostId());
         assertEquals(updatePostDTO.getStatus().getValue(), post.get().getStatus());
-        assertEquals(command.getModeratorId(), post.get().getModeratorId());
+        assertEquals(command.getUserId(), post.get().getModeratorId());
     }
 
     @Test
@@ -70,7 +70,7 @@ public class UpdatePostCommandHandlerTests {
         Optional<Post> post = postRepository.findById(postDTOTest.getPostId());
         assertEquals(updatePostDTO.getPostId(), post.get().getPostId());
         assertEquals(updatePostDTO.getStatus().getValue(), post.get().getStatus());
-        assertEquals(command.getModeratorId(), post.get().getModeratorId());
+        assertEquals(command.getUserId(), post.get().getModeratorId());
     }
 
     @Test
@@ -132,4 +132,3 @@ public class UpdatePostCommandHandlerTests {
         assertTrue(actualMessage.contains(expectedMessage));
     }
 }
-
