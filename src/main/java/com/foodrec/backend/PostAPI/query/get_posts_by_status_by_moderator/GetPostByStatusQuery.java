@@ -1,4 +1,4 @@
-package com.foodrec.backend.PostAPI.query.get_posts_by_recipe_name.get_posts_by_status_by_moderator;
+package com.foodrec.backend.PostAPI.query.get_posts_by_status_by_moderator;
 
 import an.awesome.pipelinr.Command;
 import com.foodrec.backend.PostAPI.dto.PostDTO;
@@ -10,7 +10,6 @@ import java.util.List;
 public class GetPostByStatusQuery implements Command<Page<PostDTO>> {
     private int pageNumber;
     private int pageSize;
-
     private List<PostStatus> postStatuses;
 
     public GetPostByStatusQuery() {
