@@ -1,21 +1,23 @@
-package com.foodrec.backend.CollectionAPI.query.get_collections_by_user_id;
+package com.foodrec.backend.PostAPI.query.get_posts_by_collection_id;
 
 import an.awesome.pipelinr.Command;
-import com.foodrec.backend.CollectionAPI.dto.CollectionDTO;
+import com.foodrec.backend.PostAPI.dto.PostDTO;
 import org.springframework.data.domain.Page;
 
-public class GetCollectionsByUserIdQuery implements Command<Page<CollectionDTO>> {
+public class GetPostByCollectionIdQuery implements Command<Page<PostDTO>> {
     private int pageNumber;
     private int pageSize;
     private String userId;
+    private String collectionId;
 
-    public GetCollectionsByUserIdQuery() {
+    public GetPostByCollectionIdQuery() {
     }
 
-    public GetCollectionsByUserIdQuery(int pageNumber, int pageSize, String userId) {
+    public GetPostByCollectionIdQuery(int pageNumber, int pageSize, String userId, String collectionId) {
         this.pageNumber = pageNumber;
         this.pageSize = pageSize;
         this.userId = userId;
+        this.collectionId = collectionId;
     }
 
     public int getPageNumber() {
@@ -40,5 +42,13 @@ public class GetCollectionsByUserIdQuery implements Command<Page<CollectionDTO>>
 
     public void setUserId(String userId) {
         this.userId = userId;
+    }
+
+    public String getCollectionId() {
+        return collectionId;
+    }
+
+    public void setCollectionId(String collectionId) {
+        this.collectionId = collectionId;
     }
 }

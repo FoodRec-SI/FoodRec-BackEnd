@@ -22,9 +22,10 @@ public class Collection {
     @ManyToMany(fetch = FetchType.LAZY,
             cascade = {
                     CascadeType.PERSIST,
-                    CascadeType.MERGE
+                    CascadeType.MERGE,
+                    CascadeType.REMOVE
             },
-            mappedBy = "collection")
+            mappedBy = "collections")
     @JsonIgnore
     private Set<Post> posts = new HashSet<>();
 

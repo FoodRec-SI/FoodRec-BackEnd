@@ -6,6 +6,7 @@ import io.lettuce.core.dynamic.annotation.Param;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
@@ -25,4 +26,9 @@ public interface PostRepository extends JpaRepository<Post, String> {
     Page<Post> findPostsByRecipeNameContainingIgnoreCaseAndStatus(String recipeName, int status, Pageable pageable);
 
     Page<Post> findPostsByRecipeIdInAndStatus(List<String> recipeIds, int status, Pageable pageable);
+
+    Post findFirstByCollectionsCollectionIdAndStatusOrderByRecipeNameAsc(String collectionId, int status);
+
+    Page<Post> getPostsByCollectionsCollectionIdAndStatus(String collectionId, int status, Pageable pageable);
+
 }

@@ -9,5 +9,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface CollectionRepository extends JpaRepository<Collection, String> {
-    Page<Collection> getCollectionsByUserId(String userId, Pageable pageable);
+    Page<Collection> findCollectionsByUserId(String userId, Pageable pageable);
 }
