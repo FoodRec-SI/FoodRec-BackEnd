@@ -4,13 +4,13 @@ public class AccountDTO {
 
     private String name;
     private String description;
-    private byte[] profileImage;
-    private byte[] backgroundImage;
+    private String profileImage;
+    private String backgroundImage;
 
     public AccountDTO() {
     }
 
-    public AccountDTO(String name, String description, byte[] profileImage, byte[] backgroundImage) {
+    public AccountDTO(String name, String description, String profileImage, String backgroundImage) {
         this.name = name;
         this.description = description;
         this.profileImage = profileImage;
@@ -33,19 +33,19 @@ public class AccountDTO {
         this.description = description;
     }
 
-    public byte[] getProfileImage() {
+    public String getProfileImage() {
         return profileImage;
     }
 
-    public void setProfileImage(byte[] profileImage) {
+    public void setProfileImage(String profileImage) {
         this.profileImage = profileImage;
     }
 
-    public byte[] getBackgroundImage() {
+    public String getBackgroundImage() {
         return backgroundImage;
     }
 
-    public void setBackgroundImage(byte[] backgroundImage) {
+    public void setBackgroundImage(String backgroundImage) {
         this.backgroundImage = backgroundImage;
     }
 }
