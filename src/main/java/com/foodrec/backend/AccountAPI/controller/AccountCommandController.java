@@ -2,9 +2,11 @@ package com.foodrec.backend.AccountAPI.controller;
 
 import an.awesome.pipelinr.Pipeline;
 import com.foodrec.backend.AccountAPI.command.create_account.CreateAccountCommand;
+import com.foodrec.backend.AccountAPI.command.delete_account.DeleteAccountCommand;
 import com.foodrec.backend.AccountAPI.command.update_account.UpdateAccountCommand;
 import com.foodrec.backend.AccountAPI.dto.AccountDTO;
 import com.foodrec.backend.AccountAPI.dto.CreateAccountDTO;
+import com.foodrec.backend.AccountAPI.dto.DeleteAccountDTO;
 import com.foodrec.backend.AccountAPI.dto.UpdateAccountDTO;
 import com.foodrec.backend.Utils.GetCurrentUserData;
 import io.swagger.v3.oas.annotations.Operation;
@@ -50,4 +52,14 @@ public class AccountCommandController {
         return new ResponseEntity<>(accountDTO, HttpStatus.OK);
     }
 
+    @Operation(description = "Delete account information"
+            ,security = {@SecurityRequirement(name = BEARER_KEY_SECURITY_SCHEME)})
+    @RequestMapping (value = "/api/member/account/delete", method = RequestMethod.POST, consumes = "multipart/form-data")
+    public ResponseEntity deleteAccount(@RequestBody DeleteAccountDTO deleteAccountDTO){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String userId = GetCurrentUserData.getCurrentUserId(authentication);
+        DeleteAccountCommand command = new DeleteAccountCommand(deleteAccountDTO,userId);
+        HttpStatus status = pipeline.send(command);
+        return new ResponseEntity<>(status);
+    }
 }
