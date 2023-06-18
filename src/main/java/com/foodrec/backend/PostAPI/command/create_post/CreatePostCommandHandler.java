@@ -43,7 +43,6 @@ public class CreatePostCommandHandler implements Command.Handler<CreatePostComma
         if (createPostDTO.getRecipeId() == null || command.getUserId() == null) {
             throw new InvalidDataExceptionHandler("Invalid post!");
         }
-        Post post = new Post();
         Optional<Recipe> optionalRecipe = recipeRepository.findById(createPostDTO.getRecipeId());
         if (optionalRecipe.isEmpty() || !optionalRecipe.get().isStatus()) {
             throw new NotFoundExceptionHandler("Recipe not found!");
@@ -51,6 +50,7 @@ public class CreatePostCommandHandler implements Command.Handler<CreatePostComma
         if (!Objects.equals(command.getUserId(), optionalRecipe.get().getUserId())) {
             throw new UnauthorizedExceptionHandler("You are not allowed to create post!");
         }
+        Post post = new Post();
         List<Post> posts  = postRepository.findPostByRecipeId(createPostDTO.getRecipeId());
         for (Post value : posts) {
             if (value.getRecipeName().toLowerCase().trim().equals(optionalRecipe.get().getRecipeName().toLowerCase().trim()) &&

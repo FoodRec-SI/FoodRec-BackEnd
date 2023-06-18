@@ -6,22 +6,22 @@ import com.foodrec.backend.PostAPI.dto.UpdatePostDTO;
 
 public class UpdatePostCommand implements Command<PostDTO> {
     private final UpdatePostDTO updatePostDTO;
-    private String moderatorId;
+    private String userId;
 
-    public UpdatePostCommand(UpdatePostDTO updatePostDTO, String moderatorId) {
+    public UpdatePostCommand(UpdatePostDTO updatePostDTO, String userId) {
         this.updatePostDTO = updatePostDTO;
-        this.moderatorId = moderatorId;
+        this.userId = userId;
     }
 
     public UpdatePostDTO getUpdatePostDTO() {
         return updatePostDTO;
     }
 
-    public String getModeratorId() {
-        return moderatorId;
+    public String getUserId() {
+        return userId;
     }
 
-    public void setModeratorId(String moderatorId) {
-        this.moderatorId = moderatorId;
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 }

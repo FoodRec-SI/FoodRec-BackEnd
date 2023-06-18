@@ -1,6 +1,7 @@
 package com.foodrec.backend.RecipeAPI.repository;
 
 import com.foodrec.backend.RecipeAPI.entity.Recipe;
+import com.foodrec.backend.TagAPI.entity.Tag;
 import jakarta.transaction.Transactional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -10,7 +11,9 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 @Repository
 public interface RecipeRepository extends JpaRepository<Recipe,String> {
@@ -25,4 +28,5 @@ public interface RecipeRepository extends JpaRepository<Recipe,String> {
     @Query(value="SELECT * FROM Recipe WHERE recipeid = :recipeid AND status = true",nativeQuery = true)
     Recipe findRecipeByRecipeId(@Param("recipeid") String recipeid);
     List<Recipe> findRecipesByTagTagId(String tagId);
+    List<Recipe> findRecipesByTagTagIdIn(Collection<String> tagIds);
 }
