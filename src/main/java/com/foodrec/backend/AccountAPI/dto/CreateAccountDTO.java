@@ -7,7 +7,7 @@ public class CreateAccountDTO {
     Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
     private String userId = GetCurrentUserData.getCurrentUserId(authentication);
     private String userName = GetCurrentUserData.getCurrentUserName(authentication);
-    private String profileImage = "https://storage.googleapis.com/foodrec-389515.appspot.com/profile-default.png";
+    private String profileImage = "https://storage.googleapis.com/foodrec-389515.appspot.com/profile-default.jpg";
     private String backgroundImage = "https://storage.googleapis.com/foodrec-389515.appspot.com/background-default.jpg";
 
 
