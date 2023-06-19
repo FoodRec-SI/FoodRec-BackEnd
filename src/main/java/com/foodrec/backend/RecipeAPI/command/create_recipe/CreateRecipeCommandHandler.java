@@ -9,7 +9,6 @@ import com.foodrec.backend.Utils.IdGenerator;
 import com.foodrec.backend.Utils.RecipeUtils;
 import com.foodrec.backend.Exception.InvalidDataExceptionHandler;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -20,7 +19,7 @@ import java.util.Optional;
 public class CreateRecipeCommandHandler implements Command.Handler<CreateRecipeCommand, RecipeDTO> {
 
     private final RecipeRepository recipeRepository;
-    private ModelMapper modelMapper;
+    private final ModelMapper modelMapper;
     private final RecipeUtils recipeUtils;
     private final ArrayList<String> nonNullFields = new ArrayList<>
             (Arrays.asList("recipeName", "description", "image"));
@@ -41,7 +40,7 @@ public class CreateRecipeCommandHandler implements Command.Handler<CreateRecipeC
         boolean isValid =
                 recipeUtils.fieldValidator(createRecipeCommand.getCreateRecipeDTO(),
                         nonNullFields, nonNegativeFields);
-        if (isValid == false) {
+        if (!isValid) {
             throw new InvalidDataExceptionHandler("One of the recipe attributes " +
                     "(name,description, calories, duration, image)" +
                     " is invalid. Please try again.");
@@ -52,7 +51,7 @@ public class CreateRecipeCommandHandler implements Command.Handler<CreateRecipeC
         recEntity.setStatus(true);
         recipeRepository.save(recEntity);
         Optional<Recipe> isAddedRec = recipeRepository.findById(recEntity.getRecipeId());
-        if (isAddedRec.get() != null) {
+        if (isAddedRec.isPresent()) {
             result = modelMapper.map(isAddedRec.get(), RecipeDTO.class);
         }
         return result;

@@ -1,7 +1,6 @@
 package com.foodrec.backend.PostAPI.entity;
 
 import com.foodrec.backend.CollectionAPI.entity.Collection;
-import com.foodrec.backend.RecipeAPI.entity.Recipe;
 import com.foodrec.backend.AccountAPI.entity.Account;
 import java.util.HashSet;
 import jakarta.persistence.*;
@@ -12,7 +11,6 @@ import java.util.Set;
 
 @Entity
 @Table(name = "post")
-
 public class Post implements Serializable {
     @Id
     @Column(name = "postid")

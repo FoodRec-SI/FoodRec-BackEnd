@@ -4,13 +4,13 @@ public class CollectionDTO {
     private String collectionId;
     private String collectionName;
     private String description;
-    private byte[] image;
+    private String image;
     private String userId;
 
     public CollectionDTO() {
     }
 
-    public CollectionDTO(String collectionId, String collectionName, String description, byte[] image, String userId) {
+    public CollectionDTO(String collectionId, String collectionName, String description, String image, String userId) {
         this.collectionId = collectionId;
         this.collectionName = collectionName;
         this.description = description;
@@ -42,11 +42,11 @@ public class CollectionDTO {
         this.description = description;
     }
 
-    public byte[] getImage() {
+    public String getImage() {
         return image;
     }
 
-    public void setImage(byte[] image) {
+    public void setImage(String image) {
         this.image = image;
     }
 

@@ -6,8 +6,6 @@ import com.foodrec.backend.RecipeAPI.dto.RecipeDTO;
 import com.foodrec.backend.RecipeAPI.entity.Recipe;
 import com.foodrec.backend.RecipeAPI.repository.RecipeRepository;
 import com.foodrec.backend.Utils.PageUtils;
-import com.foodrec.backend.Utils.RecipeUtils;
-import com.foodrec.backend.Exception.InvalidDataExceptionHandler;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Component;
@@ -20,16 +18,13 @@ import java.util.stream.Collectors;
 public class GetRecipeByUserIdQueryHandler implements Command.Handler<GetRecipeByUserIdQuery, Page<RecipeDTO>> {
     private final RecipeRepository recipeRepository;
     private final ModelMapper modelMapper;
-    private final RecipeUtils recipeUtils;
     private final PageUtils pageUtils;
 
     public GetRecipeByUserIdQueryHandler(ModelMapper modelMapper,
                                          RecipeRepository recipeRepository,
-                                         RecipeUtils recipeUtils,
                                          PageUtils pageUtils) {
         this.modelMapper = modelMapper;
         this.recipeRepository = recipeRepository;
-        this.recipeUtils = recipeUtils;
         this.pageUtils = pageUtils;
     }
 

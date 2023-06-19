@@ -13,6 +13,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 @Component
@@ -29,6 +30,7 @@ public class UpdatePostCommandHandler implements Command.Handler<UpdatePostComma
     @Override
     public PostDTO handle(UpdatePostCommand command) {
         UpdatePostDTO updatePostDTO = command.getUpdatePostDTO();
+        LocalDateTime localDateTime = LocalDateTime.now();
         if (updatePostDTO.getStatus() == null || updatePostDTO.getPostId() == null ||
                 updatePostDTO.getStatus().equals(PostStatus.PENDING_APPROVAL)) {
             throw new InvalidDataExceptionHandler("Invalid data!");
@@ -43,6 +45,7 @@ public class UpdatePostCommandHandler implements Command.Handler<UpdatePostComma
         Post post = optionalPost.get();
         post.setStatus(updatePostDTO.getStatus().getValue());
         post.setModeratorId(command.getUserId());
+        post.setVerifiedTime(localDateTime);
         postRepository.save(post);
         return modelMapper.map(post, PostDTO.class);
     }

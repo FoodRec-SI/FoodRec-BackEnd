@@ -58,6 +58,4 @@ public class DeleteRecipeDTO {
     public void setImage(byte[] image) {
         this.image = image;
     }
-
-
 }

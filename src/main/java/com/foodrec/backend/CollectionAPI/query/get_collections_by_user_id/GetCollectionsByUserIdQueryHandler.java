@@ -44,7 +44,7 @@ public class GetCollectionsByUserIdQueryHandler implements Command.Handler<GetCo
             CollectionDTO collectionDTO = modelMapper.map(collection, CollectionDTO.class);
             Post post = postRepository.findFirstByCollectionsCollectionIdAndStatusOrderByRecipeNameAsc(collection.getCollectionId(), 2);
             if (post != null) {
-                byte[] image = post.getImage();
+                String image = post.getImage();
                 collectionDTO.setImage(image);
             }
             collectionDTOs.add(collectionDTO);

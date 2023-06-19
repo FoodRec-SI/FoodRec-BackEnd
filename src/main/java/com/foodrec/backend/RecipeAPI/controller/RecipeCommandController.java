@@ -115,7 +115,7 @@ public class RecipeCommandController {
             String userId = GetCurrentUserData.getCurrentUserId(authentication);
             DeleteRecipeCommand command = new DeleteRecipeCommand(recipeId,userId);
             boolean isDeleted = pipeline.send(command);
-            if (isDeleted == false)
+            if (!isDeleted)
                 result = new ResponseEntity<String>("Recipe with id " +
                         recipeId + " might be deleted or non-existent. Please try again.",
                         HttpStatus.BAD_REQUEST);

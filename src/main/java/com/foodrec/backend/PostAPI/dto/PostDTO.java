@@ -13,25 +13,18 @@ public class PostDTO implements Serializable {
     private String description;
     private int calories;
     private int duration;
-    private byte[] image;
+    private String image;
     private LocalDateTime time;
     private PostStatus postStatus;
     private String recipeId;
-
-    public String getRecipeId() {
-        return recipeId;
-    }
-
-    public void setRecipeId(String recipeId) {
-        this.recipeId = recipeId;
-    }
+    private LocalDateTime verifiedTime;
 
     public PostDTO() {
     }
 
     public PostDTO(String postId, String userId, String moderatorId, String recipeName,
-                   String description, int calories, int duration, byte[] image,
-                   LocalDateTime time, PostStatus postStatus, String recipeId) {
+                   String description, int calories, int duration, String image,
+                   LocalDateTime time, PostStatus postStatus, String recipeId, LocalDateTime verifiedTime) {
         this.postId = postId;
         this.userId = userId;
         this.moderatorId = moderatorId;
@@ -42,6 +35,15 @@ public class PostDTO implements Serializable {
         this.image = image;
         this.time = time;
         this.postStatus = postStatus;
+        this.recipeId = recipeId;
+        this.verifiedTime = verifiedTime;
+    }
+
+    public String getRecipeId() {
+        return recipeId;
+    }
+
+    public void setRecipeId(String recipeId) {
         this.recipeId = recipeId;
     }
 
@@ -101,11 +103,11 @@ public class PostDTO implements Serializable {
         this.duration = duration;
     }
 
-    public byte[] getImage() {
+    public String getImage() {
         return image;
     }
 
-    public void setImage(byte[] image) {
+    public void setImage(String image) {
         this.image = image;
     }
 
@@ -123,5 +125,13 @@ public class PostDTO implements Serializable {
 
     public void setPostStatus(PostStatus postStatus) {
         this.postStatus = postStatus;
+    }
+
+    public LocalDateTime getVerifiedTime() {
+        return verifiedTime;
+    }
+
+    public void setVerifiedTime(LocalDateTime verifiedTime) {
+        this.verifiedTime = verifiedTime;
     }
 }

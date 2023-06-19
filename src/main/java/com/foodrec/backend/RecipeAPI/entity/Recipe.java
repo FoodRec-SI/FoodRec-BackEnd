@@ -23,7 +23,7 @@ public class Recipe {
     @Column(name = "duration")
     private int duration;
     @Column(name = "image")
-    private byte[] image;
+    private String image;
     @Column(name = "status")
     private boolean status;
 
@@ -38,7 +38,8 @@ public class Recipe {
     public Recipe() {
     }
 
-    public Recipe(String recipeId, String recipeName, String description, int calories, String userId, int duration, byte[] image, boolean status, Set<Tag> tag) {
+    public Recipe(String recipeId, String recipeName, String description, int calories, String userId,
+                  int duration, String image, boolean status, Set<Tag> tag) {
         this.recipeId = recipeId;
         this.recipeName = recipeName;
         this.description = description;
@@ -98,11 +99,11 @@ public class Recipe {
         this.duration = duration;
     }
 
-    public byte[] getImage() {
+    public String getImage() {
         return image;
     }
 
-    public void setImage(byte[] image) {
+    public void setImage(String image) {
         this.image = image;
     }
 
