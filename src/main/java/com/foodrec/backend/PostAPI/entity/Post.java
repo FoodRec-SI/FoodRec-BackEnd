@@ -1,6 +1,9 @@
 package com.foodrec.backend.PostAPI.entity;
 
+import com.foodrec.backend.CollectionAPI.entity.Collection;
+import com.foodrec.backend.RecipeAPI.entity.Recipe;
 import com.foodrec.backend.AccountAPI.entity.Account;
+import java.util.HashSet;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
@@ -34,6 +37,15 @@ public class Post {
     private byte[] image;
     @Column(name = "time")
     private LocalDateTime time;
+    @ManyToMany(fetch = FetchType.LAZY,
+            cascade = {
+                    CascadeType.PERSIST,
+                    CascadeType.MERGE
+            })
+    @JoinTable(name = "post_collection",
+            joinColumns = {@JoinColumn(name = "postid")},
+            inverseJoinColumns = {@JoinColumn(name = "collectionid")})
+    private Set<Collection> collections = new HashSet<>();
 
 
     //M-M relationship with the Likes table (1 Account Likes Many Posts,
@@ -48,8 +60,10 @@ public class Post {
     public Post() {
     }
 
-    public Post(String postId, int status, String userId, String moderatorId, String recipeId, String recipeName,
-                String description, int calories, int duration, byte[] image, LocalDateTime time) {
+    public Post(String postId, int status, String userId, String moderatorId,
+                String recipeId, String recipeName, String description,
+                int calories, int duration, byte[] image,
+                LocalDateTime time, Set<Collection> collections) {
         this.postId = postId;
         this.status = status;
         this.userId = userId;
@@ -61,6 +75,7 @@ public class Post {
         this.duration = duration;
         this.image = image;
         this.time = time;
+        this.collections = collections;
     }
 
     public String getPostId() {
@@ -149,6 +164,14 @@ public class Post {
 
     public void setTime(LocalDateTime time) {
         this.time = time;
+    }
+
+    public Set<Collection> getCollections() {
+        return collections;
+    }
+
+    public void setCollections(Set<Collection> collections) {
+        this.collections = collections;
     }
 
     public Set<Account> getAccounts() {

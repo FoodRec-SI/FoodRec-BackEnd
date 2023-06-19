@@ -82,8 +82,8 @@ public class PostCommandController {
         ResponseEntity responseEntity = null;
         try {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-            String moderatorId = GetCurrentUserData.getCurrentUserId(authentication);
-            UpdatePostCommand command = new UpdatePostCommand(updatePostDTO, moderatorId);
+            String userId = GetCurrentUserData.getCurrentUserId(authentication);
+            UpdatePostCommand command = new UpdatePostCommand(updatePostDTO, userId);
             PostDTO postDTO = pipeline.send(command);
             responseEntity = new ResponseEntity<>(postDTO, HttpStatus.OK);
         } catch (InvalidDataExceptionHandler | NotFoundExceptionHandler | UnauthorizedExceptionHandler e) {

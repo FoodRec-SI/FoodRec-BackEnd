@@ -40,7 +40,6 @@ public class GetPostsByTagIdQueryHandler implements Command.Handler<GetPostsByTa
         List<String> recipeIds = new ArrayList<>();
         for (Recipe recipe : recipes) {
             recipeIds.add(recipe.getRecipeId());
-            System.out.println(recipe.getRecipeId());
         }
         Page<Post> postsPage = postRepository.findPostsByRecipeIdInAndStatus(recipeIds, 2, pageable);
         if (postsPage.isEmpty()) {

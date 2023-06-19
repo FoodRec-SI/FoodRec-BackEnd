@@ -23,12 +23,14 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: 12345
     volumes:
-      - /path/to/database/data:/var/lib/postgresql/data
+      - postgres_data:/var/lib/postgresql/data
 
   redis-server:
     hostname: redis
-    container_name: redis
     image: redis:latest
     restart: always
     ports:
       - "6379:6379"
+
+volumes:
+  postgres_data:

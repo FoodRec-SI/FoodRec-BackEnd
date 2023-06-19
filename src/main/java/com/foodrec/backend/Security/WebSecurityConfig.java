@@ -25,7 +25,7 @@ public class WebSecurityConfig {
                         .xssProtection(xXssConfig -> xXssConfig
                                 .headerValue(XXssProtectionHeaderWriter.HeaderValue.DISABLED))
                         .contentSecurityPolicy(contentSecurityPolicyConfig -> contentSecurityPolicyConfig
-                                .policyDirectives("script-src 'self'")))
+                                .policyDirectives("script-src 'self'; img-src 'self'")))
                 .authorizeHttpRequests(authorizeHttpRequests -> authorizeHttpRequests
                         .requestMatchers(HttpMethod.GET, "/actuator/**").permitAll()
                         .requestMatchers("/api/public/**").permitAll()

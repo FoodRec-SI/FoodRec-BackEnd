@@ -3,7 +3,6 @@ package com.foodrec.backend.AccountAPI.entity;
 import com.foodrec.backend.PostAPI.entity.Post;
 import com.foodrec.backend.TagAPI.entity.Tag;
 import jakarta.persistence.*;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -18,13 +17,10 @@ public class Account {
     private String name;
     @Column(name = "description")
     private String description;
-    @Column(name = "profile-image")
-    private byte[] profileImage;
-    @Column(name = "background-image")
-    private byte[] backgroundImage;
-
-    //M-M relationship with Tag table (relation). NOT A COLUMN.
-    //Just imagine it as a WIRE that connects 2 tables.
+    @Column(name = "profile-image-name")
+    private String profileImageName;
+    @Column(name = "background-image-name")
+    private String backgroundImageName;
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "account_tag",
             joinColumns = @JoinColumn(name = "userid"),
@@ -47,13 +43,12 @@ public class Account {
 
     public Account(){}
 
-    public Account(String userId, String name, String description, byte[] profileImage, byte[] backgroundImage) {
+    public Account(String userId, String name, String description, String profileImageName, String backgroundImageName) {
         this.userId = userId;
         this.name = name;
         this.description = description;
-        this.profileImage = profileImage;
-        this.backgroundImage = backgroundImage;
-        this.tagAndAccountList = tagAndAccountList;
+        this.profileImageName = profileImageName;
+        this.backgroundImageName = backgroundImageName;
     }
 
     public String getUserId() {
@@ -64,13 +59,9 @@ public class Account {
         this.userId = userId;
     }
 
-    public String getName() {
-        return name;
-    }
+    public String getName() {return name;}
 
-    public void setName(String name) {
-        this.name = name;
-    }
+    public void setName(String name) {this.name = name;}
 
     public String getDescription() {
         return description;
@@ -80,20 +71,20 @@ public class Account {
         this.description = description;
     }
 
-    public byte[] getProfileImage() {
-        return profileImage;
+    public String getProfileImageName() {
+        return profileImageName;
     }
 
-    public void setProfileImage(byte[] profileImage) {
-        this.profileImage = profileImage;
+    public void setProfileImageName(String profileImageName) {
+        this.profileImageName = profileImageName;
     }
 
-    public byte[] getBackgroundImage() {
-        return backgroundImage;
+    public String getBackgroundImageName() {
+        return backgroundImageName;
     }
 
-    public void setBackgroundImage(byte[] backgroundImage) {
-        this.backgroundImage = backgroundImage;
+    public void setBackgroundImageName(String backgroundImageName) {
+        this.backgroundImageName = backgroundImageName;
     }
 
     public List<Tag> getTagAndAccountList() {

@@ -4,7 +4,6 @@ import an.awesome.pipelinr.Command;
 import com.foodrec.backend.PostAPI.dto.PostDTO;
 import org.springframework.data.domain.Page;
 
-import java.util.List;
 
 public class GetPostsByTagIdQuery implements Command<Page<PostDTO>> {
     private int pageNumber;

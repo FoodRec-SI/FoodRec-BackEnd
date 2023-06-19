@@ -28,6 +28,8 @@ public class CreateAccountCommandHandler implements Command.Handler<CreateAccoun
         Account account = new Account();
         account.setUserId(createAccountDTO.getUserId());
         account.setName(createAccountDTO.getUserName());
+        account.setProfileImageName(createAccountDTO.getProfileImage());
+        account.setBackgroundImageName(createAccountDTO.getBackgroundImage());
         accountRepository.save(account);
         return HttpStatus.OK;
     }
