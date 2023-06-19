@@ -30,4 +30,5 @@ public interface PostRepository extends JpaRepository<Post, String> {
 //            "INNER JOIN r.tag t WHERE t.tagid IN :tagIds AND p.status = 2")
 //    Page<Post> findPostsByTagIds(@Param("tagIds") List<String> tagIds);
     Page<Post> findPostsByRecipeIdInAndStatus(List<String> recipeIds, int status, Pageable pageable);
+    Page<Post> findPostByAccountsUserIdAndStatus(String userId, int status, Pageable pageable);
 }

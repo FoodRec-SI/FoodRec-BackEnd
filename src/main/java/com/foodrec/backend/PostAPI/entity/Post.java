@@ -1,9 +1,10 @@
 package com.foodrec.backend.PostAPI.entity;
 
-import com.foodrec.backend.RecipeAPI.entity.Recipe;
+import com.foodrec.backend.AccountAPI.entity.Account;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
+import java.util.Set;
 
 @Entity
 @Table(name = "post")
@@ -33,6 +34,16 @@ public class Post {
     private byte[] image;
     @Column(name = "time")
     private LocalDateTime time;
+
+
+    //M-M relationship with the Likes table (1 Account Likes Many Posts,
+    //and 1 Post is Liked by Many Accounts)
+    @ManyToMany
+    @JoinTable(
+            name = "likes",
+            joinColumns = @JoinColumn(name = "postid"),
+            inverseJoinColumns = @JoinColumn(name = "userid"))
+    private Set<Account> accounts;
 
     public Post() {
     }
@@ -138,6 +149,14 @@ public class Post {
 
     public void setTime(LocalDateTime time) {
         this.time = time;
+    }
+
+    public Set<Account> getAccounts() {
+        return accounts;
+    }
+
+    public void setAccounts(Set<Account> accounts) {
+        this.accounts = accounts;
     }
 }
 

@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 
 @Table(name = "rating")
 @Entity
-@IdClass(RatingIdClass.class)
+@IdClass(RatingCompositeKey.class)
 public class Rating {
     /*Reason for setting IDs for BOTH userId and postId:
     * If we only set @Id to userId, when we UPDATE the score of an existing Rating (postId,score),
