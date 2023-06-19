@@ -78,7 +78,6 @@ public class ImageUtils {
                 }
             }
         }
-
         // Return true if at least one file was deleted, false otherwise
         return deleted;
     }

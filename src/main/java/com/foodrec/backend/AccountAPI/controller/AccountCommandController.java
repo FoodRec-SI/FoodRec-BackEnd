@@ -31,9 +31,9 @@ public class AccountCommandController {
         this.pipeline = pipeline;
     }
 
-    @Operation(description = "Add User id and name to the database. This api will run in the background"
+    @Operation(description = "Add user information to the database. This api will run in the background"
             ,security = {@SecurityRequirement(name = BEARER_KEY_SECURITY_SCHEME)})
-    @RequestMapping (value = "/api/member/account/create", method = RequestMethod.POST)
+    @RequestMapping (value = "/api/member/account/create", method = RequestMethod.GET)
     public ResponseEntity createAccount(){
         CreateAccountDTO createAccountDTO = new CreateAccountDTO();
         CreateAccountCommand createAccountCommand = new CreateAccountCommand(createAccountDTO);
