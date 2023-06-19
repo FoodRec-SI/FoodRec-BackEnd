@@ -31,7 +31,9 @@ public class RatingCommandController {
         this.pipeline = pipeline;
     }
 
-    @Operation(security = {@SecurityRequirement(name = BEARER_KEY_SECURITY_SCHEME)})
+    @Operation(
+            description = "Lets the signed in user rate the recipe, with a score between 0 and 5.",
+            security = {@SecurityRequirement(name = BEARER_KEY_SECURITY_SCHEME)})
     @RequestMapping(value = "/api/member/rating", method = RequestMethod.POST)
     public ResponseEntity createRating(@RequestBody CreateRatingDTO createRatingDTO) {
         ResponseEntity result = null;

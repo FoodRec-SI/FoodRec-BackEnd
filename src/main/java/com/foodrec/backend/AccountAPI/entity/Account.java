@@ -1,9 +1,9 @@
 package com.foodrec.backend.AccountAPI.entity;
 
+import com.foodrec.backend.PostAPI.entity.Post;
 import com.foodrec.backend.TagAPI.entity.Tag;
 import jakarta.persistence.*;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -27,8 +27,21 @@ public class Account {
             inverseJoinColumns = @JoinColumn(name = "tagid"))
     private List<Tag> tagAndAccountList = new ArrayList<>();
 
-    public Account() {
+    //M-M relationship with the Likes table (1 Account Likes Many Posts,
+    //and 1 Post is Liked by Many Accounts)
+
+    @ManyToMany(mappedBy = "accounts")
+    private Set<Post> posts;
+
+    public Set<Post> getPosts() {
+        return posts;
     }
+
+    public void setPosts(Set<Post> posts) {
+        this.posts = posts;
+    }
+
+    public Account(){}
 
     public Account(String userId, String name, String description, String profileImageName, String backgroundImageName) {
         this.userId = userId;

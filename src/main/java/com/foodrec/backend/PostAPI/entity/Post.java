@@ -2,11 +2,12 @@ package com.foodrec.backend.PostAPI.entity;
 
 import com.foodrec.backend.CollectionAPI.entity.Collection;
 import com.foodrec.backend.RecipeAPI.entity.Recipe;
+import com.foodrec.backend.AccountAPI.entity.Account;
+import java.util.HashSet;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -47,6 +48,16 @@ public class Post implements Serializable {
             joinColumns = {@JoinColumn(name = "postid")},
             inverseJoinColumns = {@JoinColumn(name = "collectionid")})
     private Set<Collection> collections = new HashSet<>();
+
+
+    //M-M relationship with the Likes table (1 Account Likes Many Posts,
+    //and 1 Post is Liked by Many Accounts)
+    @ManyToMany
+    @JoinTable(
+            name = "likes",
+            joinColumns = @JoinColumn(name = "postid"),
+            inverseJoinColumns = @JoinColumn(name = "userid"))
+    private Set<Account> accounts;
 
     public Post() {
     }
@@ -171,6 +182,14 @@ public class Post implements Serializable {
 
     public void setCollections(Set<Collection> collections) {
         this.collections = collections;
+    }
+
+    public Set<Account> getAccounts() {
+        return accounts;
+    }
+
+    public void setAccounts(Set<Account> accounts) {
+        this.accounts = accounts;
     }
 }
 
