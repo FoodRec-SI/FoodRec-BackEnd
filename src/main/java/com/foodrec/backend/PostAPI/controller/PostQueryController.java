@@ -1,6 +1,7 @@
 package com.foodrec.backend.PostAPI.controller;
 
 import an.awesome.pipelinr.Pipeline;
+import com.foodrec.backend.Exception.InvalidPageInfoException;
 import com.foodrec.backend.Exception.NotFoundExceptionHandler;
 import com.foodrec.backend.PostAPI.dto.PostDTO;
 import com.foodrec.backend.PostAPI.entity.PostStatus;
@@ -11,6 +12,8 @@ import com.foodrec.backend.PostAPI.query.get_posts_by_recipe_name.GetPostsByReci
 import com.foodrec.backend.PostAPI.query.get_posts_by_status_by_moderator.GetPostByStatusQuery;
 import com.foodrec.backend.Exception.InvalidDataExceptionHandler;
 import com.foodrec.backend.PostAPI.query.get_posts_by_tagId.GetPostsByTagIdQuery;
+import com.foodrec.backend.PostAPI.query.get_posts_liked_by_userid.GetPostsLikedByUserIdQuery;
+import com.foodrec.backend.Utils.GetCurrentUserData;
 import com.foodrec.backend.PostAPI.query.get_posts_by_tagIds.GetPostsByTagIdsQuery;
 import com.foodrec.backend.Utils.GetCurrentUserData;
 import io.swagger.v3.oas.annotations.Operation;
@@ -142,6 +145,28 @@ public class PostQueryController {
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
+    }
+
+    @Operation(
+            description = "Gets the list of liked posts by a UserId.",
+            security = {@SecurityRequirement(name = BEARER_KEY_SECURITY_SCHEME)})
+    @RequestMapping(value = "/api/member/like", method = RequestMethod.GET)
+    public ResponseEntity getPostsLikedByUserId(@RequestParam(defaultValue = "0") String pageNumber,
+                                        @RequestParam(defaultValue = "6") String pageSize){
+        ResponseEntity result = null;
+        try {
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            String userId = GetCurrentUserData.getCurrentUserId(authentication);
+            GetPostsLikedByUserIdQuery command =
+                    new GetPostsLikedByUserIdQuery(userId,pageNumber,pageSize);
+            Page<PostDTO> likedUserDTO = pipeline.send(command);
+            if (likedUserDTO != null) {
+                result = new ResponseEntity(likedUserDTO, HttpStatus.OK);
+            }
+        }catch(InvalidPageInfoException e){
+            result = new ResponseEntity(e.getMessage(), HttpStatus.OK);
+        }
+        return result;
     }
 
     @Operation(description = "Get all posts in collection, use by collectionID",
