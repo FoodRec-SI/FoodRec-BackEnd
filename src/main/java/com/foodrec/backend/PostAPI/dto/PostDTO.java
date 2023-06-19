@@ -2,9 +2,10 @@ package com.foodrec.backend.PostAPI.dto;
 
 import com.foodrec.backend.PostAPI.entity.PostStatus;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
-public class PostDTO {
+public class PostDTO implements Serializable {
     private String postId;
     private String userId;
     private String moderatorId;

@@ -17,9 +17,9 @@ public class Account {
     private String name;
     @Column(name = "description")
     private String description;
-    @Column(name = "profile-image-name")
+    @Column(name = "profile-image")
     private String profileImageName;
-    @Column(name = "background-image-name")
+    @Column(name = "background-image")
     private String backgroundImageName;
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "account_tag",

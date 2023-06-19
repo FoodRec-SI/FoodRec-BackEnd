@@ -4,6 +4,7 @@ import com.foodrec.backend.CollectionAPI.entity.Collection;
 import com.foodrec.backend.RecipeAPI.entity.Recipe;
 import jakarta.persistence.*;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
@@ -11,11 +12,10 @@ import java.util.Set;
 @Entity
 @Table(name = "post")
 
-public class Post {
+public class Post implements Serializable {
     @Id
     @Column(name = "postid")
     private String postId;
-
     @Column(name = "status")
     private int status;
     @Column(name = "userid")
@@ -33,9 +33,11 @@ public class Post {
     @Column(name = "duration")
     private int duration;
     @Column(name = "image")
-    private byte[] image;
+    private String image;
     @Column(name = "time")
     private LocalDateTime time;
+    @Column(name = "verified-time")
+    private LocalDateTime verifiedTime;
     @ManyToMany(fetch = FetchType.LAZY,
             cascade = {
                     CascadeType.PERSIST,
@@ -50,9 +52,8 @@ public class Post {
     }
 
     public Post(String postId, int status, String userId, String moderatorId,
-                String recipeId, String recipeName, String description,
-                int calories, int duration, byte[] image,
-                LocalDateTime time, Set<Collection> collections) {
+                String recipeId, String recipeName, String description, int calories,
+                int duration, String image, LocalDateTime time, LocalDateTime verifiedTime, Set<Collection> collections) {
         this.postId = postId;
         this.status = status;
         this.userId = userId;
@@ -64,6 +65,7 @@ public class Post {
         this.duration = duration;
         this.image = image;
         this.time = time;
+        this.verifiedTime = verifiedTime;
         this.collections = collections;
     }
 
@@ -139,12 +141,20 @@ public class Post {
         this.duration = duration;
     }
 
-    public byte[] getImage() {
+    public String getImage() {
         return image;
     }
 
-    public void setImage(byte[] image) {
+    public void setImage(String image) {
         this.image = image;
+    }
+
+    public LocalDateTime getVerifiedTime() {
+        return verifiedTime;
+    }
+
+    public void setVerifiedTime(LocalDateTime verifiedTime) {
+        this.verifiedTime = verifiedTime;
     }
 
     public LocalDateTime getTime() {
