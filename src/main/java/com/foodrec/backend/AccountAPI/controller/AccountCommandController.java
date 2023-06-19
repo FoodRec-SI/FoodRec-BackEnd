@@ -33,7 +33,7 @@ public class AccountCommandController {
 
     @Operation(description = "Add user information to the database. This api will run in the background"
             ,security = {@SecurityRequirement(name = BEARER_KEY_SECURITY_SCHEME)})
-    @RequestMapping (value = "/api/member/account/create", method = RequestMethod.GET)
+    @RequestMapping (value = "/api/private/account/create", method = RequestMethod.GET)
     public ResponseEntity createAccount(){
         CreateAccountDTO createAccountDTO = new CreateAccountDTO();
         CreateAccountCommand createAccountCommand = new CreateAccountCommand(createAccountDTO);

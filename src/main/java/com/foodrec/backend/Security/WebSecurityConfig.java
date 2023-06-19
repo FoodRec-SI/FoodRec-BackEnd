@@ -29,6 +29,7 @@ public class WebSecurityConfig {
                 .authorizeHttpRequests(authorizeHttpRequests -> authorizeHttpRequests
                         .requestMatchers(HttpMethod.GET, "/actuator/**").permitAll()
                         .requestMatchers("/api/public/**").permitAll()
+                        .requestMatchers("/api/private/**").hasAnyRole(MODERATOR,MEMBER)
                         .requestMatchers("/api/moderator/**").hasRole(MODERATOR)
                         .requestMatchers("/api/member/**").hasAnyRole(MEMBER)
                         .requestMatchers("/swagger-ui.html", "/swagger-ui/**", "/v3/api-docs", "/v3/api-docs/**").permitAll()
