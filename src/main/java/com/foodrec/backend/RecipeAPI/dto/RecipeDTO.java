@@ -1,14 +1,15 @@
 package com.foodrec.backend.RecipeAPI.dto;
 
 public class RecipeDTO {
-    public RecipeDTO(){}
     private String recipeId;
     private String recipeName;
     private String description;
     private int calories;
     private int duration;
-    private byte[] image;
+    private String image;
 
+    public RecipeDTO() {
+    }
 
     public String getRecipeId() {
         return recipeId;
@@ -50,11 +51,11 @@ public class RecipeDTO {
         this.duration = duration;
     }
 
-    public byte[] getImage() {
+    public String getImage() {
         return image;
     }
 
-    public void setImage(byte[] image) {
+    public void setImage(String image) {
         this.image = image;
     }
 

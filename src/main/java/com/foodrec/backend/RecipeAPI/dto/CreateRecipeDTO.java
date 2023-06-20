@@ -21,7 +21,7 @@ public class CreateRecipeDTO {
 
     private int duration;
 
-    private byte[] image;
+    private String image;
 
     public String getRecipeName() {
         return recipeName;
@@ -55,11 +55,11 @@ public class CreateRecipeDTO {
         this.duration = duration;
     }
 
-    public byte[] getImage() {
+    public String getImage() {
         return image;
     }
 
-    public void setImage(byte[] image) {
+    public void setImage(String image) {
         this.image = image;
     }
 }

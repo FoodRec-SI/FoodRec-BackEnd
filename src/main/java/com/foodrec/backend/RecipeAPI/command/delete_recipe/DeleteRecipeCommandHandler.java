@@ -32,7 +32,7 @@ public class DeleteRecipeCommandHandler implements Command.Handler<DeleteRecipeC
         if (foundRecipe.isEmpty()) {
             return false;
         }
-        if (foundRecipe.get().isStatus() == false) {
+        if (!foundRecipe.get().isStatus()) {
             return false;
         }
         recipeRepository.updateRecipeStatusById(deleteRecipeCommand.getRecipeId());
