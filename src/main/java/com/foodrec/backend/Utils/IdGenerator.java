@@ -28,10 +28,6 @@ public class IdGenerator {
         String columnId = cache.get(prefix);
         if (columnId == null || columnId.isEmpty()) {
             columnId = RepositoryUtils.findLastById(entityClass, columnName);
-            assert columnId != null;
-            if(columnId.isEmpty()){
-                columnId = prefix + "000001";
-            }
             cache.put(prefix, columnId);
         }
         Long incrementedNumber = Long.parseLong(cache.get(prefix).substring(3));
