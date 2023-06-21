@@ -1,6 +1,7 @@
-package com.foodrec.backend.AccountAPI.command.update_account.update_account_basic_data;
+package com.foodrec.backend.AccountAPI.command.update_account;
 
 import an.awesome.pipelinr.Command;
+import com.foodrec.backend.AccountAPI.command.update_account.UpdateAccountCommand;
 import com.foodrec.backend.AccountAPI.dto.AccountDTO;
 import com.foodrec.backend.AccountAPI.dto.UpdateAccountDTO;
 import com.foodrec.backend.AccountAPI.entity.Account;

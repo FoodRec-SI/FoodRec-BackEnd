@@ -1,4 +1,4 @@
-package com.foodrec.backend.AccountAPI.command.update_account.update_account_tags;
+package com.foodrec.backend.AccountAPI.command.create_account.create_account_tags;
 
 import an.awesome.pipelinr.Command;
 import lombok.AllArgsConstructor;
@@ -9,7 +9,7 @@ import java.util.Collection;
 
 @Data
 @AllArgsConstructor
-public class UpdateAccountTagsCommand implements Command<HttpStatus> {
+public class CreateAccountTagsCommand implements Command<HttpStatus> {
 
     private final Collection<String> tagIds;
     private final String userId;
