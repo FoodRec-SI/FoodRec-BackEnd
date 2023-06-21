@@ -11,7 +11,6 @@ import com.foodrec.backend.Utils.GetCurrentUserData;
 import com.foodrec.backend.AccountAPI.dto.AccountDTO;
 import com.foodrec.backend.AccountAPI.dto.CreateAccountDTO;
 import com.foodrec.backend.AccountAPI.dto.UpdateAccountDTO;
-import com.foodrec.backend.Exception.NotFoundExceptionHandler;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
@@ -28,7 +27,6 @@ import java.util.Collection;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import static com.foodrec.backend.Config.SwaggerConfig.BEARER_KEY_SECURITY_SCHEME;
