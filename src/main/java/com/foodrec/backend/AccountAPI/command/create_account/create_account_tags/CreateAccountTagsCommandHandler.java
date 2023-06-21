@@ -21,11 +21,12 @@ public class CreateAccountTagsCommandHandler implements Command.Handler<CreateAc
         this.accountRepository = accountRepository;
         this.tagRepository = tagRepository;
     }
+
     @Transactional
     @Override
     public HttpStatus handle(CreateAccountTagsCommand command) {
         Optional<Account> optionalAccount = accountRepository.findById(command.getUserId());
-        if (optionalAccount.isEmpty()){
+        if (optionalAccount.isEmpty()) {
             throw new NotFoundExceptionHandler("Invalid Account !");
         }
         Account account = optionalAccount.get();

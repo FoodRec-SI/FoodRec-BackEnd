@@ -31,16 +31,16 @@ public class DeleteAccountCommandHandler implements Command.Handler<DeleteAccoun
         ImageUtils imageUtils = new ImageUtils();
         DeleteAccountDTO deleteAccountDTO = command.getDeleteAccountDTO();
         Optional<Account> optionalAccount = accountRepository.findById(command.getUserId());
-        if (optionalAccount.isEmpty()){
+        if (optionalAccount.isEmpty()) {
             throw new NotFoundExceptionHandler("Invalid Account !");
         }
         Account account = optionalAccount.get();
 
-        if (deleteAccountDTO.isDescriptionDeletion()){
+        if (deleteAccountDTO.isDescriptionDeletion()) {
             account.setDescription(null);
         }
 
-        if (deleteAccountDTO.isProfileImageDeletion()){
+        if (deleteAccountDTO.isProfileImageDeletion()) {
             try {
                 imageUtils.delete("profile-".concat(command.getUserId()));
             } catch (IOException e) {
@@ -50,7 +50,7 @@ public class DeleteAccountCommandHandler implements Command.Handler<DeleteAccoun
             account.setProfileImageName(defaultProfileImage);
         }
 
-        if (deleteAccountDTO.isBackgroundImageDeletion()){
+        if (deleteAccountDTO.isBackgroundImageDeletion()) {
             try {
                 imageUtils.delete("background-".concat(command.getUserId()));
             } catch (IOException e) {

@@ -37,6 +37,7 @@ public class RedisCacheConfig {
         objectMapper.registerModule(simpleModule);
         return objectMapper;
     }
+
     @Bean
     public RedisCacheManager cacheManager(RedisConnectionFactory redisConnectionFactory, ObjectMapper objectMapper) {
         RedisCacheConfiguration config = RedisCacheConfiguration.defaultCacheConfig()

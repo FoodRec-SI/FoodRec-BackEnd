@@ -22,7 +22,7 @@ public class CreateAccountCommandHandler implements Command.Handler<CreateAccoun
     public ResponseEntity handle(CreateAccountCommand command) {
         CreateAccountDTO createAccountDTO = command.getCreateAccountDTO();
         Optional<Account> optionalAccount = accountRepository.findById(createAccountDTO.getUserId());
-        if (optionalAccount.isPresent()){
+        if (optionalAccount.isPresent()) {
             return ResponseEntity.status(200).body("Existed");
         }
         Account account = new Account();

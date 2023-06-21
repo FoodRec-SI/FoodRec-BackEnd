@@ -1,4 +1,5 @@
 package com.foodrec.backend.AccountAPI.dto;
+
 import com.foodrec.backend.Utils.GetCurrentUserData;
 import lombok.AllArgsConstructor;
 import lombok.Data;

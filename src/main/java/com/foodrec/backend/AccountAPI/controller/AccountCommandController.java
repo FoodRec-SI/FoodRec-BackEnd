@@ -42,9 +42,9 @@ public class AccountCommandController {
     }
 
     @Operation(description = "Add user information to the database. This api will run in the background"
-            ,security = {@SecurityRequirement(name = BEARER_KEY_SECURITY_SCHEME)})
-    @RequestMapping (value = "/api/private/account/create", method = RequestMethod.GET)
-    public ResponseEntity createAccount(){
+            , security = {@SecurityRequirement(name = BEARER_KEY_SECURITY_SCHEME)})
+    @RequestMapping(value = "/api/private/account/create", method = RequestMethod.GET)
+    public ResponseEntity createAccount() {
         CreateAccountDTO createAccountDTO = new CreateAccountDTO();
         CreateAccountCommand createAccountCommand = new CreateAccountCommand(createAccountDTO);
         ResponseEntity responseEntity = pipeline.send(createAccountCommand);
@@ -52,34 +52,34 @@ public class AccountCommandController {
     }
 
     @Operation(description = "Add user tags"
-            ,security = {@SecurityRequirement(name = BEARER_KEY_SECURITY_SCHEME)})
-    @RequestMapping (value = "/api/member/account/create/tags", method = RequestMethod.POST)
-    public ResponseEntity updateAccountTags(@RequestParam Collection<String> tagIds){
+            , security = {@SecurityRequirement(name = BEARER_KEY_SECURITY_SCHEME)})
+    @RequestMapping(value = "/api/member/account/create/tags", method = RequestMethod.POST)
+    public ResponseEntity updateAccountTags(@RequestParam Collection<String> tagIds) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String userId = GetCurrentUserData.getCurrentUserId(authentication);
-        CreateAccountTagsCommand createAccountTagsCommand = new CreateAccountTagsCommand(tagIds,userId);
+        CreateAccountTagsCommand createAccountTagsCommand = new CreateAccountTagsCommand(tagIds, userId);
         HttpStatus status = pipeline.send(createAccountTagsCommand);
         return new ResponseEntity<>(status);
     }
 
     @Operation(description = "Update account information"
-            ,security = {@SecurityRequirement(name = BEARER_KEY_SECURITY_SCHEME)})
-    @RequestMapping (value = "/api/member/account/update", method = RequestMethod.PUT, consumes = "multipart/form-data")
-    public ResponseEntity updateAccount(@ModelAttribute UpdateAccountDTO updateAccountDTO){
+            , security = {@SecurityRequirement(name = BEARER_KEY_SECURITY_SCHEME)})
+    @RequestMapping(value = "/api/member/account/update", method = RequestMethod.PUT, consumes = "multipart/form-data")
+    public ResponseEntity updateAccount(@ModelAttribute UpdateAccountDTO updateAccountDTO) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String userId = GetCurrentUserData.getCurrentUserId(authentication);
-        UpdateAccountCommand command = new UpdateAccountCommand(updateAccountDTO,userId);
+        UpdateAccountCommand command = new UpdateAccountCommand(updateAccountDTO, userId);
         AccountDTO accountDTO = pipeline.send(command);
         return new ResponseEntity<>(accountDTO, HttpStatus.OK);
     }
 
     @Operation(description = "Delete account information"
-            ,security = {@SecurityRequirement(name = BEARER_KEY_SECURITY_SCHEME)})
-    @RequestMapping (value = "/api/member/account/delete", method = RequestMethod.POST, consumes = "multipart/form-data")
-    public ResponseEntity deleteAccount(@RequestBody DeleteAccountDTO deleteAccountDTO){
+            , security = {@SecurityRequirement(name = BEARER_KEY_SECURITY_SCHEME)})
+    @RequestMapping(value = "/api/member/account/delete", method = RequestMethod.POST, consumes = "multipart/form-data")
+    public ResponseEntity deleteAccount(@RequestBody DeleteAccountDTO deleteAccountDTO) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String userId = GetCurrentUserData.getCurrentUserId(authentication);
-        DeleteAccountCommand command = new DeleteAccountCommand(deleteAccountDTO,userId);
+        DeleteAccountCommand command = new DeleteAccountCommand(deleteAccountDTO, userId);
         HttpStatus status = pipeline.send(command);
         return new ResponseEntity<>(status);
     }
