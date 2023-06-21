@@ -1,5 +1,9 @@
 package com.foodrec.backend.RecipeAPI.dto;
 
+import com.foodrec.backend.TagAPI.entity.Tag;
+
+import java.util.List;
+
 public class RecipeDTO {
     private String recipeId;
     private String recipeName;
@@ -8,6 +12,8 @@ public class RecipeDTO {
     private int duration;
     private String image;
 
+    private String instructions;
+    private List<Tag> tags;
     public RecipeDTO() {
     }
 
@@ -59,5 +65,19 @@ public class RecipeDTO {
         this.image = image;
     }
 
+    public String getInstructions() {
+        return instructions;
+    }
 
+    public void setInstructions(String instructions) {
+        this.instructions = instructions;
+    }
+
+    public List<Tag> getTags() {
+        return tags;
+    }
+
+    public void setTags(List<Tag> tags) {
+        this.tags = tags;
+    }
 }

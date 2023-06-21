@@ -9,7 +9,7 @@ public class DeleteRecipeDTO {
     private String description;
     private int calories;
     private int duration;
-    private byte[] image;
+    private String image;
 
     public String getRecipeId() {
         return recipeId;
@@ -51,11 +51,11 @@ public class DeleteRecipeDTO {
         this.duration = duration;
     }
 
-    public byte[] getImage() {
+    public String getImage() {
         return image;
     }
 
-    public void setImage(byte[] image) {
+    public void setImage(String image) {
         this.image = image;
     }
 }

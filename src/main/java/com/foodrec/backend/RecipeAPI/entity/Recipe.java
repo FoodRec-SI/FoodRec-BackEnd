@@ -26,6 +26,9 @@ public class Recipe {
     private String image;
     @Column(name = "status")
     private boolean status;
+    @Column(name = "instructions")
+    private String instructions;
+
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
@@ -33,13 +36,12 @@ public class Recipe {
             joinColumns = @JoinColumn(name = "recipeid"),
             inverseJoinColumns = @JoinColumn(name = "tagid")
     )
-    private Set<Tag> tag = new HashSet<>();
+    private Set<Tag> tags = new HashSet<>();
 
     public Recipe() {
     }
 
-    public Recipe(String recipeId, String recipeName, String description, int calories, String userId,
-                  int duration, String image, boolean status, Set<Tag> tag) {
+    public Recipe(String recipeId, String recipeName, String description, int calories, String userId, int duration, String image, boolean status, String instructions) {
         this.recipeId = recipeId;
         this.recipeName = recipeName;
         this.description = description;
@@ -48,7 +50,7 @@ public class Recipe {
         this.duration = duration;
         this.image = image;
         this.status = status;
-        this.tag = tag;
+        this.instructions = instructions;
     }
 
     public String getRecipeId() {
@@ -115,11 +117,14 @@ public class Recipe {
         this.status = status;
     }
 
-    public Set<Tag> getTag() {
-        return tag;
+    public Set<Tag> getTags() {
+        return tags;
     }
 
-    public void setTag(Set<Tag> tag) {
-        this.tag = tag;
-    }
+    public void setTags(Set<Tag> tags) {this.tags = tags;}
+
+    public String getInstructions() { return instructions;}
+
+    public void setInstructions(String instructions) {this.instructions = instructions;};
+
 }

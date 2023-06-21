@@ -50,8 +50,9 @@ public class RecipeCommandController {
     @Operation(
             description = "Create a Recipe of 1 User",
             security = {@SecurityRequirement(name = BEARER_KEY_SECURITY_SCHEME)})
-    @RequestMapping(value = "/api/member/recipe", method = RequestMethod.POST)//cách để gọi hàm controller này.
-    public ResponseEntity createRecipe(@RequestBody CreateRecipeDTO newRec) {
+    @RequestMapping(value = "/api/member/recipe", method = RequestMethod.POST
+            ,consumes = "multipart/form-data")
+    public ResponseEntity createRecipe(@ModelAttribute CreateRecipeDTO newRec) {
         ResponseEntity result = null;
         Authentication authentication = null;
         try {

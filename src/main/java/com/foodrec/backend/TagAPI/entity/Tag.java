@@ -30,7 +30,7 @@ public class Tag {
                     CascadeType.PERSIST,
                     CascadeType.MERGE
             },
-            mappedBy = "tag")
+            mappedBy = "tags")
     @JsonIgnore
     private Set<Recipe> recipes = new HashSet<>();
 

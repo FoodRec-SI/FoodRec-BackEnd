@@ -30,7 +30,7 @@ public class AddLikeCommandHandler implements Command.Handler<AddLikeCommand, Li
     @Override
     public LikeDTO handle(AddLikeCommand command) {
         Set<Account> accountSet = null;
-            Account account = accountRepository.findById(command.getUserId()).get();
+        Account account = accountRepository.findById(command.getUserId()).get();
         Post post = postRepository.findById(command.getPostId()).get();
 
         accountSet = post.getAccounts();

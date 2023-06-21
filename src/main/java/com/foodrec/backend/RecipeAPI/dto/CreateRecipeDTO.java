@@ -1,5 +1,10 @@
 package com.foodrec.backend.RecipeAPI.dto;
 
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.Serializable;
+import java.util.List;
+
 /*Note: DTO cơ bản là 1 Model, chỉ khác ở chỗ như sau:
   - Điểm 1: Recipe chứa ĐẦY ĐỦ các thuộc tính + hàm, trong khi đó DTO chỉ chứa 1 SỐ CÁI thuộc tính.
    + Nguyên nhân: Do khi trả về client, mình KHÔNG NHẤT THIẾT PHẢI TRẢ VỀ TẤT CẢ THÔNG TIN.
@@ -9,7 +14,7 @@ package com.foodrec.backend.RecipeAPI.dto;
 * */
 //Nguyên nhân phải implement: giúp cho Utils.checkFieldEmpty nhận được nhiều LOẠI DTO khác nhau.
 //Bản chất: Coi RecipeDTO là 1 bản hợp đồng. Bất kì ai tuân theo thì sẽ đợc qua cửa Utils.checkFieldEmpty.
-public class CreateRecipeDTO {
+public class CreateRecipeDTO implements Serializable {
     public CreateRecipeDTO() { //DTO cho việc tạo 1 công thức mới (KO BẮT ng dùng nhập Id công thức)
     }
 
@@ -20,9 +25,13 @@ public class CreateRecipeDTO {
     private int calories;
 
     private int duration;
+    private String instructions;
 
-    private String image;
+    private MultipartFile image; /*receives the image as a FILE FROM THE FRONT-END.
+                                Then that image is converted into the URL String (Firebase)
+                                at the CreateRecipeCommandHandler layer.*/
 
+    private List<String> tagIdList;
     public String getRecipeName() {
         return recipeName;
     }
@@ -55,11 +64,27 @@ public class CreateRecipeDTO {
         this.duration = duration;
     }
 
-    public String getImage() {
+    public MultipartFile getImage() {
         return image;
     }
 
-    public void setImage(String image) {
+    public void setImage(MultipartFile image) {
         this.image = image;
+    }
+
+    public String getInstructions() {
+        return instructions;
+    }
+
+    public void setInstructions(String instructions) {
+        this.instructions = instructions;
+    }
+
+    public List<String> getTagIdList() {
+        return tagIdList;
+    }
+
+    public void setTagIdList(List<String> tagIdList) {
+        this.tagIdList = tagIdList;
     }
 }
