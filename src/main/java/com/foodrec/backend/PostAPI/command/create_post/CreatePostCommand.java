@@ -5,7 +5,6 @@ import com.foodrec.backend.PostAPI.dto.CreatePostDTO;
 import com.foodrec.backend.PostAPI.dto.PostDTO;
 
 public class CreatePostCommand implements Command<PostDTO> {
-
     private final CreatePostDTO createPostDTO;
     private String userId;
 

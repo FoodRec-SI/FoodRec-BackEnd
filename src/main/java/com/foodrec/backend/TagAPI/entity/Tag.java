@@ -17,7 +17,6 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Tag {
-
     @Id
     @Column(name = "tagid")
     private String tagId;
@@ -33,5 +32,4 @@ public class Tag {
             mappedBy = "tag")
     @JsonIgnore
     private Set<Recipe> recipes = new HashSet<>();
-
 }

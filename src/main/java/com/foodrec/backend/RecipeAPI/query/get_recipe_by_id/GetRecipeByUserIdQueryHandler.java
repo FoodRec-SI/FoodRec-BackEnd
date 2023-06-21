@@ -10,7 +10,6 @@ import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -45,9 +44,9 @@ public class GetRecipeByUserIdQueryHandler implements Command.Handler<GetRecipeB
         Pageable pageable = PageRequest.of(pageNumber, pageSize,
                 Sort.by("recipeId").descending());
         Page<Recipe> recipePage = recipeRepository.findRecipesByUserIdAndStatus(
-                command.getUserid(),true,pageable);
+                command.getUserid(), true, pageable);
         List<RecipeDTO> recipeDTOs = recipePage.getContent().stream()
-                .filter(recipe -> recipe.isStatus() == true)
+                .filter(recipe -> recipe.isStatus())
                 .map((recipe) -> modelMapper.map(recipe, RecipeDTO.class))
                 .collect(Collectors.toList());
         return new PageImpl<>(recipeDTOs, pageable, recipePage.getTotalElements());
