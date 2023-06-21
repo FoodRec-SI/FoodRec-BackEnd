@@ -1,7 +1,6 @@
 package com.foodrec.backend.AccountAPI.command.create_account.create_account_default_information;
 
 import an.awesome.pipelinr.Command;
-import com.foodrec.backend.AccountAPI.command.create_account.create_account_default_information.CreateAccountCommand;
 import com.foodrec.backend.AccountAPI.dto.CreateAccountDTO;
 import com.foodrec.backend.AccountAPI.entity.Account;
 import com.foodrec.backend.AccountAPI.repository.AccountRepository;

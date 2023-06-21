@@ -1,23 +1,35 @@
 package com.foodrec.backend.AccountAPI.controller;
 
 import an.awesome.pipelinr.Pipeline;
+
 import com.foodrec.backend.AccountAPI.command.create_account.create_account_default_information.CreateAccountCommand;
-import com.foodrec.backend.AccountAPI.command.delete_account.DeleteAccountCommand;
+import com.foodrec.backend.AccountAPI.command.delete_account.delete_account_information.DeleteAccountCommand;
 import com.foodrec.backend.AccountAPI.command.update_account.UpdateAccountCommand;
 import com.foodrec.backend.AccountAPI.command.create_account.create_account_tags.CreateAccountTagsCommand;
 import com.foodrec.backend.AccountAPI.dto.*;
 import com.foodrec.backend.Utils.GetCurrentUserData;
+import com.foodrec.backend.AccountAPI.dto.AccountDTO;
+import com.foodrec.backend.AccountAPI.dto.CreateAccountDTO;
+import com.foodrec.backend.AccountAPI.dto.UpdateAccountDTO;
+import com.foodrec.backend.Exception.NotFoundExceptionHandler;
+
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
+
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
 
 import static com.foodrec.backend.Config.SwaggerConfig.BEARER_KEY_SECURITY_SCHEME;
 
@@ -73,4 +85,5 @@ public class AccountCommandController {
         HttpStatus status = pipeline.send(command);
         return new ResponseEntity<>(status);
     }
+
 }
