@@ -9,5 +9,4 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class CreateCollectionDTO {
     private String collectionName;
-    private String description;
 }

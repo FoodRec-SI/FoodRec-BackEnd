@@ -1,13 +1,9 @@
 package com.foodrec.backend.PostAPI.repository;
 
 import com.foodrec.backend.PostAPI.entity.Post;
-import com.foodrec.backend.TagAPI.entity.Tag;
-import io.lettuce.core.dynamic.annotation.Param;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Modifying;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -32,4 +28,6 @@ public interface PostRepository extends JpaRepository<Post, String> {
     Page<Post> getPostsByCollectionsCollectionIdAndStatus(String collectionId, int status, Pageable pageable);
 
     Page<Post> findPostByAccountsUserIdAndStatus(String userId, int status, Pageable pageable);
+
+    int countPostByCollectionsCollectionId(String collectionId);
 }
