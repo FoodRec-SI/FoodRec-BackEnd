@@ -18,7 +18,7 @@ public class Tag {
     private String tagId;
     @Column(name = "tagname")
     private String tagName;
-    @ManyToMany(mappedBy = "tagAndAccountList")
+    @ManyToMany(mappedBy = "accountTags")
     private List<Account> accounts = new ArrayList<>();
 
     @ManyToMany(fetch = FetchType.LAZY,
