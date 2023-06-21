@@ -3,11 +3,9 @@ package com.foodrec.backend.AccountAPI.controller;
 import an.awesome.pipelinr.Pipeline;
 import com.foodrec.backend.AccountAPI.command.create_account.CreateAccountCommand;
 import com.foodrec.backend.AccountAPI.command.delete_account.DeleteAccountCommand;
-import com.foodrec.backend.AccountAPI.command.update_account.UpdateAccountCommand;
-import com.foodrec.backend.AccountAPI.dto.AccountDTO;
-import com.foodrec.backend.AccountAPI.dto.CreateAccountDTO;
-import com.foodrec.backend.AccountAPI.dto.DeleteAccountDTO;
-import com.foodrec.backend.AccountAPI.dto.UpdateAccountDTO;
+import com.foodrec.backend.AccountAPI.command.update_account.update_account_basic_data.UpdateAccountCommand;
+import com.foodrec.backend.AccountAPI.command.update_account.update_account_tags.UpdateAccountTagsCommand;
+import com.foodrec.backend.AccountAPI.dto.*;
 import com.foodrec.backend.Utils.GetCurrentUserData;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
@@ -18,6 +16,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Collection;
 
 import static com.foodrec.backend.Config.SwaggerConfig.BEARER_KEY_SECURITY_SCHEME;
 
@@ -41,10 +41,22 @@ public class AccountCommandController {
         return new ResponseEntity<>(status);
     }
 
+    @Operation(description = "Add user information to the database. This api will run in the background"
+            ,security = {@SecurityRequirement(name = BEARER_KEY_SECURITY_SCHEME)})
+    @RequestMapping (value = "/api/private/account/update/tags", method = RequestMethod.PUT)
+    public ResponseEntity updateAccountTags(@RequestParam Collection<String> tagIds){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String userId = GetCurrentUserData.getCurrentUserId(authentication);
+        UpdateAccountTagsCommand updateAccountTagsCommand = new UpdateAccountTagsCommand(tagIds,userId);
+        HttpStatus status = pipeline.send(updateAccountTagsCommand);
+        return new ResponseEntity<>(status);
+    }
+
+
     @Operation(description = "Update account information"
             ,security = {@SecurityRequirement(name = BEARER_KEY_SECURITY_SCHEME)})
     @RequestMapping (value = "/api/member/account/update", method = RequestMethod.PUT, consumes = "multipart/form-data")
-    public ResponseEntity updateAccount(@RequestBody UpdateAccountDTO updateAccountDTO){
+    public ResponseEntity updateAccount(@ModelAttribute UpdateAccountDTO updateAccountDTO){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String userId = GetCurrentUserData.getCurrentUserId(authentication);
         UpdateAccountCommand command = new UpdateAccountCommand(updateAccountDTO,userId);
