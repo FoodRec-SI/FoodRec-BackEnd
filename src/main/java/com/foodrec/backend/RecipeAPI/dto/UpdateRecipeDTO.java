@@ -1,12 +1,21 @@
 package com.foodrec.backend.RecipeAPI.dto;
 
-public class UpdateRecipeDTO {
+import com.foodrec.backend.TagAPI.dto.TagDTO;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.Serializable;
+import java.util.List;
+
+
+public class UpdateRecipeDTO implements Serializable {
     private String recipeId;
     private String recipeName;
     private String description;
     private int calories;
     private int duration;
-    private String image;
+    private MultipartFile image;
+    private String instructions;
+    private List<String> tagIdList;
 
     public UpdateRecipeDTO() {
     }
@@ -51,13 +60,27 @@ public class UpdateRecipeDTO {
         this.duration = duration;
     }
 
-    public String getImage() {
+    public MultipartFile getImage() {
         return image;
     }
 
-    public void setImage(String image) {
+    public void setImage(MultipartFile image) {
         this.image = image;
     }
 
+    public String getInstructions() {
+        return instructions;
+    }
 
+    public void setInstructions(String instructions) {
+        this.instructions = instructions;
+    }
+
+    public List<String> getTagIdList() {
+        return tagIdList;
+    }
+
+    public void setTagIdList(List<String> tagIdList) {
+        this.tagIdList = tagIdList;
+    }
 }

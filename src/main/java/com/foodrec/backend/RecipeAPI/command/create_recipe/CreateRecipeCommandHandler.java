@@ -6,6 +6,7 @@ import com.foodrec.backend.RecipeAPI.dto.RecipeDTO;
 import com.foodrec.backend.RecipeAPI.entity.Recipe;
 
 import com.foodrec.backend.RecipeAPI.repository.RecipeRepository;
+import com.foodrec.backend.TagAPI.dto.TagDTO;
 import com.foodrec.backend.TagAPI.entity.Tag;
 import com.foodrec.backend.TagAPI.repository.TagRepository;
 import com.foodrec.backend.Utils.IdGenerator;
@@ -111,10 +112,10 @@ public class CreateRecipeCommandHandler implements Command.Handler<CreateRecipeC
         //To get the Recipe Data, you can CHOOSE 1 OUT OF 2 entities (Recipe/Tag).
         recipe = recipeRepository.
                 findById(recEntity.getRecipeId()).get();
-        //Maps the full recipe details
+        //Maps the full recipe details to the DTO, for information retrieval.
+        //The tagList of a recipe (e.g món mặn...) is also returned, as it is already within
+        //in the recipe creation stage (recipe.setTags (tag))
         result = modelMapper.map(recipe,RecipeDTO.class);
-        //Gets the tags list of that recipe
-        result.setTags(tagRepository.findTagsByRecipesRecipeId(recipeId));
         return result;
     }
 }

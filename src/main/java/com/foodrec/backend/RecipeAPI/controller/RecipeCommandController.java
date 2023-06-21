@@ -51,7 +51,7 @@ public class RecipeCommandController {
             description = "Create a Recipe of 1 User",
             security = {@SecurityRequirement(name = BEARER_KEY_SECURITY_SCHEME)})
     @RequestMapping(value = "/api/member/recipe", method = RequestMethod.POST
-            ,consumes = "multipart/form-data")
+            , consumes = "multipart/form-data")
     public ResponseEntity createRecipe(@ModelAttribute CreateRecipeDTO newRec) {
         ResponseEntity result = null;
         Authentication authentication = null;
@@ -78,22 +78,23 @@ public class RecipeCommandController {
     @Operation(
             description = "Updates the Recipe Details of 1 USER",
             security = {@SecurityRequirement(name = BEARER_KEY_SECURITY_SCHEME)})
-    @RequestMapping(value = "/api/member/recipe", method = RequestMethod.PUT)
-    public ResponseEntity updateRecipeById(@RequestBody UpdateRecipeDTO rec) {
+    @RequestMapping(value = "/api/member/recipe", method = RequestMethod.PUT
+            , consumes = "multipart/form-data")
+    public ResponseEntity updateRecipeById(@ModelAttribute UpdateRecipeDTO rec) {
         ResponseEntity result = null;
         Authentication authentication = null;
         try {
             authentication = SecurityContextHolder.getContext().getAuthentication();
             String userId = GetCurrentUserData.getCurrentUserId(authentication);
-            UpdateRecipeCommand updateRecipeCommand = new UpdateRecipeCommand(rec,userId);
+            UpdateRecipeCommand updateRecipeCommand = new UpdateRecipeCommand(rec, userId);
             RecipeDTO updatedRecipe = pipeline.send(updateRecipeCommand);
             if (updatedRecipe == null) {
                 result = new ResponseEntity<String>("Something went wrong with the server and" +
                         " we couldn't add a recipe for you. Please try again.",
                         HttpStatus.BAD_REQUEST);
             } else {
-                result = new ResponseEntity<String>("Successfully updated recipe with id " +
-                        rec.getRecipeId(), HttpStatus.OK);
+                result = new ResponseEntity<>( updatedRecipe
+                        , HttpStatus.OK);
             }
         } catch (InvalidDataExceptionHandler e) {
             result = new ResponseEntity<String>(e.getMessage(), HttpStatus.BAD_REQUEST);
@@ -114,7 +115,7 @@ public class RecipeCommandController {
         try {
             authentication = SecurityContextHolder.getContext().getAuthentication();
             String userId = GetCurrentUserData.getCurrentUserId(authentication);
-            DeleteRecipeCommand command = new DeleteRecipeCommand(recipeId,userId);
+            DeleteRecipeCommand command = new DeleteRecipeCommand(recipeId, userId);
             boolean isDeleted = pipeline.send(command);
             if (!isDeleted)
                 result = new ResponseEntity<String>("Recipe with id " +
