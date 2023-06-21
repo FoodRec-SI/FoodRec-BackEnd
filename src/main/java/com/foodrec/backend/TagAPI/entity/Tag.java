@@ -8,16 +8,14 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
+@Entity
+@Table(name = "tag")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity
-@Table(name = "tag")
 public class Tag {
     @Id
     @Column(name = "tagid")
@@ -25,8 +23,7 @@ public class Tag {
     @Column(name = "tagname")
     private String tagName;
     @ManyToMany(mappedBy = "accountTags")
-    private List<Account> accounts = new ArrayList<>();
-
+    private Set<Account> accounts = new HashSet<>();
     @ManyToMany(fetch = FetchType.LAZY,
             cascade = {
                     CascadeType.PERSIST,
