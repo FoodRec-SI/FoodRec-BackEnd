@@ -14,7 +14,9 @@ public class GetRecipeByUserIdQuery implements Command<Page<RecipeDTO>> {
         this.pageNumber = pageNumber;
         this.pageSize = pageSize;
     }
-    public GetRecipeByUserIdQuery(){}
+
+    public GetRecipeByUserIdQuery() {
+    }
 
     public String getUserid() {
         return userid;
@@ -27,7 +29,6 @@ public class GetRecipeByUserIdQuery implements Command<Page<RecipeDTO>> {
     public String getPageSize() {
         return pageSize;
     }
-
 
 
 }

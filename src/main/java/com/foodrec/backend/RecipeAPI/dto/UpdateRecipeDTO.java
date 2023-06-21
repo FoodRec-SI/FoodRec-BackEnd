@@ -1,12 +1,17 @@
 package com.foodrec.backend.RecipeAPI.dto;
 
 import com.foodrec.backend.TagAPI.dto.TagDTO;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.Serializable;
 import java.util.List;
 
-
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class UpdateRecipeDTO implements Serializable {
     private String recipeId;
     private String recipeName;
@@ -15,72 +20,6 @@ public class UpdateRecipeDTO implements Serializable {
     private int duration;
     private MultipartFile image;
     private String instructions;
-    private List<String> tagIdList;
+    private List<String> tagsIdList;
 
-    public UpdateRecipeDTO() {
-    }
-
-    public String getRecipeId() {
-        return recipeId;
-    }
-
-    public void setRecipeId(String recipeId) {
-        this.recipeId = recipeId;
-    }
-
-    public String getRecipeName() {
-        return recipeName;
-    }
-
-    public void setRecipeName(String recipeName) {
-        this.recipeName = recipeName;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public int getCalories() {
-        return calories;
-    }
-
-    public void setCalories(int calories) {
-        this.calories = calories;
-    }
-
-    public int getDuration() {
-        return duration;
-    }
-
-    public void setDuration(int duration) {
-        this.duration = duration;
-    }
-
-    public MultipartFile getImage() {
-        return image;
-    }
-
-    public void setImage(MultipartFile image) {
-        this.image = image;
-    }
-
-    public String getInstructions() {
-        return instructions;
-    }
-
-    public void setInstructions(String instructions) {
-        this.instructions = instructions;
-    }
-
-    public List<String> getTagIdList() {
-        return tagIdList;
-    }
-
-    public void setTagIdList(List<String> tagIdList) {
-        this.tagIdList = tagIdList;
-    }
 }

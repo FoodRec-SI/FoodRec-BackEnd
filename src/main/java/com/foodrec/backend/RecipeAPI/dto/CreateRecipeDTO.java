@@ -1,5 +1,8 @@
 package com.foodrec.backend.RecipeAPI.dto;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.Serializable;
@@ -14,9 +17,11 @@ import java.util.List;
 * */
 //Nguyên nhân phải implement: giúp cho Utils.checkFieldEmpty nhận được nhiều LOẠI DTO khác nhau.
 //Bản chất: Coi RecipeDTO là 1 bản hợp đồng. Bất kì ai tuân theo thì sẽ đợc qua cửa Utils.checkFieldEmpty.
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class CreateRecipeDTO implements Serializable {
-    public CreateRecipeDTO() { //DTO cho việc tạo 1 công thức mới (KO BẮT ng dùng nhập Id công thức)
-    }
 
     private String recipeName;
 
@@ -30,61 +35,5 @@ public class CreateRecipeDTO implements Serializable {
     private MultipartFile image; /*receives the image as a FILE FROM THE FRONT-END.
                                 Then that image is converted into the URL String (Firebase)
                                 at the CreateRecipeCommandHandler layer.*/
-
-    private List<String> tagIdList;
-    public String getRecipeName() {
-        return recipeName;
-    }
-
-    public void setRecipeName(String recipeName) {
-        this.recipeName = recipeName;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public int getCalories() {
-        return calories;
-    }
-
-    public void setCalories(int calories) {
-        this.calories = calories;
-    }
-
-    public int getDuration() {
-        return duration;
-    }
-
-    public void setDuration(int duration) {
-        this.duration = duration;
-    }
-
-    public MultipartFile getImage() {
-        return image;
-    }
-
-    public void setImage(MultipartFile image) {
-        this.image = image;
-    }
-
-    public String getInstructions() {
-        return instructions;
-    }
-
-    public void setInstructions(String instructions) {
-        this.instructions = instructions;
-    }
-
-    public List<String> getTagIdList() {
-        return tagIdList;
-    }
-
-    public void setTagIdList(List<String> tagIdList) {
-        this.tagIdList = tagIdList;
-    }
+    private List<String> tagsIdList;
 }

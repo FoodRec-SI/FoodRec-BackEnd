@@ -2,6 +2,7 @@ package com.foodrec.backend.RecipeAPI.command.create_recipe;
 
 import an.awesome.pipelinr.Command;
 import com.foodrec.backend.RecipeAPI.dto.CreateRecipeDTO;
+import com.foodrec.backend.Exception.InvalidDataExceptionHandler;
 import com.foodrec.backend.RecipeAPI.dto.RecipeDTO;
 import com.foodrec.backend.RecipeAPI.entity.Recipe;
 
@@ -19,6 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Component
 public class CreateRecipeCommandHandler implements Command.Handler<CreateRecipeCommand, RecipeDTO> {
@@ -70,52 +72,46 @@ public class CreateRecipeCommandHandler implements Command.Handler<CreateRecipeC
 
         String recipeId = IdGenerator.generateNextId(Recipe.class, "recipeId");
         String imageUrl = (String) imageUtils.upload(createRecipeDTO.getImage(), "recipe", recipeId);
-        List<String> tagIdList = createRecipeDTO.getTagIdList();
+        List<String> tagsIdList = createRecipeDTO.getTagsIdList();
 
         /*Step 1: Adds the new Recipe Entity to the Recipe table*/
-        Recipe recEntity = new Recipe(
-                recipeId,
-                createRecipeDTO.getRecipeName(),
-                createRecipeDTO.getDescription(),
-                createRecipeDTO.getCalories(),
-                createRecipeCommand.getUserid(),
-                createRecipeDTO.getDuration(),
-                imageUrl,
-                true,
-                createRecipeDTO.getInstructions()
-                );
-
-        recipeRepository.save(recEntity);
-
+        Recipe recEntity = new Recipe();
+        recEntity = modelMapper.map(createRecipeDTO, Recipe.class);
+        recEntity.setImage(imageUrl);
+        recEntity.setRecipeId(recipeId);
+        recEntity.setUserId(createRecipeCommand.getUserid());
+        recEntity.setStatus(true);
 
         /*Step 2: Adds the RecipeId (from Step 1) and multiple TagIds (from createRecipeDTO)
-        * to the Join Table (Recipe_Tag).*/
+         * to the Join Table (Recipe_Tag).*/
 
-        //Gets the newly added recipe
-        Recipe recipe = recipeRepository.
-                findById(recEntity.getRecipeId()).get();
-        Set<Tag> tags = recipe.getTags(); //Gets the tag list of that Recipe.
+        Set<Tag> tempTags = recEntity.getTags();
+        tempTags.clear();//Gets the tag list of that Recipe.
 
         /*Adds a List of Tags requested from the Front-end
          into "tags" of the newly added recipe.
         E.g. Bún Bò has a series of Tags (e.g. bữa sáng, món ăn Việt Nam)...*/
-        for (String eachTagId:tagIdList){
+        for (String eachTagId : tagsIdList) {
             //Gets the FULL Tag Entity (including TagID (TAG000000),
             // TagName (bữa sáng() based on TagId (TAG000000)
             Tag tag = tagRepository.findById(eachTagId).get();
-            tags.add(tag); //Adds the requested tag (from createRecipeDTO) to the Tags
+            tempTags.add(tag); //Adds the requested tag (from createRecipeDTO) to the Tags
         }
-        recipe.setTags(tags);
-        recipeRepository.save(recipe);
+        recEntity.setTags(tempTags);
+        recipeRepository.save(recEntity);
 
         //Step 3: Returns the full Recipe details, and the tags List.
         //To get the Recipe Data, you can CHOOSE 1 OUT OF 2 entities (Recipe/Tag).
-        recipe = recipeRepository.
+        recEntity = recipeRepository.
                 findById(recEntity.getRecipeId()).get();
-        //Maps the full recipe details to the DTO, for information retrieval.
-        //The tagList of a recipe (e.g món mặn...) is also returned, as it is already within
-        //in the recipe creation stage (recipe.setTags (tag))
-        result = modelMapper.map(recipe,RecipeDTO.class);
+
+
+        //Gets the full details of the Added recipe, and its tags in the Dto form.
+        result = modelMapper.map(recEntity, RecipeDTO.class);
+        result.setTags(tagRepository.
+                findTagsByRecipesRecipeId(recEntity.getRecipeId())
+                .stream().map(tag -> modelMapper.map(tag,TagDTO.class))
+                .collect(Collectors.toList()));
         return result;
     }
 }

@@ -1,7 +1,6 @@
 package com.foodrec.backend.RecipeAPI.repository;
 
 import com.foodrec.backend.RecipeAPI.entity.Recipe;
-import com.foodrec.backend.TagAPI.entity.Tag;
 import jakarta.transaction.Transactional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

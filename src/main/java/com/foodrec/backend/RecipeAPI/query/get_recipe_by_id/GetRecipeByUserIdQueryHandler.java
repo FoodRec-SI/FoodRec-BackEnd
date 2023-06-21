@@ -13,7 +13,6 @@ import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -51,12 +50,24 @@ public class GetRecipeByUserIdQueryHandler implements Command.Handler<GetRecipeB
         Pageable pageable = PageRequest.of(pageNumber, pageSize,
                 Sort.by("recipeName").ascending());
 
-        List<RecipeDTO> recipes = recipeRepository.findRecipesByUserIdAndStatus(
+        List<RecipeDTO> recipeDTOs = recipeRepository.findRecipesByUserIdAndStatus(
                 command.getUserid(), true,pageable)
                 .stream()
                 .map((recipe) -> modelMapper.map(recipe, RecipeDTO.class))
                 .collect(Collectors.toList());
 
-        return new PageImpl<>(recipes, pageable, recipes.size());
+        //After applying the S**tty lOmBoK, the automapping feature (gets the tagList of Recipe)
+        //seems to malfunction. This line adds that TagList to each of the RecipeDTO.
+        for(RecipeDTO eachRecipeDTO:recipeDTOs){
+            List<TagDTO> eachTagList = tagRepository.
+                    findTagsByRecipesRecipeId(eachRecipeDTO.getRecipeId())
+                    .stream().map(tag -> modelMapper.map(tag,TagDTO.class))
+                    .collect(Collectors.toList());
+            eachRecipeDTO.setTags(eachTagList);
+
+        }
+
+        return new PageImpl<>(recipeDTOs, pageable, recipeDTOs.size());
+
     }
 }
