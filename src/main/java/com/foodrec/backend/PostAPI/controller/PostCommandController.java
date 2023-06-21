@@ -44,10 +44,12 @@ public class PostCommandController {
             CreatePostCommand command = new CreatePostCommand(createPostDTO, userId);
             PostDTO postDTO = pipeline.send(command);
             responseEntity = new ResponseEntity<>(postDTO, HttpStatus.OK);
-        } catch (InvalidDataExceptionHandler | DuplicateExceptionHandler | UnauthorizedExceptionHandler e) {
+        } catch (InvalidDataExceptionHandler | DuplicateExceptionHandler | UnauthorizedExceptionHandler |
+                 NotFoundExceptionHandler e) {
             HttpStatus status = e.getClass().getAnnotation(ResponseStatus.class).value();
             return ResponseEntity.status(status).body(e.getMessage());
         } catch (Exception e) {
+            System.out.println(e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Internal server error!");
         }
         return responseEntity;

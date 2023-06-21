@@ -63,7 +63,7 @@ public class Post {
 
     public Post(String postId, int status, String userId, String moderatorId,
                 String recipeId, String recipeName, String description, int calories,
-                int duration, String image, LocalDateTime time, LocalDateTime verifiedTime, Set<Collection> collections) {
+                int duration, String image, LocalDateTime time, LocalDateTime verifiedTime) {
         this.postId = postId;
         this.status = status;
         this.userId = userId;
@@ -76,7 +76,6 @@ public class Post {
         this.image = image;
         this.time = time;
         this.verifiedTime = verifiedTime;
-        this.collections = collections;
     }
 
     public String getPostId() {

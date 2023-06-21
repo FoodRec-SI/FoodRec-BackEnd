@@ -12,5 +12,7 @@ FROM openjdk:17-jdk-slim
 WORKDIR /app
 
 COPY --from=builder /app/build/libs/foodrec.jar foodrec.jar
+COPY firebase-config.json /app/firebase-config.json
+
 
 ENTRYPOINT ["java", "-jar", "foodrec.jar"]
