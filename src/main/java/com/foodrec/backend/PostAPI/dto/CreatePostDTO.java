@@ -1,20 +1,12 @@
 package com.foodrec.backend.PostAPI.dto;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class CreatePostDTO {
     private String recipeId;
-
-    public CreatePostDTO() {
-    }
-
-    public CreatePostDTO(String recipeId) {
-        this.recipeId = recipeId;
-    }
-
-    public String getRecipeId() {
-        return recipeId;
-    }
-
-    public void setRecipeId(String recipeId) {
-        this.recipeId = recipeId;
-    }
 }

@@ -1,13 +1,12 @@
 package com.foodrec.backend.RecipeAPI.command.create_recipe;
 
 import an.awesome.pipelinr.Command;
+import com.foodrec.backend.Exception.InvalidDataExceptionHandler;
 import com.foodrec.backend.RecipeAPI.dto.RecipeDTO;
 import com.foodrec.backend.RecipeAPI.entity.Recipe;
-
 import com.foodrec.backend.RecipeAPI.repository.RecipeRepository;
 import com.foodrec.backend.Utils.IdGenerator;
 import com.foodrec.backend.Utils.RecipeUtils;
-import com.foodrec.backend.Exception.InvalidDataExceptionHandler;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 
@@ -46,7 +45,7 @@ public class CreateRecipeCommandHandler implements Command.Handler<CreateRecipeC
                     " is invalid. Please try again.");
         }
         Recipe recEntity = modelMapper.map(createRecipeCommand.getCreateRecipeDTO(), Recipe.class);
-        recEntity.setRecipeId(IdGenerator.generateNextId(Recipe.class,"recipeId"));
+        recEntity.setRecipeId(IdGenerator.generateNextId(Recipe.class, "recipeId"));
         recEntity.setUserId(createRecipeCommand.getUserid());
         recEntity.setStatus(true);
         recipeRepository.save(recEntity);

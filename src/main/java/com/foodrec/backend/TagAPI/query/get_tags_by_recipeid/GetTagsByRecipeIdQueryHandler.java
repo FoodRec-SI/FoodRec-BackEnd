@@ -3,7 +3,6 @@ package com.foodrec.backend.TagAPI.query.get_tags_by_recipeid;
 import an.awesome.pipelinr.Command;
 import com.foodrec.backend.Exception.InvalidDataExceptionHandler;
 import com.foodrec.backend.Exception.NotFoundExceptionHandler;
-import com.foodrec.backend.RecipeAPI.repository.RecipeRepository;
 import com.foodrec.backend.TagAPI.dto.TagDTO;
 import com.foodrec.backend.TagAPI.entity.Tag;
 import com.foodrec.backend.TagAPI.repository.TagRepository;
@@ -14,12 +13,10 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class GetTagsByRecipeIdQueryHandler implements Command.Handler<GetTagsByRecipeIdQuery, List<TagDTO>> {
-    private final RecipeRepository recipeRepository;
     private final ModelMapper modelMapper;
     private final TagRepository tagRepository;
 
-    public GetTagsByRecipeIdQueryHandler(RecipeRepository recipeRepository, ModelMapper modelMapper, TagRepository tagRepository) {
-        this.recipeRepository = recipeRepository;
+    public GetTagsByRecipeIdQueryHandler(ModelMapper modelMapper, TagRepository tagRepository) {
         this.modelMapper = modelMapper;
         this.tagRepository = tagRepository;
     }
@@ -31,7 +28,7 @@ public class GetTagsByRecipeIdQueryHandler implements Command.Handler<GetTagsByR
             throw new InvalidDataExceptionHandler("Invalid data!");
         }
         List<Tag> tagList = tagRepository.findTagsByRecipesRecipeId(query.getRecipeId());
-        if (tagList.isEmpty()){
+        if (tagList.isEmpty()) {
             throw new NotFoundExceptionHandler("Not found tag!");
         }
         return tagList.stream().map(tag -> modelMapper.map(tag, TagDTO.class)).collect(Collectors.toList());

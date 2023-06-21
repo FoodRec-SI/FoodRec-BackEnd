@@ -2,13 +2,14 @@ package com.foodrec.backend.RecipeAPI.controller;
 
 
 import an.awesome.pipelinr.Pipeline;
+import com.foodrec.backend.Exception.InvalidDataExceptionHandler;
+import com.foodrec.backend.Exception.NotFoundExceptionHandler;
 import com.foodrec.backend.RecipeAPI.command.create_recipe.CreateRecipeCommand;
 import com.foodrec.backend.RecipeAPI.command.delete_recipe.DeleteRecipeCommand;
 import com.foodrec.backend.RecipeAPI.command.update_recipe.UpdateRecipeCommand;
 import com.foodrec.backend.RecipeAPI.dto.CreateRecipeDTO;
 import com.foodrec.backend.RecipeAPI.dto.RecipeDTO;
 import com.foodrec.backend.RecipeAPI.dto.UpdateRecipeDTO;
-import com.foodrec.backend.Exception.*;
 import com.foodrec.backend.Utils.GetCurrentUserData;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -84,7 +85,7 @@ public class RecipeCommandController {
         try {
             authentication = SecurityContextHolder.getContext().getAuthentication();
             String userId = GetCurrentUserData.getCurrentUserId(authentication);
-            UpdateRecipeCommand updateRecipeCommand = new UpdateRecipeCommand(rec,userId);
+            UpdateRecipeCommand updateRecipeCommand = new UpdateRecipeCommand(rec, userId);
             RecipeDTO updatedRecipe = pipeline.send(updateRecipeCommand);
             if (updatedRecipe == null) {
                 result = new ResponseEntity<String>("Something went wrong with the server and" +
@@ -113,7 +114,7 @@ public class RecipeCommandController {
         try {
             authentication = SecurityContextHolder.getContext().getAuthentication();
             String userId = GetCurrentUserData.getCurrentUserId(authentication);
-            DeleteRecipeCommand command = new DeleteRecipeCommand(recipeId,userId);
+            DeleteRecipeCommand command = new DeleteRecipeCommand(recipeId, userId);
             boolean isDeleted = pipeline.send(command);
             if (!isDeleted)
                 result = new ResponseEntity<String>("Recipe with id " +

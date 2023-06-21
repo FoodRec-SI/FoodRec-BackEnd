@@ -4,12 +4,18 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.foodrec.backend.AccountAPI.entity.Account;
 import com.foodrec.backend.RecipeAPI.entity.Recipe;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "tag")
 public class Tag {
@@ -29,46 +35,4 @@ public class Tag {
             mappedBy = "tag")
     @JsonIgnore
     private Set<Recipe> recipes = new HashSet<>();
-
-    public Tag() {
-    }
-
-    public Tag(String tagId, String tagName, List<Account> accounts, Set<Recipe> recipes) {
-        this.tagId = tagId;
-        this.tagName = tagName;
-        this.accounts = accounts;
-        this.recipes = recipes;
-    }
-
-    public String getTagId() {
-        return tagId;
-    }
-
-    public void setTagId(String tagId) {
-        this.tagId = tagId;
-    }
-
-    public String getTagName() {
-        return tagName;
-    }
-
-    public void setTagName(String tagName) {
-        this.tagName = tagName;
-    }
-
-    public List<Account> getAccounts() {
-        return accounts;
-    }
-
-    public void setAccounts(List<Account> accounts) {
-        this.accounts = accounts;
-    }
-
-    public Set<Recipe> getRecipes() {
-        return recipes;
-    }
-
-    public void setRecipes(Set<Recipe> recipes) {
-        this.recipes = recipes;
-    }
 }

@@ -3,12 +3,18 @@ package com.foodrec.backend.CollectionAPI.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.foodrec.backend.PostAPI.entity.Post;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity
 @Table(name = "collection")
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class Collection {
     @Id
     @Column(name = "collectionid")
@@ -28,55 +34,4 @@ public class Collection {
             mappedBy = "collections")
     @JsonIgnore
     private Set<Post> posts = new HashSet<>();
-
-    public Collection() {
-    }
-
-    public Collection(String collectionId, String collectionName, String description, String userId, Set<Post> posts) {
-        this.collectionId = collectionId;
-        this.collectionName = collectionName;
-        this.description = description;
-        this.userId = userId;
-        this.posts = posts;
-    }
-
-    public String getCollectionId() {
-        return collectionId;
-    }
-
-    public void setCollectionId(String collectionId) {
-        this.collectionId = collectionId;
-    }
-
-    public String getCollectionName() {
-        return collectionName;
-    }
-
-    public void setCollectionName(String collectionName) {
-        this.collectionName = collectionName;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public String getUserId() {
-        return userId;
-    }
-
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
-
-    public Set<Post> getPosts() {
-        return posts;
-    }
-
-    public void setPosts(Set<Post> posts) {
-        this.posts = posts;
-    }
 }

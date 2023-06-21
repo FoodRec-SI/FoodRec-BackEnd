@@ -7,7 +7,6 @@ import com.foodrec.backend.CollectionAPI.repository.CollectionRepository;
 import com.foodrec.backend.Exception.InvalidDataExceptionHandler;
 import com.foodrec.backend.Exception.NotFoundExceptionHandler;
 import com.foodrec.backend.Exception.UnauthorizedExceptionHandler;
-import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,11 +16,9 @@ import java.util.Optional;
 @Component
 public class UpdateCollectionCommandHandler implements Command.Handler<UpdateCollectionCommand, HttpStatus> {
     private final CollectionRepository collectionRepository;
-    private final ModelMapper modelMapper;
 
-    public UpdateCollectionCommandHandler(CollectionRepository collectionRepository, ModelMapper modelMapper) {
+    public UpdateCollectionCommandHandler(CollectionRepository collectionRepository) {
         this.collectionRepository = collectionRepository;
-        this.modelMapper = modelMapper;
     }
 
     @Transactional

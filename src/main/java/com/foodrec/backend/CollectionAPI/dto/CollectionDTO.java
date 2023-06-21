@@ -1,60 +1,16 @@
 package com.foodrec.backend.CollectionAPI.dto;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class CollectionDTO {
     private String collectionId;
     private String collectionName;
     private String description;
     private String image;
     private String userId;
-
-    public CollectionDTO() {
-    }
-
-    public CollectionDTO(String collectionId, String collectionName, String description, String image, String userId) {
-        this.collectionId = collectionId;
-        this.collectionName = collectionName;
-        this.description = description;
-        this.image = image;
-        this.userId = userId;
-    }
-
-    public String getCollectionId() {
-        return collectionId;
-    }
-
-    public void setCollectionId(String collectionId) {
-        this.collectionId = collectionId;
-    }
-
-    public String getCollectionName() {
-        return collectionName;
-    }
-
-    public void setCollectionName(String collectionName) {
-        this.collectionName = collectionName;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public String getImage() {
-        return image;
-    }
-
-    public void setImage(String image) {
-        this.image = image;
-    }
-
-    public String getUserId() {
-        return userId;
-    }
-
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
 }
