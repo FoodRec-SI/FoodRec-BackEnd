@@ -60,6 +60,7 @@ public class CreatePostCommandHandler implements Command.Handler<CreatePostComma
         }
         // Add new data for Post entity
         String postId = IdGenerator.generateNextId(Post.class, "postId");
+        System.out.println(postId);
         post.setPostId(postId);
         post.setUserId(command.getUserId());
         post.setRecipeId(createPostDTO.getRecipeId());
