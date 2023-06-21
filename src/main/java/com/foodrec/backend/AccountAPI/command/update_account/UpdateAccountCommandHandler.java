@@ -61,6 +61,6 @@ public class UpdateAccountCommandHandler implements Command.Handler<UpdateAccoun
         account.setProfileImageName(updatedProfileImageName);
         account.setBackgroundImageName(updatedBackgroundImageName);
         accountRepository.save(account);
-        return  modelMapper.map(account, AccountDTO.class);
+        return modelMapper.map(account, AccountDTO.class);
     }
 }
