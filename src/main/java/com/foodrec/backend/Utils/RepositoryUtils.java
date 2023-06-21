@@ -6,6 +6,8 @@ import org.modelmapper.internal.util.Assert;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 @Component
 public class RepositoryUtils {
     private static EntityManager entityManager;
@@ -21,7 +23,10 @@ public class RepositoryUtils {
         String queryString = String.format("SELECT p.%s FROM %s p ORDER BY p.%s DESC LIMIT 1", idColumnName, tableName, idColumnName);
         Query query = entityManager.createQuery(queryString);
         query.setMaxResults(1);
-        if(query.getSingleResult()==null) return null;
-        return (String) query.getSingleResult();
+        List<?> resultList = query.getResultList();
+        if(resultList.isEmpty()){
+            return entityClass.getName().substring(0, 3) + "000000";
+        }
+        return (String) resultList.get(0);
     }
 }

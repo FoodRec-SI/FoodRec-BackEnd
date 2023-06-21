@@ -8,6 +8,7 @@ import com.foodrec.backend.PostAPI.entity.Post;
 import com.foodrec.backend.PostAPI.entity.PostStatus;
 import com.foodrec.backend.PostAPI.repository.PostRepository;
 import org.modelmapper.ModelMapper;
+import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Optional;
 
 @Component
+@CacheConfig(cacheNames = "postCache")
 public class GetPostByIdHandler implements Command.Handler<GetPostById, PostDTO> {
     private final PostRepository postRepository;
     private final ModelMapper modelMapper;
@@ -25,7 +27,7 @@ public class GetPostByIdHandler implements Command.Handler<GetPostById, PostDTO>
     }
 
     @Transactional
-    @Cacheable(value = "post", key = "#query.getPostId()")
+    @Cacheable(cacheNames = "post", key = "#query.getPostId()")
     @Override
     public PostDTO handle(GetPostById query) {
         if (query.getPostId().isEmpty() || query.getPostId() == null) {

@@ -2,16 +2,17 @@ package com.foodrec.backend.PostAPI.entity;
 
 import com.foodrec.backend.CollectionAPI.entity.Collection;
 import com.foodrec.backend.AccountAPI.entity.Account;
+
 import java.util.HashSet;
+
 import jakarta.persistence.*;
 
-import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Set;
 
 @Entity
 @Table(name = "post")
-public class Post implements Serializable {
+public class Post {
     @Id
     @Column(name = "postid")
     private String postId;

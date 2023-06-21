@@ -47,6 +47,7 @@ public class CollectionCommandController {
             HttpStatus status = e.getClass().getAnnotation(ResponseStatus.class).value();
             return ResponseEntity.status(status).body(e.getMessage());
         } catch (Exception e) {
+            System.out.println(e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Internal server error!");
         }
         return responseEntity;
@@ -54,7 +55,7 @@ public class CollectionCommandController {
 
     @Operation(description = "Remove post in collection. Must give collectionID and postID!",
             security = {@SecurityRequirement(name = BEARER_KEY_SECURITY_SCHEME)})
-    @RequestMapping(value = "/api/member/collectionpost", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/api/member/collections/posts", method = RequestMethod.DELETE)
     public ResponseEntity removePostToCollection(@RequestBody RemovePostCollectionDTO removePostCollectionDTO) {
         ResponseEntity responseEntity = null;
         try {
@@ -118,7 +119,7 @@ public class CollectionCommandController {
 
     @Operation(description = "Add new post to collection. Must give postID and collectionID!",
             security = {@SecurityRequirement(name = BEARER_KEY_SECURITY_SCHEME)})
-    @RequestMapping(value = "/api/member/collectionpost", method = RequestMethod.PUT)
+    @RequestMapping(value = "/api/member/collections/posts", method = RequestMethod.PUT)
     public ResponseEntity addPostToCollection(@RequestBody PostCollectionDTO postCollectionDTO) {
         ResponseEntity responseEntity = null;
         try {
