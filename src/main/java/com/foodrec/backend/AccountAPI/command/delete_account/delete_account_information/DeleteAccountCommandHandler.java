@@ -1,7 +1,6 @@
 package com.foodrec.backend.AccountAPI.command.delete_account.delete_account_information;
 
 import an.awesome.pipelinr.Command;
-import com.foodrec.backend.AccountAPI.command.delete_account.delete_account_information.DeleteAccountCommand;
 import com.foodrec.backend.AccountAPI.dto.AccountDTO;
 import com.foodrec.backend.AccountAPI.dto.DeleteAccountDTO;
 import com.foodrec.backend.AccountAPI.entity.Account;
