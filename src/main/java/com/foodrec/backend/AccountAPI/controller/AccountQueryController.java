@@ -24,8 +24,7 @@ public class AccountQueryController {
         this.pipeline = pipeline;
     }
 
-    @Operation(description = "Get an account information by its id. Must provide UserId",
-            security = {@SecurityRequirement(name = BEARER_KEY_SECURITY_SCHEME)})
+    @Operation(description = "Get an account information by its id. Must provide UserId", security = {@SecurityRequirement(name = BEARER_KEY_SECURITY_SCHEME)})
     @GetMapping("/api/member/account/{userId}")
     public ResponseEntity getAllCollectionByUserId(@PathVariable String userId) {
         GetAccountByIdQuery getAccountByIdQuery = new GetAccountByIdQuery(userId);
