@@ -27,6 +27,6 @@ public class Collection {
     @Column(name = "userid")
     private String userId;
 
-    @OneToMany(mappedBy = "collectionid")
+    @OneToMany(mappedBy = "collection")
     private Set<PostCollection> postCollections;
 }

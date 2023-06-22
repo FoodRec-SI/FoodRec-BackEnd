@@ -52,7 +52,7 @@ public class Post {
     @Column(name = "verified-time")
     private LocalDateTime verifiedTime;
 
-    @OneToMany(mappedBy = "postid")
+    @OneToMany(mappedBy = "post")
     private Set<PostCollection> postCollections;
 
     //M-M relationship with the Likes table (1 Account Likes Many Posts,

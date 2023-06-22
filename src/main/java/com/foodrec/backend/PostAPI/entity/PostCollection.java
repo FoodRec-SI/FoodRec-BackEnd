@@ -3,6 +3,7 @@ package com.foodrec.backend.PostAPI.entity;
 import com.foodrec.backend.CollectionAPI.entity.Collection;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -10,6 +11,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 @Table(name = "post_collection")
 public class PostCollection {
     @EmbeddedId

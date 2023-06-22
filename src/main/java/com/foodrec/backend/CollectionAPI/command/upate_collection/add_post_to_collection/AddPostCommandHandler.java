@@ -9,6 +9,7 @@ import com.foodrec.backend.Exception.NotFoundExceptionHandler;
 import com.foodrec.backend.Exception.UnauthorizedExceptionHandler;
 import com.foodrec.backend.PostAPI.entity.Post;
 import com.foodrec.backend.PostAPI.entity.PostCollection;
+import com.foodrec.backend.PostAPI.entity.PostCollectionId;
 import com.foodrec.backend.PostAPI.repository.PostCollectionRepository;
 import com.foodrec.backend.PostAPI.repository.PostRepository;
 import org.springframework.http.HttpStatus;
@@ -49,9 +50,8 @@ public class AddPostCommandHandler implements Command.Handler<AddPostCommand, Ht
             throw new UnauthorizedExceptionHandler("You don't have permission to add post to the collection!");
         }
         Post post = postOptional.get();
-        PostCollection postCollection = new PostCollection();
-        postCollection.setCollection(collection);
-        postCollection.setPost(post);
+        PostCollectionId postCollectionId = new PostCollectionId(postCollectionDTO.getPostId(), postCollectionDTO.getCollectionId());
+        PostCollection postCollection = new PostCollection(postCollectionId, post, collection);
         postCollectionRepository.save(postCollection);
         return HttpStatus.OK;
     }
