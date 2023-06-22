@@ -1,7 +1,8 @@
 package com.foodrec.backend.RecipeAPI.controller;
 
 import an.awesome.pipelinr.Pipeline;
-import com.foodrec.backend.Exception.InvalidPageInfoException;
+import com.foodrec.backend.Exception.InvalidDataExceptionHandler;
+import com.foodrec.backend.Exception.NotFoundExceptionHandler;
 import com.foodrec.backend.RecipeAPI.dto.RecipeDTO;
 import com.foodrec.backend.RecipeAPI.query.get_recipe_by_id.GetRecipeByUserIdQuery;
 import com.foodrec.backend.Utils.GetCurrentUserData;
@@ -13,10 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import static com.foodrec.backend.Config.SwaggerConfig.BEARER_KEY_SECURITY_SCHEME;
 
@@ -24,7 +22,6 @@ import static com.foodrec.backend.Config.SwaggerConfig.BEARER_KEY_SECURITY_SCHEM
 @RestController
 public class RecipeQueryController {
 
-    //báo hiệu rằng hàm ngay dưới tương ứng với HttpGet - lấy dữ liệu + cách gọi nó.
     final Pipeline pipeline;
 
     public RecipeQueryController(Pipeline pipeline) {
@@ -38,22 +35,18 @@ public class RecipeQueryController {
     @RequestMapping(value = "/api/member/recipe", method = RequestMethod.GET)
     public ResponseEntity getRecipesByUserId(@RequestParam(defaultValue = "0") String pageNumber,
                                              @RequestParam(defaultValue = "6") String pageSize) {
-        ResponseEntity responseEntity = null;
-        Authentication authentication = null;
+        ResponseEntity responseEntity;
         try {
-            authentication = SecurityContextHolder.getContext().getAuthentication();
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             String userid = GetCurrentUserData.getCurrentUserId(authentication);
             GetRecipeByUserIdQuery query = new GetRecipeByUserIdQuery(userid, pageNumber, pageSize);
             Page<RecipeDTO> result = pipeline.send(query);
-            if (result == null) {
-                return new ResponseEntity<>("Invalid Request. Please try again."
-                        , HttpStatus.BAD_REQUEST);
-            }
             responseEntity = new ResponseEntity<>(result, HttpStatus.OK);
-
-        } catch (InvalidPageInfoException e) {
-            responseEntity = new ResponseEntity(e.getMessage()
-                    , HttpStatus.BAD_REQUEST);
+        } catch (InvalidDataExceptionHandler | NotFoundExceptionHandler e) {
+            HttpStatus status = e.getClass().getAnnotation(ResponseStatus.class).value();
+            return ResponseEntity.status(status).body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Internal server error!");
         }
         return responseEntity;
     }

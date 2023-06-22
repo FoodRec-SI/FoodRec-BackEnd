@@ -32,7 +32,7 @@ public class CreateAccountTagsCommandHandler implements Command.Handler<CreateAc
             throw new NotFoundExceptionHandler("Invalid Account !");
         }
         Account account = optionalAccount.get();
-        Set<Tag> tagSet = tagRepository.getTagsByTagIdIn(command.getTagIds());
+        Set<Tag> tagSet = tagRepository.findTagsByTagIdIn(command.getTagIds());
         account.setAccountTags(tagSet);
         accountRepository.save(account);
         return HttpStatus.OK;

@@ -1,0 +1,22 @@
+package com.foodrec.backend.RecipeAPI.entity;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Embeddable;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import java.io.Serializable;
+
+@Embeddable
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+public class RecipeTagId implements Serializable {
+    @Column(name = "recipeid")
+    private String recipeId;
+    @Column(name = "tagid")
+    private String tagId;
+}

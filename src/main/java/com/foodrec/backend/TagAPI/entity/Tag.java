@@ -1,10 +1,10 @@
 package com.foodrec.backend.TagAPI.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.foodrec.backend.AccountAPI.entity.Account;
 import com.foodrec.backend.RecipeAPI.entity.Recipe;
+import com.foodrec.backend.RecipeAPI.entity.RecipeTag;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -24,14 +24,11 @@ public class Tag {
     private String tagId;
     @Column(name = "tagname")
     private String tagName;
+    @OneToMany(mappedBy = "tag")
+    private Set<RecipeTag> recipeTags;
     @ManyToMany(mappedBy = "accountTags")
     @JsonManagedReference
     private Set<Account> accounts = new HashSet<>();
-
-
-
-
-
     @ManyToMany(fetch = FetchType.LAZY,
             cascade = {
                     CascadeType.PERSIST,
