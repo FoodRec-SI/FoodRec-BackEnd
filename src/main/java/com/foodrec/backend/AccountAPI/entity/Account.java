@@ -1,5 +1,8 @@
 package com.foodrec.backend.AccountAPI.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.foodrec.backend.PostAPI.entity.Post;
 import com.foodrec.backend.TagAPI.entity.Tag;
 import jakarta.persistence.*;
@@ -31,6 +34,7 @@ public class Account {
     @JoinTable(name = "account_tag",
             joinColumns = @JoinColumn(name = "userid"),
             inverseJoinColumns = @JoinColumn(name = "tagid"))
+    @JsonBackReference
     private Set<Tag> accountTags = new HashSet<>();
 
     //M-M relationship with the Likes table (1 Account Likes Many Posts,

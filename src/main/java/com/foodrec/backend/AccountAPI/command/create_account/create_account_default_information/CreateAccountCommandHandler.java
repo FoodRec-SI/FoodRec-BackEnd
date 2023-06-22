@@ -1,16 +1,16 @@
-package com.foodrec.backend.AccountAPI.command.create_account;
+package com.foodrec.backend.AccountAPI.command.create_account.create_account_default_information;
 
 import an.awesome.pipelinr.Command;
 import com.foodrec.backend.AccountAPI.dto.CreateAccountDTO;
 import com.foodrec.backend.AccountAPI.entity.Account;
 import com.foodrec.backend.AccountAPI.repository.AccountRepository;
-import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
 import java.util.Optional;
 
 @Component
-public class CreateAccountCommandHandler implements Command.Handler<CreateAccountCommand, HttpStatus> {
+public class CreateAccountCommandHandler implements Command.Handler<CreateAccountCommand, ResponseEntity> {
 
     private final AccountRepository accountRepository;
 
@@ -19,11 +19,11 @@ public class CreateAccountCommandHandler implements Command.Handler<CreateAccoun
     }
 
     @Override
-    public HttpStatus handle(CreateAccountCommand command) {
+    public ResponseEntity handle(CreateAccountCommand command) {
         CreateAccountDTO createAccountDTO = command.getCreateAccountDTO();
         Optional<Account> optionalAccount = accountRepository.findById(createAccountDTO.getUserId());
-        if (optionalAccount.isPresent()){
-            return HttpStatus.OK;
+        if (optionalAccount.isPresent()) {
+            return ResponseEntity.status(200).body("Existed");
         }
         Account account = new Account();
         account.setUserId(createAccountDTO.getUserId());
@@ -31,6 +31,6 @@ public class CreateAccountCommandHandler implements Command.Handler<CreateAccoun
         account.setProfileImageName(createAccountDTO.getProfileImage());
         account.setBackgroundImageName(createAccountDTO.getBackgroundImage());
         accountRepository.save(account);
-        return HttpStatus.OK;
+        return ResponseEntity.status(200).body("New");
     }
 }
