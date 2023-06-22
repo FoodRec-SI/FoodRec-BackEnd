@@ -12,5 +12,6 @@ import java.util.Set;
 public interface TagRepository extends JpaRepository<Tag, String> {
     List<Tag> findTagsByRecipesRecipeId(String recipeId);
     Set<Tag> getTagsByTagIdIn(Collection<String> tagIds);
+//    Set<Tag> getTagsByTagIdIn
     Collection<Tag> getTagsByAccountsUserId(String userId);
 }

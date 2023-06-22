@@ -1,6 +1,8 @@
 package com.foodrec.backend.TagAPI.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.foodrec.backend.AccountAPI.entity.Account;
 import com.foodrec.backend.RecipeAPI.entity.Recipe;
 import jakarta.persistence.*;
@@ -24,7 +26,13 @@ public class Tag {
     @Column(name = "tagname")
     private String tagName;
     @ManyToMany(mappedBy = "accountTags")
+    @JsonManagedReference
     private Set<Account> accounts = new HashSet<>();
+
+
+
+
+
     @ManyToMany(fetch = FetchType.LAZY,
             cascade = {
                     CascadeType.PERSIST,
