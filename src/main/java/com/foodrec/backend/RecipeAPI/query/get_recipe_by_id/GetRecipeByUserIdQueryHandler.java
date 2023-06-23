@@ -11,6 +11,7 @@ import com.foodrec.backend.Utils.PageUtils;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -32,6 +33,7 @@ public class GetRecipeByUserIdQueryHandler implements Command.Handler<GetRecipeB
         this.tagRepository = tagRepository;
     }
 
+    @Transactional
     @Override
     public Page<RecipeDTO> handle(GetRecipeByUserIdQuery command)
             throws InvalidPageInfoException {
@@ -55,7 +57,7 @@ public class GetRecipeByUserIdQueryHandler implements Command.Handler<GetRecipeB
         }
         for (RecipeDTO eachRecipeDTO : recipeDTOs) {
             List<TagDTO> eachTagList = tagRepository.
-                    findTagsByRecipesRecipeId(eachRecipeDTO.getRecipeId())
+                    findTagsByRecipeTags_Recipe(recipeRepository.findById(eachRecipeDTO.getRecipeId()).get())
                     .stream().map((tag) -> modelMapper.map(tag, TagDTO.class))
                     .collect(Collectors.toList());
             eachRecipeDTO.setTags(eachTagList);

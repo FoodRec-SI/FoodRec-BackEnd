@@ -7,7 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.domain.Page;
 
-import java.util.Collection;
+import java.util.Set;
 
 @Data
 @NoArgsConstructor
@@ -15,5 +15,5 @@ import java.util.Collection;
 public class GetPostsByTagIdsQuery implements Command<Page<PostDTO>> {
     private int pageNumber;
     private int pageSize;
-    private Collection<String> tagIds;
+    private Set<String> tagIds;
 }

@@ -22,19 +22,27 @@ public class Tag {
     @Id
     @Column(name = "tagid")
     private String tagId;
+
     @Column(name = "tagname")
     private String tagName;
+
     @OneToMany(mappedBy = "tag")
     private Set<RecipeTag> recipeTags;
+
+
+
+
     @ManyToMany(mappedBy = "accountTags")
     @JsonManagedReference
     private Set<Account> accounts = new HashSet<>();
+
+
     @ManyToMany(fetch = FetchType.LAZY,
             cascade = {
                     CascadeType.PERSIST,
                     CascadeType.MERGE
             },
-            mappedBy = "tag")
+            mappedBy = "tags")
     @JsonIgnore
     private Set<Recipe> recipes = new HashSet<>();
 }

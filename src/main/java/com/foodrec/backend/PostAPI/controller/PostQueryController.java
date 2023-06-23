@@ -27,6 +27,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 import static com.foodrec.backend.Config.SwaggerConfig.BEARER_KEY_SECURITY_SCHEME;
 
@@ -117,7 +118,7 @@ public class PostQueryController {
     @GetMapping("/api/public/posts/some/{tagIds}")
     public ResponseEntity getPostsByTagIds(@RequestParam(defaultValue = "0") int pageNumber,
                                            @RequestParam(defaultValue = "6") int pageSize,
-                                           @RequestParam Collection<String> tagIds) {
+                                           @RequestParam Set<String> tagIds) {
         try {
             GetPostsByTagIdsQuery query = new GetPostsByTagIdsQuery(pageNumber, pageSize, tagIds);
             Page<PostDTO> result = pipeline.send(query);
