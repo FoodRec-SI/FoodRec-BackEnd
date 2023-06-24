@@ -8,6 +8,7 @@ import com.foodrec.backend.RecipeAPI.entity.RecipeTag;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import java.util.HashSet;
@@ -16,6 +17,7 @@ import java.util.Set;
 @Entity
 @Table(name = "tag")
 @Data
+@EqualsAndHashCode(exclude = "recipeTags")
 @NoArgsConstructor
 @AllArgsConstructor
 public class Tag {
@@ -25,8 +27,8 @@ public class Tag {
 
     @Column(name = "tagname")
     private String tagName;
-
-    @OneToMany(mappedBy = "tag")
+    @JsonIgnore
+    @OneToMany(mappedBy = "tag", cascade = CascadeType.ALL)
     private Set<RecipeTag> recipeTags;
 
 
@@ -35,14 +37,4 @@ public class Tag {
     @ManyToMany(mappedBy = "accountTags")
     @JsonManagedReference
     private Set<Account> accounts = new HashSet<>();
-
-
-    @ManyToMany(fetch = FetchType.LAZY,
-            cascade = {
-                    CascadeType.PERSIST,
-                    CascadeType.MERGE
-            },
-            mappedBy = "tags")
-    @JsonIgnore
-    private Set<Recipe> recipes = new HashSet<>();
 }

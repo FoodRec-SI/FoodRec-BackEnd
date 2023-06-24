@@ -17,13 +17,11 @@ import com.foodrec.backend.Utils.RecipeUtils;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 @Component
 public class CreateRecipeCommandHandler implements Command.Handler<CreateRecipeCommand, HttpStatus> {
@@ -42,12 +40,12 @@ public class CreateRecipeCommandHandler implements Command.Handler<CreateRecipeC
     public CreateRecipeCommandHandler(RecipeRepository recipeRepository,
                                       RecipeUtils recipeUtils,
                                       ModelMapper modelMapper,
-                                      TagRepository tagRepository, RecipeTagRepository recipeTagRepository) {
+                                      TagRepository tagRepository,
+                                      RecipeTagRepository recipeTagRepository) {
         this.recipeRepository = recipeRepository;
         this.recipeUtils = recipeUtils;
         this.modelMapper = modelMapper;
         this.tagRepository = tagRepository;
-
         this.recipeTagRepository = recipeTagRepository;
     }
 
@@ -61,37 +59,70 @@ public class CreateRecipeCommandHandler implements Command.Handler<CreateRecipeC
         }
     }
 
+    @Transactional
+    @Override
     public HttpStatus handle(CreateRecipeCommand createRecipeCommand) {
         ImageUtils imageUtils = new ImageUtils();
         CreateRecipeDTO createRecipeDTO = createRecipeCommand.getCreateRecipeDTO();
-        boolean isValid =
-                recipeUtils.fieldValidator(createRecipeCommand.getCreateRecipeDTO(),
-                        nonNullFields, nonNegativeFields);
+        boolean isValid = recipeUtils.fieldValidator(createRecipeCommand.getCreateRecipeDTO(),
+                nonNullFields, nonNegativeFields);
         if (!isValid) {
             throw new InvalidDataExceptionHandler("One of the recipe attributes " +
-                    "(name,description, calories, duration, image)" +
+                    "(name, description, calories, duration, image)" +
                     " is invalid. Please try again.");
         }
+
         String recipeId = IdGenerator.generateNextId(Recipe.class, "recipeId");
         String imageUrl = (String) imageUtils.upload(createRecipeDTO.getImage(), "recipe", recipeId);
+
+        Recipe recipeEntity = modelMapper.map(createRecipeDTO, Recipe.class);
+        recipeEntity.setRecipeId(recipeId);
+        recipeEntity.setImage(imageUrl);
+        recipeEntity.setUserId(createRecipeCommand.getUserid());
+        recipeEntity.setStatus(true);
+//        recipeEntity.setRecipeTags(null);
+//        recipeRepository.save(recipeEntity);
+//        Set<String> tagsIdSet = createRecipeDTO.getTagsIdSet();
+//        Set<Tag> tags = tagRepository.getTagsByTagIdIn(tagsIdSet);
+//
+//        if (tags.isEmpty()) {
+//            throw new NotFoundExceptionHandler("Not found tag !");
+//        }
+//
+//        List<RecipeTag> recipeTags = new ArrayList<>();
+//        for (Tag tag : tags) {
+//            RecipeTag recipeTag = new RecipeTag();
+//            RecipeTagId recipeTagId = new RecipeTagId(recipeEntity.getRecipeId(), tag.getTagId());
+//            recipeTag.setRecipeTagId(recipeTagId);
+//            recipeTag.setRecipe(recipeEntity);
+//            recipeTag.setTag(tag);
+//            recipeTags.add(recipeTag);
+//        }
+//        recipeEntity.getRecipeTags().addAll(recipeTags);
+//        recipeRepository.save(recipeEntity);
+
+        recipeEntity.setRecipeTags(new HashSet<>()); // Khởi tạo một HashSet rỗng
+
         Set<String> tagsIdSet = createRecipeDTO.getTagsIdSet();
         Set<Tag> tags = tagRepository.getTagsByTagIdIn(tagsIdSet);
+
+// Kiểm tra nếu tags không rỗng, thì mới thực hiện việc tạo RecipeTag
         if (tags.isEmpty()) {
-            throw new NotFoundExceptionHandler("Not found tag!");
+            throw new NotFoundExceptionHandler("Not found tag !");
         }
-        Recipe recEntity = modelMapper.map(createRecipeDTO, Recipe.class);
-        recEntity.setImage(imageUrl);
-        recEntity.setRecipeId(recipeId);
-        recEntity.setUserId(createRecipeCommand.getUserid());
-        recEntity.setStatus(true);
-        Set<RecipeTag> recipeTags = new HashSet<>();
-        recEntity.setRecipeTags(recipeTags);
-        recipeRepository.save(recEntity);
+        List<RecipeTag> recipeTags = new ArrayList<>();
         for (Tag tag : tags) {
-            RecipeTagId recipeTagId = new RecipeTagId(recEntity.getRecipeId(), tag.getTagId());
-            RecipeTag recipeTag = new RecipeTag(recipeTagId, recEntity, tag);
-            recipeTagRepository.save(recipeTag);
+            RecipeTag recipeTag = new RecipeTag();
+            RecipeTagId recipeTagId = new RecipeTagId(recipeEntity.getRecipeId(), tag.getTagId());
+            recipeTag.setRecipeTagId(recipeTagId);
+            recipeTag.setRecipe(recipeEntity);
+            recipeTag.setTag(tag);
+            recipeTags.add(recipeTag);
         }
+        recipeEntity.getRecipeTags().addAll(recipeTags);
+
+        recipeRepository.save(recipeEntity);
+        recipeTagRepository.saveAll(recipeTags);
         return HttpStatus.OK;
     }
 }

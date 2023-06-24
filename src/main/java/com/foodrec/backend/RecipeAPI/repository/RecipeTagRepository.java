@@ -14,4 +14,5 @@ public interface RecipeTagRepository extends JpaRepository<RecipeTag, String> {
     List<RecipeTag> getRecipeTagsByTag_TagId(String tagId);
 
     List<RecipeTag> getRecipeTagsByTag_TagIdIn(Set<String> tagId);
+    Set<RecipeTag> getAllByTag_TagIdIn(Set<String> tagIds);
 }

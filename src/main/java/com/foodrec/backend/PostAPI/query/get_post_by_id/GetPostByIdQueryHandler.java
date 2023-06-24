@@ -17,11 +17,11 @@ import java.util.Optional;
 
 @Component
 @CacheConfig(cacheNames = "postCache")
-public class GetPostByIdHandler implements Command.Handler<GetPostById, PostDTO> {
+public class GetPostByIdQueryHandler implements Command.Handler<GetPostByIdQuery, PostDTO> {
     private final PostRepository postRepository;
     private final ModelMapper modelMapper;
 
-    public GetPostByIdHandler(PostRepository postRepository, ModelMapper modelMapper) {
+    public GetPostByIdQueryHandler(PostRepository postRepository, ModelMapper modelMapper) {
         this.postRepository = postRepository;
         this.modelMapper = modelMapper;
     }
@@ -29,7 +29,7 @@ public class GetPostByIdHandler implements Command.Handler<GetPostById, PostDTO>
     @Transactional
     @Cacheable(cacheNames = "post", key = "#query.getPostId()")
     @Override
-    public PostDTO handle(GetPostById query) {
+    public PostDTO handle(GetPostByIdQuery query) {
         if (query.getPostId().isEmpty() || query.getPostId() == null) {
             throw new InvalidDataExceptionHandler("Invalid data!");
         }

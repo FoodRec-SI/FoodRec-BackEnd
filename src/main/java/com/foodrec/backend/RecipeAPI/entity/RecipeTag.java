@@ -11,20 +11,19 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
 @Table(name = "recipe_tag")
 public class RecipeTag {
 
     @EmbeddedId
     private RecipeTagId recipeTagId;
 
-    @ManyToOne
-    @MapsId("recipeid")
-    @JoinColumn(name = "recipeid", insertable = false, updatable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @MapsId("recipeId")
+    @JoinColumn(name = "recipeid", insertable=false, updatable=false)
     private Recipe recipe;
 
-    @ManyToOne
-    @MapsId("tagid")
-    @JoinColumn(name = "tagid", insertable = false, updatable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @MapsId("tagId")
+    @JoinColumn(name = "tagid", insertable=false, updatable=false )
     private Tag tag;
 }

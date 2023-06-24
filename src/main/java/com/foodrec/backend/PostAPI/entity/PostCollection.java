@@ -17,11 +17,11 @@ public class PostCollection {
     @EmbeddedId
     private PostCollectionId postCollectionId;
     @ManyToOne
-    @MapsId("postid")
+    @MapsId("postId")
     @JoinColumn(name = "postid", insertable = false, updatable = false)
     private Post post;
     @ManyToOne
-    @MapsId("collectionid")
+    @MapsId("collectionId")
     @JoinColumn(name = "collectionid", insertable = false, updatable = false)
     private Collection collection;
 }

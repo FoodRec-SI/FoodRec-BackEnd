@@ -30,4 +30,5 @@ public interface RecipeRepository extends JpaRepository<Recipe, String> {
 
     @Query(value = "SELECT * FROM Recipe WHERE recipeid = :recipeid AND status = true", nativeQuery = true)
     Recipe findRecipeByRecipeId(@Param("recipeid") String recipeid);
+    Optional<Recipe> getRecipeByRecipeIdAndStatus(String recipeId, boolean status);
 }

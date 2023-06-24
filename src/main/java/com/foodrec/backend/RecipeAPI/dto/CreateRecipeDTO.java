@@ -22,16 +22,11 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CreateRecipeDTO implements Serializable {
-
     private String recipeName;
-
     private String description;
-
     private int calories;
-
     private int duration;
     private String instructions;
-
     private MultipartFile image;
     private Set<String> tagsIdSet;
 }
