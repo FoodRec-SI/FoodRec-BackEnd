@@ -93,7 +93,7 @@ public class CollectionCommandController {
         return responseEntity;
     }
 
-    @Operation(description = "Delete collection by collection ID. Must give collection ID!",
+    @Operation(description = "Update collection by collection ID. Must give collection ID!",
             security = {@SecurityRequirement(name = BEARER_KEY_SECURITY_SCHEME)})
     @RequestMapping(value = "/api/member/collection", method = RequestMethod.PUT)
     public ResponseEntity updateCollection(@RequestBody UpdateCollectionDTO updateCollectionDTO) {

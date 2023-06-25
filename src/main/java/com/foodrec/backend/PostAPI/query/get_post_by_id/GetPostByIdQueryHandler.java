@@ -30,7 +30,7 @@ public class GetPostByIdQueryHandler implements Command.Handler<GetPostByIdQuery
     @Cacheable(cacheNames = "post", key = "#query.getPostId()")
     @Override
     public PostDTO handle(GetPostByIdQuery query) {
-        if (query.getPostId().isEmpty() || query.getPostId() == null) {
+        if (query.getPostId().isEmpty()) {
             throw new InvalidDataExceptionHandler("Invalid data!");
         }
         Optional<Post> optionalPost = postRepository.findPostByPostIdAndStatus(query.getPostId(), 2);
