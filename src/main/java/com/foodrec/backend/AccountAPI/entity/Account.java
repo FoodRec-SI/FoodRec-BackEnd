@@ -29,7 +29,6 @@ public class Account {
     private String backgroundImageName;
     @OneToMany(mappedBy = "account", cascade = CascadeType.ALL)
     @JsonIgnore
-    @EqualsAndHashCode.Exclude
     private Set<AccountTag> accountTags;
 
     @ManyToMany(mappedBy = "accounts")

@@ -47,6 +47,5 @@ public class Recipe {
     private String ingredientList;
     @OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL)
     @JsonIgnore
-    @EqualsAndHashCode.Exclude
     private Set<RecipeTag> recipeTags;
 }

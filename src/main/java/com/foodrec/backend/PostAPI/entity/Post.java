@@ -66,7 +66,6 @@ public class Post {
 
     @OneToMany(mappedBy = "post")
     @JsonIgnore
-    @EqualsAndHashCode.Exclude
     private Set<PostCollection> postCollections;
 
     @OneToMany(mappedBy = "post")
