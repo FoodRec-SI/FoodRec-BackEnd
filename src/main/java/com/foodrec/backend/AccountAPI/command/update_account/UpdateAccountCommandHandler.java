@@ -13,13 +13,13 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.Optional;
+import java.util.UUID;
 
 @Component
 public class UpdateAccountCommandHandler implements Command.Handler<UpdateAccountCommand, AccountDTO> {
 
     private final AccountRepository accountRepository;
     private final ModelMapper modelMapper;
-
 
     public UpdateAccountCommandHandler(AccountRepository accountRepository, ModelMapper modelMapper) {
         this.accountRepository = accountRepository;
@@ -51,11 +51,13 @@ public class UpdateAccountCommandHandler implements Command.Handler<UpdateAccoun
 
         String updatedProfileImageName = updateAccountDTO.getProfileImage() == null
                 ? account.getProfileImageName()
-                : updateImage("profile-" + command.getUserId(), updateAccountDTO.getProfileImage(), "profile", command.getUserId());
+                : updateImage(account.getProfileImageName(), updateAccountDTO.getProfileImage(),
+                "profile", String.valueOf(UUID.randomUUID()));
 
         String updatedBackgroundImageName = updateAccountDTO.getBackgroundImage() == null
                 ? account.getBackgroundImageName()
-                : updateImage("background-" + command.getUserId(), updateAccountDTO.getBackgroundImage(), "background", command.getUserId());
+                : updateImage(account.getBackgroundImageName(), updateAccountDTO.getBackgroundImage(),
+                "background", String.valueOf(UUID.randomUUID()));
 
         account.setDescription(updatedDescription);
         account.setProfileImageName(updatedProfileImageName);

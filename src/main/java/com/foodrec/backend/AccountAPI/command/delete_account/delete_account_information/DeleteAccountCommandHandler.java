@@ -42,7 +42,7 @@ public class DeleteAccountCommandHandler implements Command.Handler<DeleteAccoun
 
         if (deleteAccountDTO.isProfileImageDeletion()) {
             try {
-                imageUtils.delete("profile-".concat(command.getUserId()));
+                imageUtils.delete(account.getProfileImageName());
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
@@ -52,7 +52,7 @@ public class DeleteAccountCommandHandler implements Command.Handler<DeleteAccoun
 
         if (deleteAccountDTO.isBackgroundImageDeletion()) {
             try {
-                imageUtils.delete("background-".concat(command.getUserId()));
+                imageUtils.delete(account.getBackgroundImageName());
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
