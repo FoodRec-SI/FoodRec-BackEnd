@@ -52,7 +52,7 @@ public class CreateRecipeCommandHandler implements Command.Handler<CreateRecipeC
     private String updateImage(String existingImage, MultipartFile image, String folder, String userId) {
         ImageUtils imageUtils = new ImageUtils();
         try {
-            imageUtils.delete(existingImage);
+            imageUtils.deleteImage(existingImage);
             return (String) imageUtils.upload(image, folder, userId);
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -73,7 +73,8 @@ public class CreateRecipeCommandHandler implements Command.Handler<CreateRecipeC
         }
 
         String recipeId = IdGenerator.generateNextId(Recipe.class, "recipeId");
-        String imageUrl = (String) imageUtils.upload(createRecipeDTO.getImage(), "recipe", recipeId);
+        String imageUrl = (String) imageUtils.upload(createRecipeDTO.getImage(),
+                "recipe", String.valueOf(UUID.randomUUID()));
 
         Recipe recipeEntity = modelMapper.map(createRecipeDTO, Recipe.class);
         recipeEntity.setRecipeId(recipeId);

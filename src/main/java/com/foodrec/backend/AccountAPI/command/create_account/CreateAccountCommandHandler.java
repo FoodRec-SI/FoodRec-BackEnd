@@ -1,4 +1,4 @@
-package com.foodrec.backend.AccountAPI.command.create_account.create_account_default_information;
+package com.foodrec.backend.AccountAPI.command.create_account;
 
 import an.awesome.pipelinr.Command;
 import com.foodrec.backend.AccountAPI.dto.CreateAccountDTO;
