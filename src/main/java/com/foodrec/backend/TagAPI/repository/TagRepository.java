@@ -1,5 +1,6 @@
 package com.foodrec.backend.TagAPI.repository;
 
+import com.foodrec.backend.AccountAPI.entity.Account;
 import com.foodrec.backend.RecipeAPI.entity.Recipe;
 import com.foodrec.backend.TagAPI.dto.TagDTO;
 import com.foodrec.backend.TagAPI.entity.Tag;
@@ -16,9 +17,8 @@ public interface TagRepository extends JpaRepository<Tag, String> {
 
     Set<Tag> getTagsByTagIdIn(Set<String> tagIds);
 
-    Collection<Tag> getTagsByAccountsUserId(String userId);
+    Collection<Tag> getTagsByAccountTags_Account(Account account);
 
     List<Tag> findTagsByRecipeTags_Recipe(Recipe recipe);
 
-    Set<TagDTO> findTagsByTagIdIn(Set<String> tagIds);
 }
