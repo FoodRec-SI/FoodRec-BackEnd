@@ -1,6 +1,7 @@
 package com.foodrec.backend.PostAPI.query.get_posts_by_collection_id;
 
 import an.awesome.pipelinr.Command;
+import com.foodrec.backend.CollectionAPI.repository.CollectionRepository;
 import com.foodrec.backend.Exception.InvalidDataExceptionHandler;
 import com.foodrec.backend.Exception.NotFoundExceptionHandler;
 import com.foodrec.backend.PostAPI.dto.PostDTO;
@@ -18,10 +19,12 @@ import java.util.List;
 public class GetPostByCollectionIdQueryHandler implements Command.Handler<GetPostByCollectionIdQuery, Page<PostDTO>> {
     private final PostRepository postRepository;
     private final ModelMapper modelMapper;
+    private final CollectionRepository collectionRepository;
 
-    public GetPostByCollectionIdQueryHandler(PostRepository postRepository, ModelMapper modelMapper) {
+    public GetPostByCollectionIdQueryHandler(PostRepository postRepository, ModelMapper modelMapper, CollectionRepository collectionRepository) {
         this.postRepository = postRepository;
         this.modelMapper = modelMapper;
+        this.collectionRepository = collectionRepository;
     }
 
     @Transactional
@@ -31,7 +34,7 @@ public class GetPostByCollectionIdQueryHandler implements Command.Handler<GetPos
             throw new InvalidDataExceptionHandler("Invalid data!");
         }
         Pageable pageable = PageRequest.of(query.getPageNumber(), query.getPageSize(), Sort.by("recipeName").ascending());
-        Page<Post> postsPage = postRepository.getPostsByCollectionsCollectionIdAndStatus(query.getCollectionId(), 2, pageable);
+        Page<Post> postsPage = postRepository.getPostsByPostCollectionsCollectionAndStatus(collectionRepository.findById(query.getCollectionId()).get(), 2, pageable);
         if (postsPage.isEmpty()) {
             throw new NotFoundExceptionHandler("Not found!");
         }
