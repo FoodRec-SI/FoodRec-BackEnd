@@ -18,7 +18,6 @@ import java.util.Set;
 @Entity
 @Table(name = "tag")
 @Data
-@EqualsAndHashCode(exclude = "recipeTags")
 @NoArgsConstructor
 @AllArgsConstructor
 public class Tag {
@@ -31,10 +30,12 @@ public class Tag {
 
     @JsonIgnore
     @OneToMany(mappedBy = "tag", cascade = CascadeType.ALL)
+    @EqualsAndHashCode.Exclude
     private Set<AccountTag> accountTags;
 
     @JsonIgnore
     @OneToMany(mappedBy = "tag", cascade = CascadeType.ALL)
+    @EqualsAndHashCode.Exclude
     private Set<RecipeTag> recipeTags;
 
 

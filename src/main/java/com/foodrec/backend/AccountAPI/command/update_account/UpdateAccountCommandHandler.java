@@ -9,9 +9,7 @@ import com.foodrec.backend.Exception.NotFoundExceptionHandler;
 import com.foodrec.backend.Utils.ImageUtils;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -26,19 +24,10 @@ public class UpdateAccountCommandHandler implements Command.Handler<UpdateAccoun
         this.modelMapper = modelMapper;
     }
 
-    private String updateImage(String existingImage, MultipartFile image, String folder, String userId) {
-        ImageUtils imageUtils = new ImageUtils();
-        try {
-            imageUtils.delete(existingImage);
-            return (String) imageUtils.upload(image, folder, userId);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
     @Override
     public AccountDTO handle(UpdateAccountCommand command) {
 
+        ImageUtils imageUtils = new ImageUtils();
         UpdateAccountDTO updateAccountDTO = command.getUpdateAccountDTO();
         Optional<Account> optionalAccount = accountRepository.findById(command.getUserId());
         if (optionalAccount.isEmpty()) {
@@ -51,12 +40,12 @@ public class UpdateAccountCommandHandler implements Command.Handler<UpdateAccoun
 
         String updatedProfileImageName = updateAccountDTO.getProfileImage() == null
                 ? account.getProfileImageName()
-                : updateImage(account.getProfileImageName(), updateAccountDTO.getProfileImage(),
+                : imageUtils.updateImage(account.getProfileImageName(), updateAccountDTO.getProfileImage(),
                 "profile", String.valueOf(UUID.randomUUID()));
 
         String updatedBackgroundImageName = updateAccountDTO.getBackgroundImage() == null
                 ? account.getBackgroundImageName()
-                : updateImage(account.getBackgroundImageName(), updateAccountDTO.getBackgroundImage(),
+                : imageUtils.updateImage(account.getBackgroundImageName(), updateAccountDTO.getBackgroundImage(),
                 "background", String.valueOf(UUID.randomUUID()));
 
         account.setDescription(updatedDescription);

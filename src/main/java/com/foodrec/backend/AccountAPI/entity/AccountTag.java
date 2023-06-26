@@ -1,7 +1,5 @@
 package com.foodrec.backend.AccountAPI.entity;
 
-import com.foodrec.backend.RecipeAPI.entity.Recipe;
-import com.foodrec.backend.RecipeAPI.entity.RecipeTagId;
 import com.foodrec.backend.TagAPI.entity.Tag;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

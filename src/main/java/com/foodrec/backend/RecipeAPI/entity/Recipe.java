@@ -10,7 +10,6 @@ import java.util.Set;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(exclude = "recipeTags")
 @Entity
 public class Recipe {
     @Id
@@ -43,5 +42,6 @@ public class Recipe {
 
     @OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL)
     @JsonIgnore
+    @EqualsAndHashCode.Exclude
     private Set<RecipeTag> recipeTags;
 }

@@ -57,7 +57,7 @@ public class ImageUtils {
         return fileUrl;
     }
 
-    public boolean delete(String fileUrl) throws IOException {
+    public void deleteImage(String fileUrl) throws IOException {
         Storage storage = initializeStorage();
         Blob blob;
 
@@ -66,16 +66,22 @@ public class ImageUtils {
 
         // Check if the file name contains the "default" word
         if (fileName.contains("default")) {
-            return false;
+            return;
         }
 
         blob = storage.get(BlobId.of("foodrec-389515.appspot.com", fileName));
         if (blob != null) {
-            return blob.delete(); // Return the result of deletion
+            blob.delete();
         }
-
-        return false; // Return false if the blob is null
     }
 
+    public String updateImage(String existingImage, MultipartFile image, String folder, String userId) {
+        try {
+            this.deleteImage(existingImage);
+            return (String) this.upload(image, folder, userId);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
 }
