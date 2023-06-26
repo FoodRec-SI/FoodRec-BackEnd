@@ -41,7 +41,7 @@ public class UpdateAccountCommandHandler implements Command.Handler<UpdateAccoun
 
         UpdateAccountDTO updateAccountDTO = command.getUpdateAccountDTO();
         Optional<Account> optionalAccount = accountRepository.findById(command.getUserId());
-        if (optionalAccount.isEmpty()){
+        if (optionalAccount.isEmpty()) {
             throw new NotFoundExceptionHandler("Invalid Account !");
         }
         Account account = optionalAccount.get();

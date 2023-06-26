@@ -6,7 +6,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.Serializable;
-import java.util.List;
+import java.util.Set;
 
 /*Note: DTO cơ bản là 1 Model, chỉ khác ở chỗ như sau:
   - Điểm 1: Recipe chứa ĐẦY ĐỦ các thuộc tính + hàm, trong khi đó DTO chỉ chứa 1 SỐ CÁI thuộc tính.
@@ -22,18 +22,11 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CreateRecipeDTO implements Serializable {
-
     private String recipeName;
-
     private String description;
-
     private int calories;
-
     private int duration;
     private String instructions;
-
-    private MultipartFile image; /*receives the image as a FILE FROM THE FRONT-END.
-                                Then that image is converted into the URL String (Firebase)
-                                at the CreateRecipeCommandHandler layer.*/
-    private List<String> tagsIdList;
+    private MultipartFile image;
+    private Set<String> tagsIdSet;
 }

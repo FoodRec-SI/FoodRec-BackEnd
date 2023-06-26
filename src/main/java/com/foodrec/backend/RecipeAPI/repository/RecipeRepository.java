@@ -1,6 +1,7 @@
 package com.foodrec.backend.RecipeAPI.repository;
 
 import com.foodrec.backend.RecipeAPI.entity.Recipe;
+import com.foodrec.backend.TagAPI.entity.Tag;
 import jakarta.transaction.Transactional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -12,12 +13,12 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 @Repository
 public interface RecipeRepository extends JpaRepository<Recipe, String> {
-    Page<Recipe> findRecipesByUserIdAndStatus(String userid, boolean status,
-                                              Pageable pageable);
+    Page<Recipe> findRecipesByUserIdAndStatus(String userid, boolean status, Pageable pageable);
 
     @Transactional
     @Modifying
@@ -29,9 +30,5 @@ public interface RecipeRepository extends JpaRepository<Recipe, String> {
 
     @Query(value = "SELECT * FROM Recipe WHERE recipeid = :recipeid AND status = true", nativeQuery = true)
     Recipe findRecipeByRecipeId(@Param("recipeid") String recipeid);
-
-    List<Recipe> findRecipesByTagsTagId(String tagId);
-
-    List<Recipe> findRecipesByTagsTagIdIn(Collection<String> tagIds);
-
+    Optional<Recipe> getRecipeByRecipeIdAndStatus(String recipeId, boolean status);
 }

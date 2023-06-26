@@ -1,99 +1,77 @@
 package com.foodrec.backend.RecipeAPI.command.update_recipe;
 
 import an.awesome.pipelinr.Command;
-import com.foodrec.backend.RecipeAPI.dto.RecipeDTO;
+import com.foodrec.backend.Exception.InvalidDataExceptionHandler;
+import com.foodrec.backend.Exception.NotFoundExceptionHandler;
+import com.foodrec.backend.Exception.UnauthorizedExceptionHandler;
 import com.foodrec.backend.RecipeAPI.dto.UpdateRecipeDTO;
 import com.foodrec.backend.RecipeAPI.entity.Recipe;
+import com.foodrec.backend.RecipeAPI.entity.RecipeTag;
+import com.foodrec.backend.RecipeAPI.entity.RecipeTagId;
 import com.foodrec.backend.RecipeAPI.repository.RecipeRepository;
-import com.foodrec.backend.TagAPI.dto.TagDTO;
+import com.foodrec.backend.RecipeAPI.repository.RecipeTagRepository;
 import com.foodrec.backend.TagAPI.entity.Tag;
 import com.foodrec.backend.TagAPI.repository.TagRepository;
 import com.foodrec.backend.Utils.ImageUtils;
-import com.foodrec.backend.Utils.RecipeUtils;
-import com.foodrec.backend.Exception.InvalidDataExceptionHandler;
-import com.foodrec.backend.Exception.NotFoundExceptionHandler;
 import org.modelmapper.ModelMapper;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.*;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Component
-public class UpdateRecipeCommandHandler implements Command.Handler<UpdateRecipeCommand, RecipeDTO> {
+public class UpdateRecipeCommandHandler implements Command.Handler<UpdateRecipeCommand, HttpStatus> {
     private final RecipeRepository recipeRepository;
-    private ModelMapper modelMapper;
+    private final ModelMapper modelMapper;
     private final TagRepository tagRepository;
-    private final RecipeUtils recipeUtils;
-    private final ArrayList<String> nonNullFields = new ArrayList<>
-            (Arrays.asList("recipeName", "description", "image"));
-    private final ArrayList<String> nonNegativeFields = new ArrayList<>
-            (Arrays.asList("calories", "duration"));
+    private final RecipeTagRepository recipeTagRepository;
 
     public UpdateRecipeCommandHandler(RecipeRepository recipeRepository,
-                                      RecipeUtils recipeUtils, ModelMapper modelMapper,
-                                      TagRepository tagRepository) {
+                                      ModelMapper modelMapper,
+                                      TagRepository tagRepository,
+                                      RecipeTagRepository recipeTagRepository) {
         this.recipeRepository = recipeRepository;
-        this.recipeUtils = recipeUtils;
         this.modelMapper = modelMapper;
         this.tagRepository = tagRepository;
+        this.recipeTagRepository = recipeTagRepository;
     }
 
+    @Transactional
     @Override
-    public RecipeDTO handle(UpdateRecipeCommand updateRecipeCommand)
-            throws InvalidDataExceptionHandler {
-        RecipeDTO result = null;
+    public HttpStatus handle(UpdateRecipeCommand command) {
         ImageUtils imageUtils = new ImageUtils();
-        UpdateRecipeDTO updateRecipeDTO = updateRecipeCommand.getUpdateRecipeDTO();
-        String recipeId = updateRecipeDTO.getRecipeId();
-        String imageUrl = (String) imageUtils.upload(updateRecipeDTO.getImage(), "recipe", recipeId);
-
-
-        boolean isRecipeIdValid = recipeUtils.validateRecipeId(updateRecipeCommand
-                .getUpdateRecipeDTO().getRecipeId());
-        if (!isRecipeIdValid) {
-            throw new InvalidDataExceptionHandler("The format of RecipeId is invalid." +
-                    " Please try again.");
+        UpdateRecipeDTO updateRecipeDTO = command.getUpdateRecipeDTO();
+        if (updateRecipeDTO.getTagIdSet().isEmpty()) {
+            throw new InvalidDataExceptionHandler("Invalid tag ID !");
         }
-
-        Recipe foundRecipe = recipeRepository.findById(updateRecipeCommand.
-                getUpdateRecipeDTO().getRecipeId()).get();
-        if (foundRecipe==null) {
+        String imageUrl = (String) imageUtils.upload(updateRecipeDTO.getImageFile(), "recipe", updateRecipeDTO.getRecipeId());
+        Optional<Recipe> recipeOptional = recipeRepository.findById(updateRecipeDTO.getRecipeId());
+        if (recipeOptional.isEmpty() || !recipeOptional.get().isStatus()) {
             throw new NotFoundExceptionHandler("The provided RecipeId " +
                     "is not found or already deleted. Please try again.");
         }
-        if (!foundRecipe.isStatus()) {
-            throw new NotFoundExceptionHandler("The provided RecipeId " +
-                    "is not found or already deleted. Please try again.");
+        Recipe recipe = recipeOptional.get();
+        if (!command.getUserId().equals(recipe.getUserId())) {
+            throw new UnauthorizedExceptionHandler("You are not authorized to delete this recipe!");
         }
-
-        boolean isValid = recipeUtils.fieldValidator(updateRecipeCommand.
-                getUpdateRecipeDTO(), nonNullFields, nonNegativeFields);
-        if (!isValid) {
-            throw new InvalidDataExceptionHandler
-                    ("One of the recipe attributes (name,description, calories, duration, image)" +
-                            " is invalid. Please try again.");
-        }
-
-//        Step 1: Updates the recipe details
-        foundRecipe = modelMapper.map(updateRecipeDTO, Recipe.class);
-        foundRecipe.setImage(imageUrl);
-        foundRecipe.setRecipeId(recipeId);
-        foundRecipe.setUserId(updateRecipeCommand.getUserId());
-        foundRecipe.setStatus(true);
-
-        //Step 2: Updates the tag list of that recipe
-        List<String> tagIdList = updateRecipeCommand.getUpdateRecipeDTO().getTagsIdList();
-        Set<Tag> tempTags = foundRecipe.getTags();
-        tempTags.clear();
-
-        for(String eachTagId:tagIdList){
-            Tag eachTag = tagRepository.findById(eachTagId).get();
-            tempTags.add(eachTag); //adds the new Tags.
-        }
-        foundRecipe.setTags(tempTags);
-        recipeRepository.save(foundRecipe);
-
-        //Step 3: Returns the result of the updated recipe (in DTO).
-        result = modelMapper.map(foundRecipe, RecipeDTO.class);
-        return result;
+        Set<String> tagIdSet = updateRecipeDTO.getTagIdSet();
+        Set<Tag> tags = tagRepository.getTagsByTagIdIn(tagIdSet);
+        recipeTagRepository.deleteRecipeTagByRecipe_RecipeId(recipe.getRecipeId());
+        Recipe finalRecipe = recipe;
+        List<RecipeTag> recipeTags = tags.stream()
+                .map(tag -> new RecipeTag(new RecipeTagId(finalRecipe.getRecipeId(), tag.getTagId()), finalRecipe, tag))
+                .collect(Collectors.toList());
+        recipeTagRepository.saveAll(recipeTags);
+        recipe = modelMapper.map(updateRecipeDTO, Recipe.class);
+        recipe.setUserId(command.getUserId());
+        recipe.setStatus(true);
+        recipe.setImage(imageUrl);
+        recipeRepository.save(recipe);
+        return HttpStatus.OK;
     }
 }
+

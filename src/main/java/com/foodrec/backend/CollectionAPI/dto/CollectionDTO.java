@@ -13,4 +13,5 @@ public class CollectionDTO {
     private String description;
     private String image;
     private String userId;
+    private int countPost;
 }

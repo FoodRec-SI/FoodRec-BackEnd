@@ -1,9 +1,9 @@
 package com.foodrec.backend.CollectionAPI.controller;
 
 import an.awesome.pipelinr.Pipeline;
-import com.foodrec.backend.CollectionAPI.command.upate_collection.add_post_to_collection.AddPostCommand;
 import com.foodrec.backend.CollectionAPI.command.create_collection.CreateCollectionCommand;
 import com.foodrec.backend.CollectionAPI.command.delete_collection.DeleteCollectionCommand;
+import com.foodrec.backend.CollectionAPI.command.upate_collection.add_post_to_collection.AddPostCommand;
 import com.foodrec.backend.CollectionAPI.command.upate_collection.remove_post_from_collection.RemovePostCommand;
 import com.foodrec.backend.CollectionAPI.command.upate_collection.update_data_collection.UpdateCollectionCommand;
 import com.foodrec.backend.CollectionAPI.dto.*;
@@ -84,7 +84,7 @@ public class CollectionCommandController {
             DeleteCollectionCommand command = new DeleteCollectionCommand(deleteCollectionDTO, userId);
             HttpStatus status = pipeline.send(command);
             responseEntity = ResponseEntity.status(status).body("Delete collection successfully!");
-        } catch (InvalidDataExceptionHandler | DuplicateExceptionHandler | UnauthorizedExceptionHandler e) {
+        } catch (InvalidDataExceptionHandler | NotFoundExceptionHandler | UnauthorizedExceptionHandler e) {
             HttpStatus status = e.getClass().getAnnotation(ResponseStatus.class).value();
             return ResponseEntity.status(status).body(e.getMessage());
         } catch (Exception e) {
@@ -93,7 +93,7 @@ public class CollectionCommandController {
         return responseEntity;
     }
 
-    @Operation(description = "Delete collection by collection ID. Must give collection ID!",
+    @Operation(description = "Update collection by collection ID. Must give collection ID!",
             security = {@SecurityRequirement(name = BEARER_KEY_SECURITY_SCHEME)})
     @RequestMapping(value = "/api/member/collection", method = RequestMethod.PUT)
     public ResponseEntity updateCollection(@RequestBody UpdateCollectionDTO updateCollectionDTO) {
@@ -128,6 +128,7 @@ public class CollectionCommandController {
             HttpStatus status = e.getClass().getAnnotation(ResponseStatus.class).value();
             return ResponseEntity.status(status).body(e.getMessage());
         } catch (Exception e) {
+            System.out.println(e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Internal server error!");
         }
         return responseEntity;

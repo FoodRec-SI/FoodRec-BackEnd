@@ -1,4 +1,4 @@
-package com.foodrec.backend.AccountAPI.command.delete_account;
+package com.foodrec.backend.AccountAPI.command.delete_account.delete_account_information;
 
 import an.awesome.pipelinr.Command;
 import com.foodrec.backend.AccountAPI.dto.AccountDTO;
@@ -6,10 +6,12 @@ import com.foodrec.backend.AccountAPI.dto.DeleteAccountDTO;
 import com.foodrec.backend.AccountAPI.entity.Account;
 import com.foodrec.backend.AccountAPI.repository.AccountRepository;
 import com.foodrec.backend.Exception.NotFoundExceptionHandler;
+import com.foodrec.backend.Utils.ImageUtils;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
+import java.io.IOException;
 import java.util.Optional;
 
 @Component
@@ -26,25 +28,36 @@ public class DeleteAccountCommandHandler implements Command.Handler<DeleteAccoun
     @Override
     public HttpStatus handle(DeleteAccountCommand command) {
 
+        ImageUtils imageUtils = new ImageUtils();
         DeleteAccountDTO deleteAccountDTO = command.getDeleteAccountDTO();
         Optional<Account> optionalAccount = accountRepository.findById(command.getUserId());
-        if (optionalAccount.isEmpty()){
+        if (optionalAccount.isEmpty()) {
             throw new NotFoundExceptionHandler("Invalid Account !");
         }
         Account account = optionalAccount.get();
 
-        if (deleteAccountDTO.isDescriptionDeletion()){
+        if (deleteAccountDTO.isDescriptionDeletion()) {
             account.setDescription(null);
         }
 
-        if (deleteAccountDTO.isProfileImageDeletion()){
-            String deletedProfileImage = "https://storage.googleapis.com/foodrec-389515.appspot.com/profile-default.png";
-            account.setProfileImageName(deletedProfileImage);
+        if (deleteAccountDTO.isProfileImageDeletion()) {
+            try {
+                imageUtils.delete("profile-".concat(command.getUserId()));
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+            String defaultProfileImage = "https://storage.googleapis.com/foodrec-389515.appspot.com/profile-default.jpg";
+            account.setProfileImageName(defaultProfileImage);
         }
 
-        if (deleteAccountDTO.isBackgroundImageDeletion()){
-            String deletedBackgroundImage = "https://storage.googleapis.com/foodrec-389515.appspot.com/background-default.jpg";
-            account.setBackgroundImageName(deletedBackgroundImage);
+        if (deleteAccountDTO.isBackgroundImageDeletion()) {
+            try {
+                imageUtils.delete("background-".concat(command.getUserId()));
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+            String defaultBackgroundImage = "https://storage.googleapis.com/foodrec-389515.appspot.com/background-default.jpg";
+            account.setBackgroundImageName(defaultBackgroundImage);
         }
 
         accountRepository.save(account);

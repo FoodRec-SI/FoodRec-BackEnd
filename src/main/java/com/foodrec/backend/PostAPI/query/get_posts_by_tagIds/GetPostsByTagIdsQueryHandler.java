@@ -7,8 +7,8 @@ import com.foodrec.backend.PostAPI.dto.PostDTO;
 import com.foodrec.backend.PostAPI.entity.Post;
 import com.foodrec.backend.PostAPI.entity.PostStatus;
 import com.foodrec.backend.PostAPI.repository.PostRepository;
-import com.foodrec.backend.RecipeAPI.entity.Recipe;
-import com.foodrec.backend.RecipeAPI.repository.RecipeRepository;
+import com.foodrec.backend.RecipeAPI.entity.RecipeTag;
+import com.foodrec.backend.RecipeAPI.repository.RecipeTagRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Component;
@@ -21,13 +21,12 @@ import java.util.List;
 public class GetPostsByTagIdsQueryHandler implements Command.Handler<GetPostsByTagIdsQuery, Page<PostDTO>> {
     private final PostRepository postRepository;
     private final ModelMapper modelMapper;
-    private final RecipeRepository recipeRepository;
+    private final RecipeTagRepository recipeTagRepository;
 
-
-    public GetPostsByTagIdsQueryHandler(PostRepository postRepository, ModelMapper modelMapper, RecipeRepository recipeRepository) {
+    public GetPostsByTagIdsQueryHandler(PostRepository postRepository, ModelMapper modelMapper, RecipeTagRepository recipeTagRepository) {
         this.postRepository = postRepository;
         this.modelMapper = modelMapper;
-        this.recipeRepository = recipeRepository;
+        this.recipeTagRepository = recipeTagRepository;
     }
 
     @Transactional
@@ -38,10 +37,10 @@ public class GetPostsByTagIdsQueryHandler implements Command.Handler<GetPostsByT
             throw new InvalidDataExceptionHandler("Invalid data!");
         }
         Pageable pageable = PageRequest.of(query.getPageNumber(), query.getPageSize(), Sort.by("time").descending());
-        List<Recipe> recipes = recipeRepository.findRecipesByTagsTagIdIn(query.getTagIds());
+        List<RecipeTag> recipeTags = recipeTagRepository.getRecipeTagsByTag_TagIdIn(query.getTagIds());
         List<String> recipeIds = new ArrayList<>();
-        for (Recipe recipe : recipes) {
-            recipeIds.add(recipe.getRecipeId());
+        for (RecipeTag recipeTag : recipeTags) {
+            recipeIds.add(recipeTag.getRecipeTagId().getRecipeId());
         }
         Page<Post> postsPage = postRepository.findPostsByRecipeIdInAndStatus(recipeIds, 2, pageable);
         if (postsPage.isEmpty()) {

@@ -9,6 +9,6 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class GetPostById implements Command<PostDTO> {
+public class GetPostByIdQuery implements Command<PostDTO> {
     private String postId;
 }

@@ -7,7 +7,7 @@ import com.foodrec.backend.Exception.NotFoundExceptionHandler;
 import com.foodrec.backend.PostAPI.dto.PostDTO;
 import com.foodrec.backend.PostAPI.entity.PostStatus;
 import com.foodrec.backend.PostAPI.query.get_all_posts.GetAllPostsApprovedQuery;
-import com.foodrec.backend.PostAPI.query.get_post_by_id.GetPostById;
+import com.foodrec.backend.PostAPI.query.get_post_by_id.GetPostByIdQuery;
 import com.foodrec.backend.PostAPI.query.get_posts_by_collection_id.GetPostByCollectionIdQuery;
 import com.foodrec.backend.PostAPI.query.get_posts_by_recipe_name.GetPostsByRecipeNameQuery;
 import com.foodrec.backend.PostAPI.query.get_posts_by_status_by_moderator.GetPostByStatusQuery;
@@ -25,8 +25,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 import static com.foodrec.backend.Config.SwaggerConfig.BEARER_KEY_SECURITY_SCHEME;
 
@@ -117,7 +117,7 @@ public class PostQueryController {
     @GetMapping("/api/public/posts/some/{tagIds}")
     public ResponseEntity getPostsByTagIds(@RequestParam(defaultValue = "0") int pageNumber,
                                            @RequestParam(defaultValue = "6") int pageSize,
-                                           @RequestParam Collection<String> tagIds) {
+                                           @RequestParam Set<String> tagIds) {
         try {
             GetPostsByTagIdsQuery query = new GetPostsByTagIdsQuery(pageNumber, pageSize, tagIds);
             Page<PostDTO> result = pipeline.send(query);
@@ -132,17 +132,16 @@ public class PostQueryController {
 
     @Operation(description = "Get post by post ID.",
             security = {@SecurityRequirement(name = BEARER_KEY_SECURITY_SCHEME)})
-    @GetMapping("/api/member/{postId}")
+    @GetMapping("/api/member/post/{postId}")
     public ResponseEntity getPostById(@PathVariable String postId) {
         try {
-            GetPostById query = new GetPostById(postId);
+            GetPostByIdQuery query = new GetPostByIdQuery(postId);
             PostDTO result = pipeline.send(query);
             return new ResponseEntity<>(result, HttpStatus.OK);
         } catch (InvalidDataExceptionHandler | NotFoundExceptionHandler e) {
             HttpStatus status = e.getClass().getAnnotation(ResponseStatus.class).value();
             return ResponseEntity.status(status).body(e.getMessage());
         } catch (Exception e) {
-            System.out.println(e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
     }
