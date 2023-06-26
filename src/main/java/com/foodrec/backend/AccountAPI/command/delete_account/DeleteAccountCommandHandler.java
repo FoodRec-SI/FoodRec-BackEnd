@@ -1,4 +1,4 @@
-package com.foodrec.backend.AccountAPI.command.delete_account.delete_account_information;
+package com.foodrec.backend.AccountAPI.command.delete_account;
 
 import an.awesome.pipelinr.Command;
 import com.foodrec.backend.AccountAPI.dto.AccountDTO;
@@ -27,7 +27,6 @@ public class DeleteAccountCommandHandler implements Command.Handler<DeleteAccoun
 
     @Override
     public HttpStatus handle(DeleteAccountCommand command) {
-
         ImageUtils imageUtils = new ImageUtils();
         DeleteAccountDTO deleteAccountDTO = command.getDeleteAccountDTO();
         Optional<Account> optionalAccount = accountRepository.findById(command.getUserId());
@@ -42,7 +41,7 @@ public class DeleteAccountCommandHandler implements Command.Handler<DeleteAccoun
 
         if (deleteAccountDTO.isProfileImageDeletion()) {
             try {
-                imageUtils.delete("profile-".concat(command.getUserId()));
+                imageUtils.deleteImage(account.getProfileImageName());
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
@@ -52,7 +51,7 @@ public class DeleteAccountCommandHandler implements Command.Handler<DeleteAccoun
 
         if (deleteAccountDTO.isBackgroundImageDeletion()) {
             try {
-                imageUtils.delete("background-".concat(command.getUserId()));
+                imageUtils.deleteImage(account.getBackgroundImageName());
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }

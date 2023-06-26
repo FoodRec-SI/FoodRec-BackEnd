@@ -33,7 +33,8 @@ public class GetAccountByIdQueryHandler implements Command.Handler<GetAccountByI
             throw new NotFoundExceptionHandler("Invalid Account !");
         }
         Account account = optionalAccount.get();
-        Collection<TagDTO> tagDTOCollection = tagRepository.getTagsByAccountsUserId(command.getUserId()).stream().map(tag -> modelMapper.map(tag, TagDTO.class)).toList();
+        Collection<TagDTO> tagDTOCollection = tagRepository.getTagsByAccountTags_Account(account)
+                .stream().map(tag -> modelMapper.map(tag, TagDTO.class)).toList();
         AccountDTO accountDTO = modelMapper.map(account, AccountDTO.class);
         accountDTO.setTagsCollection(tagDTOCollection);
         return accountDTO;

@@ -1,8 +1,7 @@
 package com.foodrec.backend.TagAPI.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.foodrec.backend.AccountAPI.entity.Account;
+import com.foodrec.backend.AccountAPI.entity.AccountTag;
 import com.foodrec.backend.RecipeAPI.entity.RecipeTag;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -19,7 +18,6 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Tag {
-
     @Id
     @Column(name = "tagid")
     private String tagId;
@@ -30,9 +28,10 @@ public class Tag {
     @JsonIgnore
     @OneToMany(mappedBy = "tag", cascade = CascadeType.ALL)
     @EqualsAndHashCode.Exclude
-    private Set<RecipeTag> recipeTags;
+    private Set<AccountTag> accountTags;
 
-    @ManyToMany(mappedBy = "accountTags")
-    @JsonManagedReference
-    private Set<Account> accounts = new HashSet<>();
+    @JsonIgnore
+    @OneToMany(mappedBy = "tag", cascade = CascadeType.ALL)
+    @EqualsAndHashCode.Exclude
+    private Set<RecipeTag> recipeTags;
 }

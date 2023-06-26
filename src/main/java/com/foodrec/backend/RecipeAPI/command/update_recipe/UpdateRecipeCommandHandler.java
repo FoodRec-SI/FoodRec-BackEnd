@@ -21,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Component
@@ -48,7 +49,6 @@ public class UpdateRecipeCommandHandler implements Command.Handler<UpdateRecipeC
         if (updateRecipeDTO.getTagIdSet().isEmpty()) {
             throw new InvalidDataExceptionHandler("Invalid tag ID !");
         }
-        String imageUrl = (String) imageUtils.upload(updateRecipeDTO.getImageFile(), "recipe", updateRecipeDTO.getRecipeId());
         Optional<Recipe> recipeOptional = recipeRepository.findById(updateRecipeDTO.getRecipeId());
         if (recipeOptional.isEmpty() || !recipeOptional.get().isStatus()) {
             throw new NotFoundExceptionHandler("The provided RecipeId " +
@@ -58,6 +58,8 @@ public class UpdateRecipeCommandHandler implements Command.Handler<UpdateRecipeC
         if (!command.getUserId().equals(recipe.getUserId())) {
             throw new UnauthorizedExceptionHandler("You are not authorized to delete this recipe!");
         }
+        String imageUrl = imageUtils.updateImage(recipe.getImage(), updateRecipeDTO.getImageFile(),
+                "recipe", String.valueOf(UUID.randomUUID()));
         Set<String> tagIdSet = updateRecipeDTO.getTagIdSet();
         Set<Tag> tags = tagRepository.getTagsByTagIdIn(tagIdSet);
         recipeTagRepository.deleteRecipeTagByRecipe_RecipeId(recipe.getRecipeId());

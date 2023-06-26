@@ -2,10 +2,10 @@ package com.foodrec.backend.AccountAPI.controller;
 
 import an.awesome.pipelinr.Pipeline;
 
-import com.foodrec.backend.AccountAPI.command.create_account.create_account_default_information.CreateAccountCommand;
-import com.foodrec.backend.AccountAPI.command.delete_account.delete_account_information.DeleteAccountCommand;
+import com.foodrec.backend.AccountAPI.command.create_account.CreateAccountCommand;
+import com.foodrec.backend.AccountAPI.command.delete_account.DeleteAccountCommand;
 import com.foodrec.backend.AccountAPI.command.update_account.UpdateAccountCommand;
-import com.foodrec.backend.AccountAPI.command.create_account.create_account_tags.CreateAccountTagsCommand;
+import com.foodrec.backend.AccountAPI.command.account_tags.AccountTagsCommand;
 import com.foodrec.backend.AccountAPI.dto.*;
 import com.foodrec.backend.Utils.GetCurrentUserData;
 import com.foodrec.backend.AccountAPI.dto.AccountDTO;
@@ -23,7 +23,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Collection;
+import java.util.Set;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -51,14 +51,14 @@ public class AccountCommandController {
         return responseEntity;
     }
 
-    @Operation(description = "Add user tags"
+    @Operation(description = "Modify user tags. This endpoint can be used for add, update, and delete tags"
             , security = {@SecurityRequirement(name = BEARER_KEY_SECURITY_SCHEME)})
-    @RequestMapping(value = "/api/member/account/create/tags", method = RequestMethod.POST)
-    public ResponseEntity updateAccountTags(@RequestParam Collection<String> tagIds) {
+    @RequestMapping(value = "/api/member/account/tags", method = RequestMethod.POST)
+    public ResponseEntity updateAccountTags(@RequestParam Set<String> tagIds) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String userId = GetCurrentUserData.getCurrentUserId(authentication);
-        CreateAccountTagsCommand createAccountTagsCommand = new CreateAccountTagsCommand(tagIds, userId);
-        HttpStatus status = pipeline.send(createAccountTagsCommand);
+        AccountTagsCommand accountTagsCommand = new AccountTagsCommand(tagIds, userId);
+        HttpStatus status = pipeline.send(accountTagsCommand);
         return new ResponseEntity<>(status);
     }
 
