@@ -40,11 +40,12 @@ public class DeleteRecipeCommandHandler implements Command.Handler<DeleteRecipeC
         if (foundRecipe.isEmpty() || !foundRecipe.get().isStatus()) {
             throw new NotFoundExceptionHandler("Not found recipe !");
         }
-        if (foundRecipe.get().getUserId().equals(deleteRecipeCommand.getUserId())) {
+        if (!foundRecipe.get().getUserId().equals(deleteRecipeCommand.getUserId())) {
             throw new UnauthorizedExceptionHandler("You are not authorized to delete this recipe !");
         }
         Recipe recipe = foundRecipe.get();
         recipeTagRepository.deleteRecipeTagByRecipe_RecipeId(recipe.getRecipeId());
+        recipe.setStatus(false);
         recipeRepository.save(recipe);
         try {
             imageUtils.delete(foundRecipe.get().getImage());

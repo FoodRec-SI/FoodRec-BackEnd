@@ -36,7 +36,7 @@ public class GetPostsByTagIdQueryHandler implements Command.Handler<GetPostsByTa
                 query.getTagId().isEmpty() || query.getTagId().equals("")) {
             throw new InvalidDataExceptionHandler("Invalid data!");
         }
-        Pageable pageable = PageRequest.of(query.getPageNumber(), query.getPageSize(), Sort.by("time").descending());
+        Pageable pageable = PageRequest.of(query.getPageNumber(), query.getPageSize(), Sort.by("createdTime").descending());
         List<RecipeTag> recipes = recipeTagRepository.getRecipeTagsByTag_TagId(query.getTagId());
         List<String> recipeIds = new ArrayList<>();
         for (RecipeTag RecipeTag : recipes) {

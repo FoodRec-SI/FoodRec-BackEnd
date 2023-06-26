@@ -19,5 +19,6 @@ public class RecipeDTO {
     private int duration;
     private String image;
     private String instructions;
+    private String ingredientList;
     private List<TagDTO> tags;
 }

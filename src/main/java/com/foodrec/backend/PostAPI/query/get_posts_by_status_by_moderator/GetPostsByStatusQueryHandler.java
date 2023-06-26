@@ -27,7 +27,7 @@ public class GetPostsByStatusQueryHandler implements Command.Handler<GetPostBySt
             throw new InvalidDataExceptionHandler("Invalid data!");
         }
         List<Integer> statusNum = PostStatus.convertPostStatusesToIntArray(query.getPostStatuses());
-        Pageable pageable = PageRequest.of(query.getPageNumber(), query.getPageSize(), Sort.by("time").descending());
+        Pageable pageable = PageRequest.of(query.getPageNumber(), query.getPageSize(), Sort.by("createdTime").descending());
         Page<Post> postsPage = postRepository.findAllByStatusIn(statusNum, pageable);
         List<PostDTO> postDTOS = postsPage.getContent().stream().map(post -> {
             PostDTO postDTO = modelMapper.map(post, PostDTO.class);

@@ -29,7 +29,7 @@ public class GetAllPostsApprovedQueryHandler implements Command.Handler<GetAllPo
         if (query.getPageNumber() < 0 || query.getPageSize() < 1) {
             throw new InvalidDataExceptionHandler("Invalid data!");
         }
-        Pageable pageable = PageRequest.of(query.getPageNumber(), query.getPageSize(), Sort.by("time").descending());
+        Pageable pageable = PageRequest.of(query.getPageNumber(), query.getPageSize(), Sort.by("createdTime").descending());
         Page<Post> postsPage = postRepository.findAllByStatus(2, pageable);
         List<PostDTO> postDTOS = postsPage.getContent().stream().map(post -> {
             PostDTO postDTO = modelMapper.map(post, PostDTO.class);

@@ -19,5 +19,6 @@ public class UpdateRecipeDTO implements Serializable {
     private int duration;
     private MultipartFile imageFile;
     private String instructions;
+    private String ingredientList;
     private Set<String> tagIdSet;
 }

@@ -1,9 +1,12 @@
 package com.foodrec.backend.PostAPI.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.foodrec.backend.AccountAPI.entity.Account;
+import com.foodrec.backend.MealAPI.entity.MealPost;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
@@ -46,14 +49,30 @@ public class Post {
     @Column(name = "image")
     private String image;
 
-    @Column(name = "time")
-    private LocalDateTime time;
+    @Column(name = "created-time")
+    private LocalDateTime createdTime;
 
     @Column(name = "verified-time")
     private LocalDateTime verifiedTime;
 
+    @Column(name = "average-score")
+    private double averageScore;
+
+    @Column(name = "ingredient-list")
+    private String ingredientList;
+
+    @Column(name = "instruction")
+    private String instruction;
+
     @OneToMany(mappedBy = "post")
+    @JsonIgnore
+    @EqualsAndHashCode.Exclude
     private Set<PostCollection> postCollections;
+
+    @OneToMany(mappedBy = "post")
+    @JsonIgnore
+    @EqualsAndHashCode.Exclude
+    private Set<MealPost> mealPosts;
 
     //M-M relationship with the Likes table (1 Account Likes Many Posts,
     //and 1 Post is Liked by Many Accounts)

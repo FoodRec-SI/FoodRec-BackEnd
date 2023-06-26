@@ -29,7 +29,7 @@ public class GetPostsByRecipeNameQueryHandler implements Command.Handler<GetPost
                 query.getRecipeName().isEmpty() || query.getRecipeName().equals("")) {
             throw new InvalidDataExceptionHandler("Invalid data!");
         }
-        Pageable pageable = PageRequest.of(query.getPageNumber(), query.getPageSize(), Sort.by("time").descending());
+        Pageable pageable = PageRequest.of(query.getPageNumber(), query.getPageSize(), Sort.by("createdTime").descending());
         Page<Post> postsPage = postRepository.findPostsByRecipeNameContainingIgnoreCaseAndStatus(query.getRecipeName(), 2, pageable);
         if (postsPage.isEmpty()) {
             throw new NotFoundExceptionHandler("Not found!");

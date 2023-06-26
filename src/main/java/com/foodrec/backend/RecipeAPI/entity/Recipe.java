@@ -2,7 +2,10 @@ package com.foodrec.backend.RecipeAPI.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 import java.util.Set;
 
@@ -10,7 +13,6 @@ import java.util.Set;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(exclude = "recipeTags")
 @Entity
 public class Recipe {
     @Id
@@ -41,7 +43,10 @@ public class Recipe {
     @Column(name = "instructions")
     private String instructions;
 
+    @Column(name = "ingredient-list")
+    private String ingredientList;
     @OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL)
     @JsonIgnore
+    @EqualsAndHashCode.Exclude
     private Set<RecipeTag> recipeTags;
 }

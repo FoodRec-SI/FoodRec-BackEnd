@@ -1,6 +1,10 @@
 package com.foodrec.backend.PostAPI.command.create_post;
 
 import an.awesome.pipelinr.Command;
+import com.foodrec.backend.Exception.DuplicateExceptionHandler;
+import com.foodrec.backend.Exception.InvalidDataExceptionHandler;
+import com.foodrec.backend.Exception.NotFoundExceptionHandler;
+import com.foodrec.backend.Exception.UnauthorizedExceptionHandler;
 import com.foodrec.backend.PostAPI.dto.CreatePostDTO;
 import com.foodrec.backend.PostAPI.dto.PostDTO;
 import com.foodrec.backend.PostAPI.entity.Post;
@@ -9,10 +13,6 @@ import com.foodrec.backend.PostAPI.repository.PostRepository;
 import com.foodrec.backend.RecipeAPI.entity.Recipe;
 import com.foodrec.backend.RecipeAPI.repository.RecipeRepository;
 import com.foodrec.backend.Utils.IdGenerator;
-import com.foodrec.backend.Exception.DuplicateExceptionHandler;
-import com.foodrec.backend.Exception.InvalidDataExceptionHandler;
-import com.foodrec.backend.Exception.NotFoundExceptionHandler;
-import com.foodrec.backend.Exception.UnauthorizedExceptionHandler;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -51,11 +51,11 @@ public class CreatePostCommandHandler implements Command.Handler<CreatePostComma
             throw new UnauthorizedExceptionHandler("You are not allowed to create post!");
         }
         Post post = new Post();
-        List<Post> posts  = postRepository.findPostByRecipeId(createPostDTO.getRecipeId());
+        List<Post> posts = postRepository.findPostByRecipeId(createPostDTO.getRecipeId());
         for (Post value : posts) {
             if (value.getRecipeName().toLowerCase().trim().equals(optionalRecipe.get().getRecipeName().toLowerCase().trim()) &&
                     value.getDescription().toLowerCase().trim().equals(optionalRecipe.get().getDescription().toLowerCase().trim())) {
-                    throw new DuplicateExceptionHandler("Duplicate recipe!");
+                throw new DuplicateExceptionHandler("Duplicate recipe!");
             }
         }
         // Add new data for Post entity
@@ -64,16 +64,18 @@ public class CreatePostCommandHandler implements Command.Handler<CreatePostComma
         post.setPostId(postId);
         post.setUserId(command.getUserId());
         post.setRecipeId(createPostDTO.getRecipeId());
-        post.setTime(localDateTime);
+        post.setVerifiedTime(localDateTime);
         post.setStatus(PostStatus.PENDING_APPROVAL.getValue());
         post.setRecipeName(optionalRecipe.get().getRecipeName());
         post.setDescription(optionalRecipe.get().getDescription());
         post.setCalories(optionalRecipe.get().getCalories());
         post.setDuration(optionalRecipe.get().getDuration());
         post.setImage(optionalRecipe.get().getImage());
+        post.setIngredientList(optionalRecipe.get().getIngredientList());
+        post.setInstruction(optionalRecipe.get().getInstructions());
         postRepository.save(post);
         Optional<Post> optionalPost = postRepository.findById(post.getPostId());
-        if(optionalPost.isEmpty()){
+        if (optionalPost.isEmpty()) {
             throw new NotFoundExceptionHandler("Can not create post!");
         }
         PostDTO postDTO = modelMapper.map(optionalPost.get(), PostDTO.class);
