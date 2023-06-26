@@ -8,20 +8,22 @@ import com.foodrec.backend.TagAPI.dto.TagDTO;
 import com.foodrec.backend.TagAPI.entity.Tag;
 import com.foodrec.backend.TagAPI.repository.TagRepository;
 import org.modelmapper.ModelMapper;
+import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Component
 public class GetTagsByRecipeIdQueryHandler implements Command.Handler<GetTagsByRecipeIdQuery, List<TagDTO>> {
-    private final RecipeRepository recipeRepository;
     private final ModelMapper modelMapper;
     private final TagRepository tagRepository;
+    private final RecipeRepository recipeRepository;
 
-    public GetTagsByRecipeIdQueryHandler(RecipeRepository recipeRepository, ModelMapper modelMapper, TagRepository tagRepository) {
-        this.recipeRepository = recipeRepository;
+    public GetTagsByRecipeIdQueryHandler(ModelMapper modelMapper, TagRepository tagRepository, RecipeRepository recipeRepository) {
         this.modelMapper = modelMapper;
         this.tagRepository = tagRepository;
+        this.recipeRepository = recipeRepository;
     }
 
     @Transactional
@@ -30,8 +32,8 @@ public class GetTagsByRecipeIdQueryHandler implements Command.Handler<GetTagsByR
         if (query.getRecipeId() == null || query.getRecipeId().equals("")) {
             throw new InvalidDataExceptionHandler("Invalid data!");
         }
-        List<Tag> tagList = tagRepository.findTagsByRecipesRecipeId(query.getRecipeId());
-        if (tagList.isEmpty()){
+        List<Tag> tagList = tagRepository.findTagsByRecipeTags_Recipe(recipeRepository.findById(query.getRecipeId()).get());
+        if (tagList.isEmpty()) {
             throw new NotFoundExceptionHandler("Not found tag!");
         }
         return tagList.stream().map(tag -> modelMapper.map(tag, TagDTO.class)).collect(Collectors.toList());

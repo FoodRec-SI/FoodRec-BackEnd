@@ -58,23 +58,21 @@ public class PostCommandController {
     @Operation(description = "Delete post by user who create post. You must give post ID.",
             security = {@SecurityRequirement(name = BEARER_KEY_SECURITY_SCHEME)})
     @RequestMapping(value = "/api/member/post", method = RequestMethod.DELETE)
-    public ResponseEntity<String> removePostByUser(@RequestBody DeletePostDTO deletePostDTO) {
+    public ResponseEntity removePostByUser(@RequestBody DeletePostDTO deletePostDTO) {
+        ResponseEntity responseEntity = null;
         try {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             String userId = GetCurrentUserData.getCurrentUserId(authentication);
             DeletePostCommand command = new DeletePostCommand(deletePostDTO, userId);
-            boolean isRemoved = pipeline.send(command);
-            if (isRemoved) {
-                return ResponseEntity.ok("Post delete successfully!");
-            } else {
-                return ResponseEntity.badRequest().body("Invalid post data");
-            }
+            HttpStatus status = pipeline.send(command);
+            responseEntity = ResponseEntity.status(status).body("Create collection successfully!");
         } catch (InvalidDataExceptionHandler | DuplicateExceptionHandler | UnauthorizedExceptionHandler e) {
             HttpStatus status = e.getClass().getAnnotation(ResponseStatus.class).value();
             return ResponseEntity.status(status).body(e.getMessage());
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Internal server error!");
         }
+        return responseEntity;
     }
 
     @Operation(description = "Update status(PENDING_APPROVAL, APPROVED, DELETED) by moderator. You must give post ID and post status.",
@@ -93,7 +91,6 @@ public class PostCommandController {
             HttpStatus status = e.getClass().getAnnotation(ResponseStatus.class).value();
             return ResponseEntity.status(status).body(e.getMessage());
         } catch (Exception e) {
-            System.out.println(e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Internal server error");
         }
         return responseEntity;

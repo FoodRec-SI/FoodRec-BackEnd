@@ -1,16 +1,12 @@
 package com.foodrec.backend.CollectionAPI.dto;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class DeleteCollectionDTO {
     private String collectionId;
-
-    public DeleteCollectionDTO() {
-    }
-
-    public String getCollectionId() {
-        return collectionId;
-    }
-
-    public void setCollectionId(String collectionId) {
-        this.collectionId = collectionId;
-    }
 }

@@ -26,8 +26,7 @@ public class CreateCollectionCommandHandler implements Command.Handler<CreateCol
     @Override
     public HttpStatus handle(CreateCollectionCommand command) {
         CreateCollectionDTO createCollectionDTO = command.getCreateCollectionDTO();
-        if(createCollectionDTO.getCollectionName() == null || createCollectionDTO.getCollectionName().isBlank() ||
-                createCollectionDTO.getDescription() == null || createCollectionDTO.getDescription().isBlank()){
+        if (createCollectionDTO.getCollectionName() == null || createCollectionDTO.getCollectionName().isBlank()) {
             throw new InvalidDataExceptionHandler("Invalid Data!");
         }
         String collectionId = IdGenerator.generateNextId(Collection.class, "collectionId");

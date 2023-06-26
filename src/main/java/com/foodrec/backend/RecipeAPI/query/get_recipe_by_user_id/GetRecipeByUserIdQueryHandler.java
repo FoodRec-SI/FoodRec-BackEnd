@@ -1,16 +1,18 @@
-package com.foodrec.backend.RecipeAPI.query.get_recipe_by_id;
+package com.foodrec.backend.RecipeAPI.query.get_recipe_by_user_id;
 
 import an.awesome.pipelinr.Command;
 import com.foodrec.backend.Exception.InvalidPageInfoException;
+import com.foodrec.backend.Exception.NotFoundExceptionHandler;
 import com.foodrec.backend.RecipeAPI.dto.RecipeDTO;
-import com.foodrec.backend.RecipeAPI.entity.Recipe;
 import com.foodrec.backend.RecipeAPI.repository.RecipeRepository;
+import com.foodrec.backend.TagAPI.dto.TagDTO;
+import com.foodrec.backend.TagAPI.repository.TagRepository;
 import com.foodrec.backend.Utils.PageUtils;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -19,15 +21,19 @@ public class GetRecipeByUserIdQueryHandler implements Command.Handler<GetRecipeB
     private final RecipeRepository recipeRepository;
     private final ModelMapper modelMapper;
     private final PageUtils pageUtils;
+    private final TagRepository tagRepository;
 
     public GetRecipeByUserIdQueryHandler(ModelMapper modelMapper,
                                          RecipeRepository recipeRepository,
-                                         PageUtils pageUtils) {
+                                         PageUtils pageUtils,
+                                         TagRepository tagRepository) {
         this.modelMapper = modelMapper;
         this.recipeRepository = recipeRepository;
         this.pageUtils = pageUtils;
+        this.tagRepository = tagRepository;
     }
 
+    @Transactional
     @Override
     public Page<RecipeDTO> handle(GetRecipeByUserIdQuery command)
             throws InvalidPageInfoException {
@@ -40,16 +46,22 @@ public class GetRecipeByUserIdQueryHandler implements Command.Handler<GetRecipeB
         if (pageNumber < 0 || pageSize < 0)
             throw new InvalidPageInfoException
                     ("pageNumber or pageSize can't be less than 0.");
-
-
         Pageable pageable = PageRequest.of(pageNumber, pageSize,
-                Sort.by("recipeId").descending());
-        Page<Recipe> recipePage = recipeRepository.findRecipesByUserIdAndStatus(
-                command.getUserid(),true,pageable);
-        List<RecipeDTO> recipeDTOs = recipePage.getContent().stream()
-                .filter(recipe -> recipe.isStatus() == true)
+                Sort.by("recipeName").ascending());
+        List<RecipeDTO> recipeDTOs = recipeRepository.findRecipesByUserIdAndStatus(command.getUserid(), true, pageable)
+                .stream()
                 .map((recipe) -> modelMapper.map(recipe, RecipeDTO.class))
                 .collect(Collectors.toList());
-        return new PageImpl<>(recipeDTOs, pageable, recipePage.getTotalElements());
+        if (recipeDTOs.isEmpty()) {
+            throw new NotFoundExceptionHandler("Not found recipe !");
+        }
+        for (RecipeDTO eachRecipeDTO : recipeDTOs) {
+            List<TagDTO> eachTagList = tagRepository.
+                    findTagsByRecipeTags_Recipe(recipeRepository.findById(eachRecipeDTO.getRecipeId()).get())
+                    .stream().map((tag) -> modelMapper.map(tag, TagDTO.class))
+                    .collect(Collectors.toList());
+            eachRecipeDTO.setTags(eachTagList);
+        }
+        return new PageImpl<>(recipeDTOs, pageable, recipeDTOs.size());
     }
 }

@@ -8,43 +8,51 @@ import com.foodrec.backend.Exception.InvalidDataExceptionHandler;
 import com.foodrec.backend.Exception.NotFoundExceptionHandler;
 import com.foodrec.backend.Exception.UnauthorizedExceptionHandler;
 import com.foodrec.backend.PostAPI.entity.Post;
+import com.foodrec.backend.PostAPI.entity.PostCollection;
+import com.foodrec.backend.PostAPI.entity.PostCollectionId;
+import com.foodrec.backend.PostAPI.repository.PostCollectionRepository;
 import com.foodrec.backend.PostAPI.repository.PostRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Set;
+import java.util.Optional;
 
 @Component
 public class AddPostCommandHandler implements Command.Handler<AddPostCommand, HttpStatus> {
-    private final CollectionRepository collectionRepository;
     private final PostRepository postRepository;
+    private final CollectionRepository collectionRepository;
+    private final PostCollectionRepository postCollectionRepository;
 
-    public AddPostCommandHandler(CollectionRepository collectionRepository, PostRepository postRepository) {
-        this.collectionRepository = collectionRepository;
+    public AddPostCommandHandler(PostRepository postRepository,
+                                 CollectionRepository collectionRepository,
+                                 PostCollectionRepository postCollectionRepository) {
         this.postRepository = postRepository;
+        this.collectionRepository = collectionRepository;
+        this.postCollectionRepository = postCollectionRepository;
     }
 
     @Transactional
     @Override
-    public HttpStatus handle(AddPostCommand command) {
+    public HttpStatus handle(AddPostCommand command) throws InvalidDataExceptionHandler {
         PostCollectionDTO postCollectionDTO = command.getPostCollectionDTO();
         if (postCollectionDTO.getPostId() == null || postCollectionDTO.getPostId().isBlank() ||
                 postCollectionDTO.getCollectionId() == null || postCollectionDTO.getCollectionId().isBlank()) {
             throw new InvalidDataExceptionHandler("Invalid Data!");
         }
-        if (postRepository.findById(postCollectionDTO.getPostId()).isEmpty() || collectionRepository.findById(postCollectionDTO.getCollectionId()).isEmpty()) {
+        Optional<Post> postOptional = postRepository.findById(postCollectionDTO.getPostId());
+        Optional<Collection> collectionOptional = collectionRepository.findById(postCollectionDTO.getCollectionId());
+        if (postOptional.isEmpty() || collectionOptional.isEmpty()) {
             throw new NotFoundExceptionHandler("Not found!");
         }
-        if (!command.getUserId().equals(collectionRepository.findById(postCollectionDTO.getCollectionId()).get().getUserId())) {
+        Collection collection = collectionOptional.get();
+        if (!command.getUserId().equals(collection.getUserId())) {
             throw new UnauthorizedExceptionHandler("You don't have permission to add post to the collection!");
         }
-        Post post = postRepository.findById(postCollectionDTO.getPostId()).get();
-        Collection collection = collectionRepository.findById(postCollectionDTO.getCollectionId()).get();
-        Set<Collection> collectionSet = post.getCollections();
-        collectionSet.add(collection);
-        post.setCollections(collectionSet);
-        postRepository.save(post);
+        Post post = postOptional.get();
+        PostCollectionId postCollectionId = new PostCollectionId(postCollectionDTO.getPostId(), postCollectionDTO.getCollectionId());
+        PostCollection postCollection = new PostCollection(postCollectionId, post, collection);
+        postCollectionRepository.save(postCollection);
         return HttpStatus.OK;
     }
 }

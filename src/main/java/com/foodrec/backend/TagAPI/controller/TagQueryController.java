@@ -43,7 +43,7 @@ public class TagQueryController {
     @GetMapping("/api/public/tag/{recipeId}")
     public ResponseEntity getTagByRecipeId(@PathVariable String recipeId) {
         try {
-            GetTagsByRecipeIdQuery query = new GetTagsByRecipeIdQuery();
+            GetTagsByRecipeIdQuery query = new GetTagsByRecipeIdQuery(recipeId);
             List<TagDTO> result = pipeline.send(query);
             return new ResponseEntity<>(result, HttpStatus.OK);
         } catch (InvalidDataExceptionHandler | NotFoundExceptionHandler e) {

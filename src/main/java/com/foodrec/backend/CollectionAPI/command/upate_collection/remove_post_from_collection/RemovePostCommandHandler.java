@@ -8,6 +8,7 @@ import com.foodrec.backend.Exception.InvalidDataExceptionHandler;
 import com.foodrec.backend.Exception.NotFoundExceptionHandler;
 import com.foodrec.backend.Exception.UnauthorizedExceptionHandler;
 import com.foodrec.backend.PostAPI.entity.Post;
+import com.foodrec.backend.PostAPI.repository.PostCollectionRepository;
 import com.foodrec.backend.PostAPI.repository.PostRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
@@ -19,10 +20,12 @@ import java.util.Optional;
 public class RemovePostCommandHandler implements Command.Handler<RemovePostCommand, HttpStatus> {
     private final CollectionRepository collectionRepository;
     private final PostRepository postRepository;
+    private final PostCollectionRepository postCollectionRepository;
 
-    public RemovePostCommandHandler(CollectionRepository collectionRepository, PostRepository postRepository) {
+    public RemovePostCommandHandler(CollectionRepository collectionRepository, PostRepository postRepository, PostCollectionRepository postCollectionRepository) {
         this.collectionRepository = collectionRepository;
         this.postRepository = postRepository;
+        this.postCollectionRepository = postCollectionRepository;
     }
 
     @Transactional
@@ -37,7 +40,7 @@ public class RemovePostCommandHandler implements Command.Handler<RemovePostComma
         if (optionalCollection.isEmpty()) {
             throw new NotFoundExceptionHandler("Not found collection!");
         }
-        if(!optionalCollection.get().getUserId().equals(command.getUserId())){
+        if (!optionalCollection.get().getUserId().equals(command.getUserId())) {
             throw new UnauthorizedExceptionHandler("You don't have permission to remove this post from the collection");
         }
         Collection collection = optionalCollection.get();
@@ -46,10 +49,7 @@ public class RemovePostCommandHandler implements Command.Handler<RemovePostComma
             throw new NotFoundExceptionHandler("Not found post!");
         }
         Post post = optionalPost.get();
-        collection.getPosts().remove(post);
-        post.getCollections().remove(collection);
-        collectionRepository.save(collection);
-        postRepository.save(post);
+        postCollectionRepository.deleteByPostAndCollection(post, collection);
         return HttpStatus.OK;
     }
 }

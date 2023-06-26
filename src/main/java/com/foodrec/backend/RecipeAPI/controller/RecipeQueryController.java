@@ -1,9 +1,12 @@
 package com.foodrec.backend.RecipeAPI.controller;
 
 import an.awesome.pipelinr.Pipeline;
+import com.foodrec.backend.Exception.InvalidDataExceptionHandler;
+import com.foodrec.backend.Exception.NotFoundExceptionHandler;
+import com.foodrec.backend.Exception.UnauthorizedExceptionHandler;
 import com.foodrec.backend.RecipeAPI.dto.RecipeDTO;
-import com.foodrec.backend.RecipeAPI.query.get_recipe_by_id.GetRecipeByUserIdQuery;
-import com.foodrec.backend.Exception.InvalidPageInfoException;
+import com.foodrec.backend.RecipeAPI.query.get_recipe_by_id.GetRecipeByIdQuery;
+import com.foodrec.backend.RecipeAPI.query.get_recipe_by_user_id.GetRecipeByUserIdQuery;
 import com.foodrec.backend.Utils.GetCurrentUserData;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -21,7 +24,6 @@ import static com.foodrec.backend.Config.SwaggerConfig.BEARER_KEY_SECURITY_SCHEM
 @RestController
 public class RecipeQueryController {
 
-    //báo hiệu rằng hàm ngay dưới tương ứng với HttpGet - lấy dữ liệu + cách gọi nó.
     final Pipeline pipeline;
 
     public RecipeQueryController(Pipeline pipeline) {
@@ -34,25 +36,38 @@ public class RecipeQueryController {
 
     @RequestMapping(value = "/api/member/recipe", method = RequestMethod.GET)
     public ResponseEntity getRecipesByUserId(@RequestParam(defaultValue = "0") String pageNumber,
-                                                @RequestParam(defaultValue = "6") String pageSize) {
-        ResponseEntity responseEntity = null;
-        Authentication authentication = null;
+                                             @RequestParam(defaultValue = "6") String pageSize) {
+        ResponseEntity responseEntity;
         try {
-            authentication = SecurityContextHolder.getContext().getAuthentication();
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             String userid = GetCurrentUserData.getCurrentUserId(authentication);
-            GetRecipeByUserIdQuery query = new GetRecipeByUserIdQuery(userid,pageNumber, pageSize);
+            GetRecipeByUserIdQuery query = new GetRecipeByUserIdQuery(userid, pageNumber, pageSize);
             Page<RecipeDTO> result = pipeline.send(query);
-            if (result == null) {
-                return new ResponseEntity<>("Invalid Request. Please try again."
-                        , HttpStatus.BAD_REQUEST);
-            }
             responseEntity = new ResponseEntity<>(result, HttpStatus.OK);
-
-        } catch (InvalidPageInfoException e) {
-            responseEntity = new ResponseEntity(e.getMessage()
-                    , HttpStatus.BAD_REQUEST);
+        } catch (InvalidDataExceptionHandler | NotFoundExceptionHandler e) {
+            HttpStatus status = e.getClass().getAnnotation(ResponseStatus.class).value();
+            return ResponseEntity.status(status).body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Internal server error!");
         }
         return responseEntity;
     }
 
+    @Operation(description = "Get recipe by recipe ID. Only user who create this recipe can view",
+            security = {@SecurityRequirement(name = BEARER_KEY_SECURITY_SCHEME)})
+    @GetMapping("/api/member/recipe/{recipeId}")
+    public ResponseEntity getRecipeById(@PathVariable String recipeId) {
+        try {
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            String userid = GetCurrentUserData.getCurrentUserId(authentication);
+            GetRecipeByIdQuery query = new GetRecipeByIdQuery(recipeId, userid);
+            RecipeDTO result = pipeline.send(query);
+            return new ResponseEntity<>(result, HttpStatus.OK);
+        } catch (InvalidDataExceptionHandler | UnauthorizedExceptionHandler | NotFoundExceptionHandler e) {
+            HttpStatus status = e.getClass().getAnnotation(ResponseStatus.class).value();
+            return ResponseEntity.status(status).body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
+    }
 }
