@@ -27,6 +27,7 @@ public class CreateRecipeDTO implements Serializable {
     private int calories;
     private int duration;
     private String instructions;
+    private String ingredientList;
     private MultipartFile image;
     private Set<String> tagsIdSet;
 }

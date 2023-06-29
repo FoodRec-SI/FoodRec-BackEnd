@@ -5,7 +5,7 @@ import com.foodrec.backend.Exception.InvalidDataExceptionHandler;
 import com.foodrec.backend.Exception.NotFoundExceptionHandler;
 import com.foodrec.backend.PostAPI.dto.PostDTO;
 import com.foodrec.backend.PostAPI.entity.Post;
-import com.foodrec.backend.PostAPI.query.get_post_by_id.GetPostById;
+import com.foodrec.backend.PostAPI.query.get_post_by_id.GetPostByIdQuery;
 import com.foodrec.backend.PostAPI.repository.PostRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,14 +16,13 @@ import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
-
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 @Testcontainers
 @SpringBootTest
-public class GetPostByIdQueryHandlerTests {
+public class GetPostByIdByModeratorQueryHandlerTests {
     @Autowired
     private PostRepository postRepository;
     @Autowired
@@ -43,9 +42,9 @@ public class GetPostByIdQueryHandlerTests {
     }
 
     @Test
-    public void testGetPostByIdSuccessfully(){
+    public void testGetPostByIdSuccessfully() {
         String postId = "POS000001";
-        GetPostById query = new GetPostById(postId);
+        GetPostByIdQuery query = new GetPostByIdQuery(postId);
         PostDTO postDTO = pipeline.send(query);
         Optional<Post> optionalPost = postRepository.findPostByPostIdAndStatus(query.getPostId(), 2);
         assertEquals(postDTO.getPostId(), optionalPost.get().getPostId());
@@ -55,9 +54,9 @@ public class GetPostByIdQueryHandlerTests {
     }
 
     @Test
-    public void testNotFoundPost(){
+    public void testNotFoundPost() {
         String postId = "POS000009";
-        GetPostById query = new GetPostById(postId);
+        GetPostByIdQuery query = new GetPostByIdQuery(postId);
         Exception exception = assertThrows(NotFoundExceptionHandler.class, () -> {
             pipeline.send(query);
         });
@@ -67,9 +66,9 @@ public class GetPostByIdQueryHandlerTests {
     }
 
     @Test
-    public void testNullPostId(){
+    public void testNullPostId() {
         String postId = "";
-        GetPostById query = new GetPostById(postId);
+        GetPostByIdQuery query = new GetPostByIdQuery(postId);
         Exception exception = assertThrows(InvalidDataExceptionHandler.class, () -> {
             pipeline.send(query);
         });

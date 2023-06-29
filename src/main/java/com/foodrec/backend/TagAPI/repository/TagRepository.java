@@ -20,5 +20,5 @@ public interface TagRepository extends JpaRepository<Tag, String> {
     Collection<Tag> getTagsByAccountTags_Account(Account account);
 
     List<Tag> findTagsByRecipeTags_Recipe(Recipe recipe);
-
+    List<Tag> findTagsByRecipeTags_Recipe_RecipeId(String recipeId);
 }

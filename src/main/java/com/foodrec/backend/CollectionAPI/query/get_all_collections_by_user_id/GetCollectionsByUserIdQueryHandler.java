@@ -39,9 +39,6 @@ public class GetCollectionsByUserIdQueryHandler implements Command.Handler<GetCo
         }
         Pageable pageable = PageRequest.of(query.getPageNumber(), query.getPageSize(), Sort.by("collectionName").ascending());
         Page<Collection> collectionsPage = collectionRepository.findCollectionsByUserId(query.getUserId(), pageable);
-        if (collectionsPage.isEmpty()) {
-            throw new NotFoundExceptionHandler("Not found!");
-        }
         List<CollectionDTO> collectionDTOs = new ArrayList<>();
         for (Collection collection : collectionsPage) {
             CollectionDTO collectionDTO = modelMapper.map(collection, CollectionDTO.class);
