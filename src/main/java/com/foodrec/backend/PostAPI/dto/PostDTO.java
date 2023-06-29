@@ -28,6 +28,7 @@ public class PostDTO implements Serializable {
     private PostStatus postStatus;
     private LocalDateTime verifiedTime;
     private double averageScore;
+    private boolean liked;
     private String ingredientList;
     private String instruction;
     private List<TagDTO> tagDTOList;

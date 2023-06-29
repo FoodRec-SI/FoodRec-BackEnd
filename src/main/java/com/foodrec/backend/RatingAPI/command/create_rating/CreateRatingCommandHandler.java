@@ -79,7 +79,7 @@ public class CreateRatingCommandHandler implements Command.Handler<CreateRatingC
         BigDecimal bd = new BigDecimal(Double.toString(avgScore));
         bd = bd.setScale(1, RoundingMode.UP);
         avgScore = bd.doubleValue();
-        likedPost.setAvgScore(avgScore);
+        likedPost.setAverageScore(avgScore);
         postRepository.save(likedPost);
 
 

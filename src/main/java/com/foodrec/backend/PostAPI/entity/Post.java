@@ -57,7 +57,7 @@ public class Post {
     @Column(name = "verified-time")
     private LocalDateTime verifiedTime;
     @Column(name = "average-score")
-    private double avgScore;
+    private double averageScore;
 
     @Column(name = "ingredient-list")
     private String ingredientList;
