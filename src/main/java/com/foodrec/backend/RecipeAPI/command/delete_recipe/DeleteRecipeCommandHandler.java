@@ -32,7 +32,7 @@ public class DeleteRecipeCommandHandler implements Command.Handler<DeleteRecipeC
     @Transactional
     @Override
     public HttpStatus handle(DeleteRecipeCommand deleteRecipeCommand) throws InvalidDataExceptionHandler {
-        ImageUtils imageUtils = new ImageUtils();
+
         boolean isValidRecId = recipeUtils.validateRecipeId(deleteRecipeCommand.getRecipeId());
         if (!isValidRecId)
             throw new InvalidDataExceptionHandler("Invalid Recipe Id detected. Please try again !");
@@ -40,17 +40,20 @@ public class DeleteRecipeCommandHandler implements Command.Handler<DeleteRecipeC
         if (foundRecipe.isEmpty() || !foundRecipe.get().isStatus()) {
             throw new NotFoundExceptionHandler("Not found recipe !");
         }
-        if (foundRecipe.get().getUserId().equals(deleteRecipeCommand.getUserId())) {
+        if (!foundRecipe.get().getUserId().equals(deleteRecipeCommand.getUserId())) {
             throw new UnauthorizedExceptionHandler("You are not authorized to delete this recipe !");
         }
         Recipe recipe = foundRecipe.get();
-        recipeTagRepository.deleteRecipeTagByRecipe_RecipeId(recipe.getRecipeId());
-        recipeRepository.save(recipe);
+        recipe.setStatus(false);
+        ImageUtils imageUtils = new ImageUtils();
         try {
-            imageUtils.delete(foundRecipe.get().getImage());
+            imageUtils.deleteImage(foundRecipe.get().getImage());
+            recipe.setImage(null);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+        recipeTagRepository.deleteRecipeTagByRecipe_RecipeId(recipe.getRecipeId());
+        recipeRepository.save(recipe);
         return HttpStatus.OK;
     }
 }

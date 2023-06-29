@@ -41,12 +41,11 @@ public class ImageUtils {
         return fileName.substring(fileName.lastIndexOf("."));
     }
 
-    public Object upload(MultipartFile multipartFile, String folder, String userId) {
-        String fileName;
+    public Object upload(MultipartFile multipartFile, String folder, String fileName) {
         String fileUrl = null;
         try {
             // Get unique file name
-            fileName = folder + "-" + userId.concat(getFileExtension(multipartFile));
+            fileName = folder + "-" + fileName.concat(getFileExtension(multipartFile));
             // Convert multipartFile to File
             File file = this.convertToFile(multipartFile, fileName);
             fileUrl= this.uploadFile(file, fileName);
@@ -58,29 +57,31 @@ public class ImageUtils {
         return fileUrl;
     }
 
-    public boolean delete(String fileName) throws IOException {
+    public void deleteImage(String fileUrl) throws IOException {
         Storage storage = initializeStorage();
         Blob blob;
 
-        // List of supported file extensions
-        String[] fileExtensions = {".png", ".jpg", ".jpeg", ".jfif", ".pjpeg", ".pjp"};
+        // Extract the file name from the URL
+        String fileName = fileUrl.substring(fileUrl.lastIndexOf("/") + 1);
 
-        boolean deleted = false;
-
-        // Loop through each file extension and delete the corresponding file
-        for (String extension : fileExtensions) {
-            String fullFileName = fileName.concat(extension);
-            blob = storage.get(BlobId.of("foodrec-389515.appspot.com", fullFileName));
-            if (blob != null) {
-                if (blob.delete()) {
-                    deleted = true;
-                    break; // Exit the loop if deletion is successful
-                }
-            }
+        // Check if the file name contains the "default" word
+        if (fileName.contains("default")) {
+            return;
         }
-        // Return true if at least one file was deleted, false otherwise
-        return deleted;
+
+        blob = storage.get(BlobId.of("foodrec-389515.appspot.com", fileName));
+        if (blob != null) {
+            blob.delete();
+        }
     }
 
+    public String updateImage(String existingImage, MultipartFile image, String folder, String userId) {
+        try {
+            this.deleteImage(existingImage);
+            return (String) this.upload(image, folder, userId);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
 }
