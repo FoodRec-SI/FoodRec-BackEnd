@@ -12,5 +12,6 @@ import org.springframework.data.domain.Page;
 public class CollectionDetailsDTO {
     private String collectionName;
     private String description;
+    private String image;
     Page<PostDTO> postDTOS;
 }

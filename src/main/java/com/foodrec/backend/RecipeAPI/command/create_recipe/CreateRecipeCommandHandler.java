@@ -81,33 +81,9 @@ public class CreateRecipeCommandHandler implements Command.Handler<CreateRecipeC
         recipeEntity.setImage(imageUrl);
         recipeEntity.setUserId(createRecipeCommand.getUserid());
         recipeEntity.setStatus(true);
-//        recipeEntity.setRecipeTags(null);
-//        recipeRepository.save(recipeEntity);
-//        Set<String> tagsIdSet = createRecipeDTO.getTagsIdSet();
-//        Set<Tag> tags = tagRepository.getTagsByTagIdIn(tagsIdSet);
-//
-//        if (tags.isEmpty()) {
-//            throw new NotFoundExceptionHandler("Not found tag !");
-//        }
-//
-//        List<RecipeTag> recipeTags = new ArrayList<>();
-//        for (Tag tag : tags) {
-//            RecipeTag recipeTag = new RecipeTag();
-//            RecipeTagId recipeTagId = new RecipeTagId(recipeEntity.getRecipeId(), tag.getTagId());
-//            recipeTag.setRecipeTagId(recipeTagId);
-//            recipeTag.setRecipe(recipeEntity);
-//            recipeTag.setTag(tag);
-//            recipeTags.add(recipeTag);
-//        }
-//        recipeEntity.getRecipeTags().addAll(recipeTags);
-//        recipeRepository.save(recipeEntity);
-
-        recipeEntity.setRecipeTags(new HashSet<>()); // Khởi tạo một HashSet rỗng
-
+        recipeEntity.setRecipeTags(new HashSet<>());
         Set<String> tagsIdSet = createRecipeDTO.getTagsIdSet();
         Set<Tag> tags = tagRepository.getTagsByTagIdIn(tagsIdSet);
-
-// Kiểm tra nếu tags không rỗng, thì mới thực hiện việc tạo RecipeTag
         if (tags.isEmpty()) {
             throw new NotFoundExceptionHandler("Not found tag !");
         }
@@ -121,7 +97,6 @@ public class CreateRecipeCommandHandler implements Command.Handler<CreateRecipeC
             recipeTags.add(recipeTag);
         }
         recipeEntity.getRecipeTags().addAll(recipeTags);
-
         recipeRepository.save(recipeEntity);
         recipeTagRepository.saveAll(recipeTags);
         return HttpStatus.OK;

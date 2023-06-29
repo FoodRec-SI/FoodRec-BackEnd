@@ -42,16 +42,23 @@ public class GetCollectionByIdQueryHandler implements Command.Handler<GetCollect
             throw new NotFoundExceptionHandler("Not found collection");
         }
         if (!optionalCollection.get().getUserId().equals(query.getUserId())) {
-            throw new UnauthorizedExceptionHandler("You don't have permission to delete view collection");
+            throw new UnauthorizedExceptionHandler("You don't have permission to view collection");
         }
-        Page<Post> postsPage = postRepository.getPostsByPostCollectionsCollectionAndStatus(collectionRepository.findById(query.getCollectionId()).get(), 2, pageable);
+        Page<Post> postsPage = postRepository.getPostsByPostCollectionsCollectionAndStatus(optionalCollection.get(), 2, pageable);
+
         List<PostDTO> postDTOS = postsPage.getContent().stream().map(post -> {
             PostDTO postDTO = modelMapper.map(post, PostDTO.class);
             postDTO.setPostStatus(PostStatus.convertStatusToEnum(post.getStatus()));
             return postDTO;
         }).toList();
-        Page<PostDTO> postDTOPage = new PageImpl<>(postDTOS, pageable, postsPage.getTotalElements());
         CollectionDetailsDTO collectionDetailsDTO = modelMapper.map(optionalCollection.get(), CollectionDetailsDTO.class);
+        Page<PostDTO> postDTOPage = new PageImpl<>(postDTOS, pageable, postsPage.getTotalElements());
+        Post post = postRepository.findFirstByPostCollections_CollectionAndStatusOrderByRecipeNameAsc(optionalCollection.get(), 2);
+        if(post == null){
+            collectionDetailsDTO.setPostDTOS(postDTOPage);
+            return collectionDetailsDTO;
+        }
+        collectionDetailsDTO.setImage(post.getImage());
         collectionDetailsDTO.setPostDTOS(postDTOPage);
         return collectionDetailsDTO;
     }

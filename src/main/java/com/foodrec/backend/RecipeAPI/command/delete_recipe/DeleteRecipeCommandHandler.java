@@ -32,7 +32,6 @@ public class DeleteRecipeCommandHandler implements Command.Handler<DeleteRecipeC
     @Transactional
     @Override
     public HttpStatus handle(DeleteRecipeCommand deleteRecipeCommand) throws InvalidDataExceptionHandler {
-
         boolean isValidRecId = recipeUtils.validateRecipeId(deleteRecipeCommand.getRecipeId());
         if (!isValidRecId)
             throw new InvalidDataExceptionHandler("Invalid Recipe Id detected. Please try again !");

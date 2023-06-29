@@ -33,7 +33,6 @@ public class Account {
     private String backgroundImageName;
     @OneToMany(mappedBy = "account", cascade = CascadeType.ALL)
     @JsonIgnore
-    @EqualsAndHashCode.Exclude
     private Set<AccountTag> accountTags;
 
     @OneToMany(mappedBy = "account")/*mappedBy: This Entity (Account) is mapped to                                        the Account entity in the Join Table (Rating)*/

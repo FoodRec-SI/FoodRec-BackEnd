@@ -20,5 +20,6 @@ public class RecipeDTO {
     private String image;
     private boolean isLiked;
     private String instructions;
+    private String ingredientList;
     private List<TagDTO> tags;
 }

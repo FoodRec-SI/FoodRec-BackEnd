@@ -1,11 +1,8 @@
-package com.foodrec.backend.PostAPI.query.get_post_by_id;
+package com.foodrec.backend.PostAPI.query.get_post_by_id_by_moderator;
 
 import an.awesome.pipelinr.Command;
 import com.foodrec.backend.Exception.InvalidDataExceptionHandler;
 import com.foodrec.backend.Exception.NotFoundExceptionHandler;
-import com.foodrec.backend.LikeAPI.entity.Likes;
-import com.foodrec.backend.LikeAPI.entity.LikesCompositeKey;
-import com.foodrec.backend.LikeAPI.repository.LikesRepository;
 import com.foodrec.backend.PostAPI.dto.PostDTO;
 import com.foodrec.backend.PostAPI.entity.Post;
 import com.foodrec.backend.PostAPI.entity.PostStatus;
@@ -23,31 +20,26 @@ import java.util.List;
 import java.util.Optional;
 
 @Component
-@CacheConfig(cacheNames = "postCache")
-public class GetPostByIdQueryHandler implements Command.Handler<GetPostByIdQuery, PostDTO> {
+@CacheConfig(cacheNames = "postModerator")
+public class GetPostByIdByModeratorQueryHandler implements Command.Handler<GetPostByIdByModeratorQuery, PostDTO> {
     private final PostRepository postRepository;
     private final TagRepository tagRepository;
     private final ModelMapper modelMapper;
-    private final LikesRepository likesRepository;
 
-    public GetPostByIdQueryHandler(PostRepository postRepository,
-                                   ModelMapper modelMapper,
-                                   LikesRepository likesRepository,
-                                   TagRepository tagRepository) {
+    public GetPostByIdByModeratorQueryHandler(PostRepository postRepository, TagRepository tagRepository, ModelMapper modelMapper) {
         this.postRepository = postRepository;
         this.tagRepository = tagRepository;
         this.modelMapper = modelMapper;
-        this.likesRepository = likesRepository;
     }
 
     @Transactional
-    @Cacheable(cacheNames = "postMember", key = "#query.getPostId()")
+    @Cacheable(cacheNames = "postModerator", key = "#query.getPostId()")
     @Override
-    public PostDTO handle(GetPostByIdQuery query) {
+    public PostDTO handle(GetPostByIdByModeratorQuery query) {
         if (query.getPostId().isEmpty()) {
             throw new InvalidDataExceptionHandler("Invalid data!");
         }
-        Optional<Post> optionalPost = postRepository.findPostByPostIdAndStatus(query.getPostId(), 2);
+        Optional<Post> optionalPost = postRepository.findById(query.getPostId());
         if (optionalPost.isEmpty()) {
             throw new NotFoundExceptionHandler("Post not found!");
         }
@@ -56,14 +48,6 @@ public class GetPostByIdQueryHandler implements Command.Handler<GetPostByIdQuery
         PostDTO postDTO = modelMapper.map(optionalPost.get(), PostDTO.class);
         postDTO.setTagDTOList(tagDTOList);
         postDTO.setPostStatus(PostStatus.convertStatusToEnum(optionalPost.get().getStatus()));
-
-        Optional<Likes> foundLike = likesRepository.findById(
-                new LikesCompositeKey(
-                        query.getUserId(),
-                        query.getPostId()
-                ));
-        if (foundLike.isEmpty()) postDTO.setLiked(false);
-        else postDTO.setLiked(true);
         return postDTO;
     }
 }

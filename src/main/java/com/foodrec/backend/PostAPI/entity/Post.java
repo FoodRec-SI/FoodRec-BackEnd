@@ -1,11 +1,14 @@
 package com.foodrec.backend.PostAPI.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.foodrec.backend.AccountAPI.entity.Account;
+import com.foodrec.backend.MealAPI.entity.MealPost;
 import com.foodrec.backend.LikeAPI.entity.Likes;
 import com.foodrec.backend.RatingAPI.entity.Rating;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
@@ -48,17 +51,28 @@ public class Post {
     @Column(name = "image")
     private String image;
 
-    @Column(name = "time")
-    private LocalDateTime time;
+    @Column(name = "created-time")
+    private LocalDateTime createdTime;
 
     @Column(name = "verified-time")
     private LocalDateTime verifiedTime;
     @Column(name = "average-score")
     private double avgScore;
 
+    @Column(name = "ingredient-list")
+    private String ingredientList;
+
+    @Column(name = "instruction")
+    private String instruction;
+
     @OneToMany(mappedBy = "post")
+    @JsonIgnore
     private Set<PostCollection> postCollections;
 
+    @OneToMany(mappedBy = "post")
+    @JsonIgnore
+    @EqualsAndHashCode.Exclude
+    private Set<MealPost> mealPosts;
 
     @OneToMany(mappedBy = "post") /*mappedBy: Bind this entity (Post)
                                         to the entity with the same name
