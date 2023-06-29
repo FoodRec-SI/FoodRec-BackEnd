@@ -1,11 +1,11 @@
-package com.foodrec.backend.RatingAPI.query;
+package com.foodrec.backend.RatingAPI.query.get_rating_details_by_postid;
 
 import an.awesome.pipelinr.Command;
 import com.foodrec.backend.RatingAPI.dto.RatingDetailsDTO;
 
-public class GetRatingDetailsByPostIdCommand implements Command<RatingDetailsDTO> {
+public class GetRatingDetailsByPostIdQuery implements Command<RatingDetailsDTO> {
     private String postId;
-    public GetRatingDetailsByPostIdCommand(String postId){
+    public GetRatingDetailsByPostIdQuery(String postId){
         this.postId = postId;
     }
 

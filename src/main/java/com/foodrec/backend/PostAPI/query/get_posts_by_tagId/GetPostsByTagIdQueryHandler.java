@@ -3,6 +3,7 @@ package com.foodrec.backend.PostAPI.query.get_posts_by_tagId;
 import an.awesome.pipelinr.Command;
 import com.foodrec.backend.Exception.InvalidDataExceptionHandler;
 import com.foodrec.backend.Exception.NotFoundExceptionHandler;
+import com.foodrec.backend.LikeAPI.entity.Likes;
 import com.foodrec.backend.PostAPI.dto.PostDTO;
 import com.foodrec.backend.PostAPI.entity.Post;
 import com.foodrec.backend.PostAPI.entity.PostStatus;
@@ -19,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Component
 public class GetPostsByTagIdQueryHandler implements Command.Handler<GetPostsByTagIdQuery, Page<PostDTO>> {

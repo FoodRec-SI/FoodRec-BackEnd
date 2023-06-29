@@ -1,6 +1,7 @@
 package com.foodrec.backend.PostAPI.query.get_posts_liked_by_userid;
 
 import an.awesome.pipelinr.Command;
+import com.foodrec.backend.AccountAPI.repository.AccountRepository;
 import com.foodrec.backend.Exception.InvalidPageInfoException;
 import com.foodrec.backend.PostAPI.dto.PostDTO;
 import com.foodrec.backend.PostAPI.entity.Post;
@@ -19,15 +20,17 @@ public class GetPostsLikedByUserIdQueryHandler implements Command.Handler
         <GetPostsLikedByUserIdQuery, Page<PostDTO>> {
     @Autowired
     private PostRepository postRepository;
+    private final AccountRepository accountRepository;
     @Autowired
     private PageUtils pageUtils;
     @Autowired
     private ModelMapper modelMapper;
 
     public GetPostsLikedByUserIdQueryHandler(PostRepository postRepository,
-                                             PageUtils pageUtils,
+                                             AccountRepository accountRepository, PageUtils pageUtils,
                                              ModelMapper modelMapper) {
         this.postRepository = postRepository;
+        this.accountRepository = accountRepository;
         this.pageUtils = pageUtils;
         this.modelMapper = modelMapper;
     }
@@ -50,7 +53,7 @@ public class GetPostsLikedByUserIdQueryHandler implements Command.Handler
         Pageable pageable = PageRequest.of(pageNumber, pageSize,
                 Sort.by("postId").descending());
 
-        Page<Post> postPages = postRepository.findPostByAccountsUserIdAndStatus(command.getUserId(),
+        Page<Post> postPages = postRepository.getPostsByRatingsAccountAndStatus(accountRepository.findById(command.getUserId()).get(),
                 2,pageable);
 
         List<PostDTO> postDTOList = postPages.getContent().stream()

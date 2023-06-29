@@ -1,5 +1,6 @@
 package com.foodrec.backend.PostAPI.repository;
 
+import com.foodrec.backend.AccountAPI.entity.Account;
 import com.foodrec.backend.CollectionAPI.entity.Collection;
 import com.foodrec.backend.PostAPI.entity.Post;
 import org.springframework.data.domain.Page;
@@ -28,5 +29,5 @@ public interface PostRepository extends JpaRepository<Post, String> {
 
     Page<Post> getPostsByPostCollectionsCollectionAndStatus(Collection collection, int status, Pageable pageable);
 
-    Page<Post> findPostByAccountsUserIdAndStatus(String userId, int status, Pageable pageable);
+    Page<Post> getPostsByRatingsAccountAndStatus(Account account, int status, Pageable pageable);
 }

@@ -18,6 +18,10 @@ spring:
       resourceserver:
         jwt:
           issuer-uri: https://keycloak.yp2743.me/realms/swp
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
 jwt:
   auth:
     converter:

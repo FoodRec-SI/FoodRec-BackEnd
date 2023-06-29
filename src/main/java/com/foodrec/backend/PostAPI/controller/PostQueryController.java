@@ -135,8 +135,12 @@ public class PostQueryController {
             security = {@SecurityRequirement(name = BEARER_KEY_SECURITY_SCHEME)})
     @GetMapping("/api/member/post/{postId}")
     public ResponseEntity getPostById(@PathVariable String postId) {
+
         try {
-            GetPostByIdQuery query = new GetPostByIdQuery(postId);
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            String userId = GetCurrentUserData.getCurrentUserId(authentication);
+            GetPostByIdQuery query = new GetPostByIdQuery(postId,userId);
+
             PostDTO result = pipeline.send(query);
             return new ResponseEntity<>(result, HttpStatus.OK);
         } catch (InvalidDataExceptionHandler | NotFoundExceptionHandler e) {

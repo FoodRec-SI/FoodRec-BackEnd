@@ -1,7 +1,11 @@
 package com.foodrec.backend.AccountAPI.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.foodrec.backend.LikeAPI.entity.Likes;
 import com.foodrec.backend.PostAPI.entity.Post;
+import com.foodrec.backend.RatingAPI.entity.Rating;
+import com.foodrec.backend.TagAPI.entity.Tag;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -31,6 +35,6 @@ public class Account {
     @JsonIgnore
     private Set<AccountTag> accountTags;
 
-    @ManyToMany(mappedBy = "accounts")
-    private Set<Post> posts;
+    @OneToMany(mappedBy = "account")/*mappedBy: This Entity (Account) is mapped to                                        the Account entity in the Join Table (Rating)*/
+    private Set<Rating> ratings;
 }
