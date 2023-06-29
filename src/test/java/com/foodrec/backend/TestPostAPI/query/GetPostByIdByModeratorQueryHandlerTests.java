@@ -22,7 +22,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @Testcontainers
 @SpringBootTest
-public class GetPostByIdQueryHandlerTests {
+public class GetPostByIdByModeratorQueryHandlerTests {
     @Autowired
     private PostRepository postRepository;
     @Autowired

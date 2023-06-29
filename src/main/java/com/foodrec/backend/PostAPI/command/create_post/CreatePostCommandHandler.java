@@ -60,7 +60,6 @@ public class CreatePostCommandHandler implements Command.Handler<CreatePostComma
         }
         // Add new data for Post entity
         String postId = IdGenerator.generateNextId(Post.class, "postId");
-        System.out.println(postId);
         post.setPostId(postId);
         post.setUserId(command.getUserId());
         post.setRecipeId(createPostDTO.getRecipeId());
@@ -73,6 +72,7 @@ public class CreatePostCommandHandler implements Command.Handler<CreatePostComma
         post.setImage(optionalRecipe.get().getImage());
         post.setIngredientList(optionalRecipe.get().getIngredientList());
         post.setInstruction(optionalRecipe.get().getInstructions());
+        post.setAverageScore(0);
         postRepository.save(post);
         Optional<Post> optionalPost = postRepository.findById(post.getPostId());
         if (optionalPost.isEmpty()) {

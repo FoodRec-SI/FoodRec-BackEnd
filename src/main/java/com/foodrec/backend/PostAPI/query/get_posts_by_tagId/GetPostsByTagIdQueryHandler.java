@@ -9,6 +9,9 @@ import com.foodrec.backend.PostAPI.entity.PostStatus;
 import com.foodrec.backend.PostAPI.repository.PostRepository;
 import com.foodrec.backend.RecipeAPI.entity.RecipeTag;
 import com.foodrec.backend.RecipeAPI.repository.RecipeTagRepository;
+import com.foodrec.backend.TagAPI.dto.TagDTO;
+import com.foodrec.backend.TagAPI.entity.Tag;
+import com.foodrec.backend.TagAPI.repository.TagRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Component;
@@ -21,11 +24,13 @@ import java.util.List;
 public class GetPostsByTagIdQueryHandler implements Command.Handler<GetPostsByTagIdQuery, Page<PostDTO>> {
     private final PostRepository postRepository;
     private final RecipeTagRepository recipeTagRepository;
+    private final TagRepository tagRepository;
     private final ModelMapper modelMapper;
 
-    public GetPostsByTagIdQueryHandler(PostRepository postRepository, RecipeTagRepository recipeTagRepository, ModelMapper modelMapper) {
+    public GetPostsByTagIdQueryHandler(PostRepository postRepository, RecipeTagRepository recipeTagRepository, TagRepository tagRepository, ModelMapper modelMapper) {
         this.postRepository = postRepository;
         this.recipeTagRepository = recipeTagRepository;
+        this.tagRepository = tagRepository;
         this.modelMapper = modelMapper;
     }
 
@@ -48,6 +53,9 @@ public class GetPostsByTagIdQueryHandler implements Command.Handler<GetPostsByTa
         }
         List<PostDTO> postDTOS = postsPage.getContent().stream().map(post -> {
             PostDTO postDTO = modelMapper.map(post, PostDTO.class);
+            List<Tag> tagList = tagRepository.findTagsByRecipeTags_Recipe_RecipeId(postDTO.getRecipeId());
+            List<TagDTO> tagDTOList = tagList.stream().map(tag -> modelMapper.map(tag, TagDTO.class)).toList();
+            postDTO.setTagDTOList(tagDTOList);
             postDTO.setPostStatus(PostStatus.convertStatusToEnum(post.getStatus()));
             return postDTO;
         }).toList();

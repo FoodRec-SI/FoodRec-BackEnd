@@ -7,6 +7,9 @@ import com.foodrec.backend.PostAPI.dto.PostDTO;
 import com.foodrec.backend.PostAPI.entity.Post;
 import com.foodrec.backend.PostAPI.entity.PostStatus;
 import com.foodrec.backend.PostAPI.repository.PostRepository;
+import com.foodrec.backend.TagAPI.dto.TagDTO;
+import com.foodrec.backend.TagAPI.entity.Tag;
+import com.foodrec.backend.TagAPI.repository.TagRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Component;
@@ -16,10 +19,12 @@ import java.util.List;
 @Component
 public class GetPostsByRecipeNameQueryHandler implements Command.Handler<GetPostsByRecipeNameQuery, Page<PostDTO>> {
     private final PostRepository postRepository;
+    private final TagRepository tagRepository;
     private final ModelMapper modelMapper;
 
-    public GetPostsByRecipeNameQueryHandler(PostRepository postRepository, ModelMapper modelMapper) {
+    public GetPostsByRecipeNameQueryHandler(PostRepository postRepository, TagRepository tagRepository, ModelMapper modelMapper) {
         this.postRepository = postRepository;
+        this.tagRepository = tagRepository;
         this.modelMapper = modelMapper;
     }
 
@@ -36,7 +41,10 @@ public class GetPostsByRecipeNameQueryHandler implements Command.Handler<GetPost
         }
         List<PostDTO> postDTOS = postsPage.getContent().stream().map(post -> {
             PostDTO postDTO = modelMapper.map(post, PostDTO.class);
+            List<Tag> tagList = tagRepository.findTagsByRecipeTags_Recipe_RecipeId(postDTO.getRecipeId());
+            List<TagDTO> tagDTOList = tagList.stream().map(tag -> modelMapper.map(tag, TagDTO.class)).toList();
             postDTO.setPostStatus(PostStatus.convertStatusToEnum(post.getStatus()));
+            postDTO.setTagDTOList(tagDTOList);
             return postDTO;
         }).toList();
         return new PageImpl<>(postDTOS, pageable, postsPage.getTotalElements());

@@ -8,6 +8,7 @@ import com.foodrec.backend.PostAPI.dto.PostDTO;
 import com.foodrec.backend.PostAPI.entity.PostStatus;
 import com.foodrec.backend.PostAPI.query.get_all_posts.GetAllPostsApprovedQuery;
 import com.foodrec.backend.PostAPI.query.get_post_by_id.GetPostByIdQuery;
+import com.foodrec.backend.PostAPI.query.get_post_by_id_by_moderator.GetPostByIdByModeratorQuery;
 import com.foodrec.backend.PostAPI.query.get_posts_by_collection_id.GetPostByCollectionIdQuery;
 import com.foodrec.backend.PostAPI.query.get_posts_by_recipe_name.GetPostsByRecipeNameQuery;
 import com.foodrec.backend.PostAPI.query.get_posts_by_status_by_moderator.GetPostByStatusQuery;
@@ -136,6 +137,22 @@ public class PostQueryController {
     public ResponseEntity getPostById(@PathVariable String postId) {
         try {
             GetPostByIdQuery query = new GetPostByIdQuery(postId);
+            PostDTO result = pipeline.send(query);
+            return new ResponseEntity<>(result, HttpStatus.OK);
+        } catch (InvalidDataExceptionHandler | NotFoundExceptionHandler e) {
+            HttpStatus status = e.getClass().getAnnotation(ResponseStatus.class).value();
+            return ResponseEntity.status(status).body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
+    }
+
+    @Operation(description = "Get post by post ID.",
+            security = {@SecurityRequirement(name = BEARER_KEY_SECURITY_SCHEME)})
+    @GetMapping("/api/moderator/post/{postId}")
+    public ResponseEntity getPostByIdByModerator(@PathVariable String postId) {
+        try {
+            GetPostByIdByModeratorQuery query = new GetPostByIdByModeratorQuery(postId);
             PostDTO result = pipeline.send(query);
             return new ResponseEntity<>(result, HttpStatus.OK);
         } catch (InvalidDataExceptionHandler | NotFoundExceptionHandler e) {

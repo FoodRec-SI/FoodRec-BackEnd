@@ -55,6 +55,7 @@ public class GetCollectionByIdQueryHandler implements Command.Handler<GetCollect
         Page<PostDTO> postDTOPage = new PageImpl<>(postDTOS, pageable, postsPage.getTotalElements());
         Post post = postRepository.findFirstByPostCollections_CollectionAndStatusOrderByRecipeNameAsc(optionalCollection.get(), 2);
         if(post == null){
+            collectionDetailsDTO.setPostDTOS(postDTOPage);
             return collectionDetailsDTO;
         }
         collectionDetailsDTO.setImage(post.getImage());

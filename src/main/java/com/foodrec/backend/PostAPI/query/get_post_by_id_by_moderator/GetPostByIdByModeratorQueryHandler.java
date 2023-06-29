@@ -1,4 +1,4 @@
-package com.foodrec.backend.PostAPI.query.get_post_by_id;
+package com.foodrec.backend.PostAPI.query.get_post_by_id_by_moderator;
 
 import an.awesome.pipelinr.Command;
 import com.foodrec.backend.Exception.InvalidDataExceptionHandler;
@@ -20,26 +20,26 @@ import java.util.List;
 import java.util.Optional;
 
 @Component
-@CacheConfig(cacheNames = "postCache")
-public class GetPostByIdQueryHandler implements Command.Handler<GetPostByIdQuery, PostDTO> {
+@CacheConfig(cacheNames = "postModerator")
+public class GetPostByIdByModeratorQueryHandler implements Command.Handler<GetPostByIdByModeratorQuery, PostDTO> {
     private final PostRepository postRepository;
     private final TagRepository tagRepository;
     private final ModelMapper modelMapper;
 
-    public GetPostByIdQueryHandler(PostRepository postRepository, TagRepository tagRepository, ModelMapper modelMapper) {
+    public GetPostByIdByModeratorQueryHandler(PostRepository postRepository, TagRepository tagRepository, ModelMapper modelMapper) {
         this.postRepository = postRepository;
         this.tagRepository = tagRepository;
         this.modelMapper = modelMapper;
     }
 
     @Transactional
-    @Cacheable(cacheNames = "postMember", key = "#query.getPostId()")
+    @Cacheable(cacheNames = "postModerator", key = "#query.getPostId()")
     @Override
-    public PostDTO handle(GetPostByIdQuery query) {
+    public PostDTO handle(GetPostByIdByModeratorQuery query) {
         if (query.getPostId().isEmpty()) {
             throw new InvalidDataExceptionHandler("Invalid data!");
         }
-        Optional<Post> optionalPost = postRepository.findPostByPostIdAndStatus(query.getPostId(), 2);
+        Optional<Post> optionalPost = postRepository.findById(query.getPostId());
         if (optionalPost.isEmpty()) {
             throw new NotFoundExceptionHandler("Post not found!");
         }

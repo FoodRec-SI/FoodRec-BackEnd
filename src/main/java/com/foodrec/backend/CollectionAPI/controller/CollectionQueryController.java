@@ -8,7 +8,6 @@ import com.foodrec.backend.CollectionAPI.query.get_collection_by_id.GetCollectio
 import com.foodrec.backend.Exception.InvalidDataExceptionHandler;
 import com.foodrec.backend.Exception.NotFoundExceptionHandler;
 import com.foodrec.backend.Exception.UnauthorizedExceptionHandler;
-import com.foodrec.backend.Utils.CustomResponse;
 import com.foodrec.backend.Utils.GetCurrentUserData;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -60,11 +59,8 @@ public class CollectionQueryController {
             String userId = GetCurrentUserData.getCurrentUserId(authentication);
             GetCollectionByIdQuery query = new GetCollectionByIdQuery(pageNumber, pageSize, userId, collectionId);
             CollectionDetailsDTO result = pipeline.send(query);
-            if (result.getPostDTOS() == null) {
-                CustomResponse<CollectionDetailsDTO> response = new CustomResponse<>("No Post!", result);
-                return ResponseEntity.status(HttpStatus.OK).body(response);
-            }
-            return new ResponseEntity<>(result, HttpStatus.OK);
+            HttpStatus status = HttpStatus.OK;
+            return new ResponseEntity<>(result, status);
         } catch (InvalidDataExceptionHandler | NotFoundExceptionHandler | UnauthorizedExceptionHandler e) {
             HttpStatus status = e.getClass().getAnnotation(ResponseStatus.class).value();
             return new ResponseEntity<>(e.getMessage(), status);
