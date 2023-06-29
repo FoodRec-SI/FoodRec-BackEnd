@@ -7,7 +7,6 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class RatingDetailsDTO {
-    private int raters;
-    private double average;
+public class RatingByUserIdPostIdDTO {
+    private int rating;
 }

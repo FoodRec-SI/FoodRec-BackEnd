@@ -18,6 +18,7 @@ public class RecipeDTO {
     private int calories;
     private int duration;
     private String image;
+    private boolean isLiked;
     private String instructions;
     private List<TagDTO> tags;
 }

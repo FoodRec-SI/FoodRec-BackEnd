@@ -1,4 +1,4 @@
-package com.foodrec.backend.RatingAPI.command;
+package com.foodrec.backend.RatingAPI.command.create_rating;
 
 import an.awesome.pipelinr.Command;
 import com.foodrec.backend.RatingAPI.dto.CreateRatingDTO;

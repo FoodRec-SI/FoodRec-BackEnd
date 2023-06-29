@@ -1,6 +1,8 @@
 package com.foodrec.backend.PostAPI.entity;
 
 import com.foodrec.backend.AccountAPI.entity.Account;
+import com.foodrec.backend.LikeAPI.entity.Likes;
+import com.foodrec.backend.RatingAPI.entity.Rating;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -51,17 +53,19 @@ public class Post {
 
     @Column(name = "verified-time")
     private LocalDateTime verifiedTime;
+    @Column(name = "average-score")
+    private double avgScore;
 
     @OneToMany(mappedBy = "post")
     private Set<PostCollection> postCollections;
 
-    //M-M relationship with the Likes table (1 Account Likes Many Posts,
-    //and 1 Post is Liked by Many Accounts)
-    @ManyToMany
-    @JoinTable(
-            name = "likes",
-            joinColumns = @JoinColumn(name = "postid"),
-            inverseJoinColumns = @JoinColumn(name = "userid"))
-    private Set<Account> accounts;
+
+    @OneToMany(mappedBy = "post") /*mappedBy: Bind this entity (Post)
+                                        to the entity with the same name
+                                        in the Join table (Likes/Ratings)                                        */
+    private Set<Likes> likes; /*The name of the join table*/
+
+    @OneToMany(mappedBy = "post")
+    private Set<Rating> ratings;
 }
 

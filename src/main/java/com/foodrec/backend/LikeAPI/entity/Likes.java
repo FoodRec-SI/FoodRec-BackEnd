@@ -11,8 +11,16 @@ public class Likes { /*The temporary table, for
 
     @EmbeddedId
     private LikesCompositeKey id;
-    @ManyToOne /*Many Likes belong to 1 Post
-                  (1 Post contains Many Likes) */
+    /*Quick explanation:
+    * We have 3 tables: Post, Account, Likes.
+     Because the Likes relationship between Post and Accounts
+     *  is M-M, this is how it looks in the database
+     *          Post (1) -------(M)-Likes-(M) ---------(1) Account
+    *           (1 Post)         (can have Many Likes)      (from Many Accounts)
+    *        or:(1 Account)      (can give Many Likes)      (to Many Posts)
+    *
+    * */
+    @ManyToOne //Many Likes can belong to 1 Post
     @JoinColumn(name = "postid") /*name of the column of the Likes
                                     table, that matches the postid
                                     column of Post table*/
@@ -21,11 +29,10 @@ public class Likes { /*The temporary table, for
     private Post post;
 
 
-    @ManyToOne
+    @ManyToOne //Many Likes can belong to 1 Account
     @JoinColumn(name = "userid")
     @MapsId("userid")
     private Account account;
-
 
     public LikesCompositeKey getId() {
         return id;

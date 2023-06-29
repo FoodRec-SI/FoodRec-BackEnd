@@ -21,6 +21,7 @@ public class PostDTO implements Serializable {
     private int duration;
     private String image;
     private LocalDateTime time;
+    private boolean isLiked;
     private PostStatus postStatus;
     private String recipeId;
     private LocalDateTime verifiedTime;

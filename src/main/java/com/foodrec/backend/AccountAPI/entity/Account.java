@@ -3,7 +3,9 @@ package com.foodrec.backend.AccountAPI.entity;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.foodrec.backend.LikeAPI.entity.Likes;
 import com.foodrec.backend.PostAPI.entity.Post;
+import com.foodrec.backend.RatingAPI.entity.Rating;
 import com.foodrec.backend.TagAPI.entity.Tag;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -37,9 +39,10 @@ public class Account {
     @JsonBackReference
     private Set<Tag> accountTags = new HashSet<>();
 
-    //M-M relationship with the Likes table (1 Account Likes Many Posts,
-    //and 1 Post is Liked by Many Accounts)
+    @OneToMany(mappedBy = "account") /*mappedBy: This Entity (Account) is mapped to
+                                        the Account entity in the Join Table (Likes)*/
+    private Set<Likes> likes;
 
-    @ManyToMany(mappedBy = "accounts")
-    private Set<Post> posts;
+    @OneToMany(mappedBy = "account")/*mappedBy: This Entity (Account) is mapped to                                        the Account entity in the Join Table (Rating)*/
+    private Set<Rating> ratings;
 }
