@@ -25,6 +25,12 @@ public class Meal {
     @Column(name = "userid")
     private String userid;
 
+    @Column(name = "calories")
+    private int calories;
+
+    @Column(name = "planid")
+    private String planId;
+
     @OneToMany(mappedBy = "meal")
     @JsonIgnore
     private Set<MealPost> mealPosts;
