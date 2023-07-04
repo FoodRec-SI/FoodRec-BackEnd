@@ -1,6 +1,7 @@
-package com.foodrec.backend.MealAPI.entity.dto;
+package com.foodrec.backend.MealAPI.dto;
 
 import com.foodrec.backend.PostAPI.dto.PostDTO;
+import com.foodrec.backend.PostAPI.dto.PostPerMealDTO;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -15,6 +16,7 @@ import java.util.Set;
  AFTER the user has generated a couple of meals.
 * */
 public class MealPerPlanDTO {
+    private String mealId;
     private String mealName;
-    private Set<PostDTO> postSet; //1 Meal contains a Set of Posts
+    private Set<PostPerMealDTO> postSet; //1 Meal contains a Set of Posts
 }

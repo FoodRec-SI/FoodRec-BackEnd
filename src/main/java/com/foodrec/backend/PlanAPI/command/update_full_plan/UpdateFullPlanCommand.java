@@ -1,8 +1,9 @@
 package com.foodrec.backend.PlanAPI.command.update_full_plan;
 
 import an.awesome.pipelinr.Command;
+import com.foodrec.backend.PlanAPI.dto.CreateBasePlanDTO;
 import com.foodrec.backend.PlanAPI.dto.BasePlanDTO;
-import com.foodrec.backend.PlanAPI.dto.ReadBasePlanDTO;
+import com.foodrec.backend.PlanAPI.dto.FullPlanDTO;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -10,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class UpdateBasePlanCommand implements Command<ReadBasePlanDTO> {
+public class UpdateFullPlanCommand implements Command<FullPlanDTO> {
     private String userId;
-    private BasePlanDTO basePlanDTO;
+    private CreateBasePlanDTO createBasePlanDTO;
 }

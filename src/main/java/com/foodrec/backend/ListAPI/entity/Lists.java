@@ -1,4 +1,4 @@
-package com.foodrec.backend.ListAPI.Entity;
+package com.foodrec.backend.ListAPI.entity;
 
 import com.foodrec.backend.IngredientAPI.entity.Ingredient;
 import com.foodrec.backend.PlanAPI.entity.Plan;

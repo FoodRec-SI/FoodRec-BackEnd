@@ -1,25 +1,20 @@
 package com.foodrec.backend.PlanAPI.command.create_base_plan;
 
 import an.awesome.pipelinr.Command;
+import com.foodrec.backend.PlanAPI.dto.CreateBasePlanDTO;
 import com.foodrec.backend.PlanAPI.dto.BasePlanDTO;
-import com.foodrec.backend.PlanAPI.dto.ReadBasePlanDTO;
 import com.foodrec.backend.PlanAPI.entity.Plan;
 import com.foodrec.backend.PlanAPI.repository.PlanRepository;
 import com.foodrec.backend.Utils.IdGenerator;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 import org.modelmapper.ModelMapper;
-import org.springframework.cglib.core.Local;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 
 
 @Component
-public class CreateBasePlanCommandHandler implements Command.Handler<CreateBasePlanCommand, ReadBasePlanDTO> {
+public class CreateBasePlanCommandHandler implements Command.Handler<CreateBasePlanCommand, BasePlanDTO> {
 
     private ModelMapper modelMapper;
     private PlanRepository planRepository;
@@ -33,13 +28,13 @@ public class CreateBasePlanCommandHandler implements Command.Handler<CreateBaseP
         return localDateTime;
     }
     @Override
-    public ReadBasePlanDTO handle(CreateBasePlanCommand command) {
-        BasePlanDTO basePlanDTO = command.getBasePlanDTO();
+    public BasePlanDTO handle(CreateBasePlanCommand command) {
+        CreateBasePlanDTO createBasePlanDTO = command.getCreateBasePlanDTO();
         String userId = command.getUserId();
         String planId = IdGenerator.generateNextId(Plan.class,"planId");
 
         Plan newPlan = new Plan();
-        modelMapper.map(basePlanDTO,newPlan);
+        modelMapper.map(createBasePlanDTO,newPlan);
         newPlan.setPlanId(planId);
         newPlan.setUserId(userId);
         newPlan.setDate(getDateTime());
@@ -59,7 +54,7 @@ public class CreateBasePlanCommandHandler implements Command.Handler<CreateBaseP
         Optional<Plan> optionalPlan = planRepository.findById(planId);
         if (optionalPlan.isEmpty()) return null;
 
-        ReadBasePlanDTO result = modelMapper.map(optionalPlan.get(),ReadBasePlanDTO.class);
+        BasePlanDTO result = modelMapper.map(optionalPlan.get(), BasePlanDTO.class);
         return result;
 
     }

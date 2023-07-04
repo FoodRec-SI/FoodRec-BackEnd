@@ -1,6 +1,6 @@
 package com.foodrec.backend.IngredientAPI.entity;
 
-import com.foodrec.backend.ListAPI.Entity.Lists;
+import com.foodrec.backend.ListAPI.entity.Lists;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;

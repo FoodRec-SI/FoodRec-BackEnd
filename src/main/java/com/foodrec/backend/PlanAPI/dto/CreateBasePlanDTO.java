@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-public class BasePlanDTO {
+public class CreateBasePlanDTO {
     private String planName;
     private String planDescription;
 }

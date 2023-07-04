@@ -7,7 +7,8 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class ReadBasePlanDTO {
+//returned to the front-end when a new plan is created.
+public class BasePlanDTO {
     private String planId;
     private String planName;
     private String planDescription;

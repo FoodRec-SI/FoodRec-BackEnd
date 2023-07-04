@@ -1,8 +1,6 @@
 package com.foodrec.backend.PlanAPI.entity;
 
 import com.foodrec.backend.AccountAPI.entity.Account;
-import com.foodrec.backend.IngredientAPI.entity.Ingredient;
-import com.foodrec.backend.ListAPI.Entity.Lists;
 import com.foodrec.backend.MealAPI.entity.Meal;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -10,8 +8,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
-import java.util.Date;
-import java.util.List;
 import java.util.Set;
 
 
