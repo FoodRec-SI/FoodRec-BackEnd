@@ -4,12 +4,10 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Data
-@AllArgsConstructor
 @NoArgsConstructor
-public class ReadBasePlanDTO {
-    private String planId;
+@AllArgsConstructor
+@Data
+public class BasePlanDTO {
     private String planName;
     private String planDescription;
-    private String planDate;
 }
