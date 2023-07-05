@@ -2,14 +2,14 @@ package com.foodrec.backend.MealAPI.entity;
 
 import com.foodrec.backend.PostAPI.entity.Post;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
-@Data
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
+@Getter /*Use Lombok's getter and setter to prevent Stack Overflow error.*/
+@Setter
 @Table(name = "meal_post")
 public class MealPost {
 

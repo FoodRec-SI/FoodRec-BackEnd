@@ -12,19 +12,18 @@ import com.foodrec.backend.PlanAPI.dto.*;
 import com.foodrec.backend.Utils.GetCurrentUserData;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.*;
 
 import static com.foodrec.backend.Config.SwaggerConfig.BEARER_KEY_SECURITY_SCHEME;
 
-@Controller
+@Tag(name = "PlanAPI")
+@RestController
 public class PlanCommandController {
     final Pipeline pipeline;
 
@@ -60,13 +59,13 @@ public class PlanCommandController {
             " This is used when the user no longer wants to add more Meals to the Plan.",
             security = {@SecurityRequirement(name = BEARER_KEY_SECURITY_SCHEME)})
     @RequestMapping(value = "/api/member/plan", method = RequestMethod.DELETE)
-    public ResponseEntity removePlan(@RequestBody RemoveBasePlanDTO removeBasePlanDTO) {
+    public ResponseEntity removePlan(@RequestBody RemovePlanDTO removePlanDTO) {
         ResponseEntity responseEntity = null;
         try {
-            RemovePlanCommand removePlanCommand = new RemovePlanCommand(removeBasePlanDTO);
+            RemovePlanCommand removePlanCommand = new RemovePlanCommand(removePlanDTO);
             Boolean result = pipeline.send(removePlanCommand);
             if (result==true) responseEntity = new ResponseEntity<>(
-                    "Successfully removed plan with Id" + removePlanCommand.getRemoveBasePlanDTO().getPlanId(),HttpStatus.OK);
+                    "Successfully removed plan with Id" + removePlanCommand.getRemovePlanDTO().getPlanId(),HttpStatus.OK);
         } catch (InvalidDataExceptionHandler | DuplicateExceptionHandler | UnauthorizedExceptionHandler |
                  NotFoundExceptionHandler e) {
             HttpStatus status = e.getClass().getAnnotation(ResponseStatus.class).value();
@@ -85,7 +84,10 @@ public class PlanCommandController {
     public ResponseEntity updateFullPlan(@RequestBody UpdateFullPlanDTO updateFullPlanDTO) {
         ResponseEntity responseEntity = null;
         try {
-            UpdateFullPlanCommand updateFullPlanCommand = new UpdateFullPlanCommand();
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            String userId = GetCurrentUserData.getCurrentUserId(authentication);
+            UpdateFullPlanCommand updateFullPlanCommand =
+                    new UpdateFullPlanCommand(userId,updateFullPlanDTO);
             FullPlanDTO result = pipeline.send(updateFullPlanCommand);
             if (result!=null) responseEntity = new ResponseEntity<>(result,HttpStatus.OK);
         } catch (InvalidDataExceptionHandler | DuplicateExceptionHandler | UnauthorizedExceptionHandler |

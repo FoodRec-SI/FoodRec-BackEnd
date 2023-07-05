@@ -1,7 +1,7 @@
 package com.foodrec.backend.PlanAPI.command.remove_plan;
 
 import an.awesome.pipelinr.Command;
-import com.foodrec.backend.PlanAPI.dto.RemoveBasePlanDTO;
+import com.foodrec.backend.PlanAPI.dto.RemovePlanDTO;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -10,5 +10,5 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class RemovePlanCommand implements Command<Boolean> {
-    private RemoveBasePlanDTO removeBasePlanDTO;
+    private RemovePlanDTO removePlanDTO;
 }

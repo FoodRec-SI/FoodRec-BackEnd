@@ -7,6 +7,6 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class RemoveBasePlanDTO {
+public class RemovePlanDTO {
     private String planId;
 }

@@ -3,15 +3,14 @@ package com.foodrec.backend.MealAPI.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.foodrec.backend.PlanAPI.entity.Plan;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.Set;
 
 @Entity
 @Table(name = "meal")
-@Data
+@Getter /*Use Lombok's getter and setter to prevent Stack Overflow error.*/
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class Meal {
@@ -39,7 +38,8 @@ public class Meal {
     @ManyToOne /*The relationship between Meal and Plan.
                1 Meal belongs to 1 Plan
                 */
-    @JoinColumn(name="planid") /*Name of the column in the Plan Table,
+    @JoinColumn(name="planid",insertable = false,
+    updatable = false) /*Name of the column in the Plan Table,
                                 that this table (Meal) is joined to.*/
     private Plan plan;
 }

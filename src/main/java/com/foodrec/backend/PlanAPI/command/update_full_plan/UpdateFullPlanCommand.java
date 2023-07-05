@@ -4,6 +4,7 @@ import an.awesome.pipelinr.Command;
 import com.foodrec.backend.PlanAPI.dto.CreateBasePlanDTO;
 import com.foodrec.backend.PlanAPI.dto.BasePlanDTO;
 import com.foodrec.backend.PlanAPI.dto.FullPlanDTO;
+import com.foodrec.backend.PlanAPI.dto.UpdateFullPlanDTO;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -13,5 +14,5 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class UpdateFullPlanCommand implements Command<FullPlanDTO> {
     private String userId;
-    private CreateBasePlanDTO createBasePlanDTO;
+    private UpdateFullPlanDTO updateFullPlanDTO;
 }

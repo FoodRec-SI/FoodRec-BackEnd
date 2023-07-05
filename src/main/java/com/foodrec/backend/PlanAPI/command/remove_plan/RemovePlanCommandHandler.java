@@ -25,7 +25,7 @@ public class RemovePlanCommandHandler implements Command.Handler<RemovePlanComma
     public Boolean handle(RemovePlanCommand command) {
         Boolean result = null;
         try{
-            String planId = command.getRemoveBasePlanDTO().getPlanId();
+            String planId = command.getRemovePlanDTO().getPlanId();
             planRepository.deleteById(planId);
 
             Optional<Plan> plan = planRepository.findById(planId);
