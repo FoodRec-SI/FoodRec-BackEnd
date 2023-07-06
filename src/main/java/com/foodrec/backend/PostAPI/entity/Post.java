@@ -6,17 +6,16 @@ import com.foodrec.backend.MealAPI.entity.MealPost;
 import com.foodrec.backend.LikeAPI.entity.Likes;
 import com.foodrec.backend.RatingAPI.entity.Rating;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDateTime;
 import java.util.Set;
 
-@Data
+
 @NoArgsConstructor
 @AllArgsConstructor
+@Getter /*Use Lombok's getter and setter to prevent Stack Overflow error.*/
+@Setter
 @Entity
 @Table(name = "post")
 public class Post {

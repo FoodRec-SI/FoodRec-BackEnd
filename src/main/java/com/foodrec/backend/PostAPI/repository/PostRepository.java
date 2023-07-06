@@ -32,4 +32,5 @@ public interface PostRepository extends JpaRepository<Post, String> {
     Page<Post> getPostsByRatingsAccountAndStatus(Account account, int status, Pageable pageable);
 
     List<Post> getPostsByRecipeIdInAndStatus(List<String> recipeIds, int status);
+    Page<Post> getPostsByLikes_Account_UserId(String userId,Pageable pageable);
 }
