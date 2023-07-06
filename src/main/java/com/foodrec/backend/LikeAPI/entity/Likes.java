@@ -3,8 +3,16 @@ package com.foodrec.backend.LikeAPI.entity;
 import com.foodrec.backend.AccountAPI.entity.Account;
 import com.foodrec.backend.PostAPI.entity.Post;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
 @Table(name = "likes")
 public class Likes { /*The temporary table, for
                         the M-M relationship between Post and Account.*/
@@ -34,27 +42,5 @@ public class Likes { /*The temporary table, for
     @MapsId("userid")
     private Account account;
 
-    public LikesCompositeKey getId() {
-        return id;
-    }
 
-    public void setId(LikesCompositeKey id) {
-        this.id = id;
-    }
-
-    public Post getPost() {
-        return post;
-    }
-
-    public void setPost(Post post) {
-        this.post = post;
-    }
-
-    public Account getAccount() {
-        return account;
-    }
-
-    public void setAccount(Account account) {
-        this.account = account;
-    }
 }

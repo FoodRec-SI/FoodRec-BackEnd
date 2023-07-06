@@ -3,6 +3,7 @@ package com.foodrec.backend.LikeAPI.command.add_like;
 import an.awesome.pipelinr.Command;
 import com.foodrec.backend.AccountAPI.entity.Account;
 import com.foodrec.backend.AccountAPI.repository.AccountRepository;
+import com.foodrec.backend.Exception.InvalidDataExceptionHandler;
 import com.foodrec.backend.LikeAPI.dto.LikeDTO;
 import com.foodrec.backend.LikeAPI.entity.Likes;
 import com.foodrec.backend.LikeAPI.entity.LikesCompositeKey;
@@ -35,7 +36,8 @@ public class AddLikeCommandHandler implements Command.Handler<AddLikeCommand, Li
         this.likesRepository = likesRepository;
     }
     @Override
-    public LikeDTO handle(AddLikeCommand command) {
+    public LikeDTO handle(AddLikeCommand command)
+    throws InvalidDataExceptionHandler {
         /*Step 0: Creates a new likes entity with the new details from the command.*/
         String userId = command.getUserId();
         String postId = command.getPostId();
@@ -50,6 +52,9 @@ public class AddLikeCommandHandler implements Command.Handler<AddLikeCommand, Li
         Account likedAccount = accountRepository.findById(userId).get();
         Post likedPost = postRepository.findById(postId).get();
 
+        //Only allows users to give likes to Posts with Status 2.
+        if (likedPost.getStatus()!=2)
+            throw new InvalidDataExceptionHandler("This Post is already deleted!");
         newLike.setPost(likedPost);
         newLike.setAccount(likedAccount);
 
