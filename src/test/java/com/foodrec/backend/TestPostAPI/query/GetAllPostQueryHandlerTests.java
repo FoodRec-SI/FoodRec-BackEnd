@@ -4,7 +4,6 @@ import an.awesome.pipelinr.Pipeline;
 import com.foodrec.backend.Exception.InvalidDataExceptionHandler;
 import com.foodrec.backend.PostAPI.dto.PostDTO;
 import com.foodrec.backend.PostAPI.query.get_all_posts.GetAllPostsApprovedQuery;
-import com.foodrec.backend.PostAPI.query.get_posts_by_recipe_name.GetPostsByRecipeNameQuery;
 import com.foodrec.backend.PostAPI.repository.PostRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

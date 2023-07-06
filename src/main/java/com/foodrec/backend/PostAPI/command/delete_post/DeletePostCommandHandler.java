@@ -6,6 +6,7 @@ import com.foodrec.backend.Exception.NotFoundExceptionHandler;
 import com.foodrec.backend.Exception.UnauthorizedExceptionHandler;
 import com.foodrec.backend.PostAPI.dto.DeletePostDTO;
 import com.foodrec.backend.PostAPI.entity.Post;
+import com.foodrec.backend.PostAPI.repository.PostElasticsearchRepository;
 import com.foodrec.backend.PostAPI.repository.PostRepository;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.HttpStatus;
@@ -18,10 +19,12 @@ import java.util.Optional;
 public class DeletePostCommandHandler implements Command.Handler<DeletePostCommand, HttpStatus> {
 
     private final PostRepository postRepository;
-    private final RedisTemplate<String, Object> redisTemplate;
+    private final PostElasticsearchRepository postElasticsearchRepository;
+    private final RedisTemplate redisTemplate;
 
-    public DeletePostCommandHandler(PostRepository postRepository, RedisTemplate redisTemplate) {
+    public DeletePostCommandHandler(PostRepository postRepository, PostElasticsearchRepository postElasticsearchRepository, RedisTemplate redisTemplate) {
         this.postRepository = postRepository;
+        this.postElasticsearchRepository = postElasticsearchRepository;
         this.redisTemplate = redisTemplate;
     }
 
@@ -44,6 +47,7 @@ public class DeletePostCommandHandler implements Command.Handler<DeletePostComma
         Post post = postOptional.get();
         post.setStatus(3);
         postRepository.save(post);
+        postElasticsearchRepository.deletePostELKByPostId(post.getPostId());
         redisTemplate.delete("post::" + deletePostDTO.getPostId());
         return HttpStatus.OK;
     }

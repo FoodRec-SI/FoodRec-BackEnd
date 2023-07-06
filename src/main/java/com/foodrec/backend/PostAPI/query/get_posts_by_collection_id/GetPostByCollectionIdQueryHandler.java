@@ -1,6 +1,7 @@
 package com.foodrec.backend.PostAPI.query.get_posts_by_collection_id;
 
 import an.awesome.pipelinr.Command;
+import com.foodrec.backend.AccountAPI.repository.AccountRepository;
 import com.foodrec.backend.CollectionAPI.repository.CollectionRepository;
 import com.foodrec.backend.Exception.InvalidDataExceptionHandler;
 import com.foodrec.backend.Exception.NotFoundExceptionHandler;
@@ -21,12 +22,14 @@ import java.util.List;
 @Component
 public class GetPostByCollectionIdQueryHandler implements Command.Handler<GetPostByCollectionIdQuery, Page<PostDTO>> {
     private final PostRepository postRepository;
+    private final AccountRepository accountRepository;
     private final TagRepository tagRepository;
     private final ModelMapper modelMapper;
     private final CollectionRepository collectionRepository;
 
-    public GetPostByCollectionIdQueryHandler(PostRepository postRepository, TagRepository tagRepository, ModelMapper modelMapper, CollectionRepository collectionRepository) {
+    public GetPostByCollectionIdQueryHandler(PostRepository postRepository, AccountRepository accountRepository, TagRepository tagRepository, ModelMapper modelMapper, CollectionRepository collectionRepository) {
         this.postRepository = postRepository;
+        this.accountRepository = accountRepository;
         this.tagRepository = tagRepository;
         this.modelMapper = modelMapper;
         this.collectionRepository = collectionRepository;
@@ -48,6 +51,8 @@ public class GetPostByCollectionIdQueryHandler implements Command.Handler<GetPos
             List<Tag> tagList = tagRepository.findTagsByRecipeTags_Recipe_RecipeId(postDTO.getRecipeId());
             List<TagDTO> tagDTOList = tagList.stream().map(tag -> modelMapper.map(tag, TagDTO.class)).toList();
             postDTO.setTagDTOList(tagDTOList);
+            postDTO.setUserName(accountRepository.findById(postDTO.getUserId()).get().getName());
+            postDTO.setModeratorName(accountRepository.findById(postDTO.getModeratorId()).get().getName());
             postDTO.setPostStatus(PostStatus.convertStatusToEnum(post.getStatus()));
             return postDTO;
         }).toList();
