@@ -3,6 +3,8 @@ package com.foodrec.backend.PostAPI.query.get_posts_liked_by_userid;
 import an.awesome.pipelinr.Command;
 import com.foodrec.backend.AccountAPI.repository.AccountRepository;
 import com.foodrec.backend.Exception.InvalidPageInfoException;
+import com.foodrec.backend.LikeAPI.entity.Likes;
+import com.foodrec.backend.LikeAPI.repository.LikesRepository;
 import com.foodrec.backend.PostAPI.dto.PostDTO;
 import com.foodrec.backend.PostAPI.entity.Post;
 import com.foodrec.backend.PostAPI.repository.PostRepository;
@@ -25,14 +27,18 @@ public class GetPostsLikedByUserIdQueryHandler implements Command.Handler
     private PageUtils pageUtils;
     @Autowired
     private ModelMapper modelMapper;
+    @Autowired
+    private LikesRepository likesRepository;
 
     public GetPostsLikedByUserIdQueryHandler(PostRepository postRepository,
                                              AccountRepository accountRepository, PageUtils pageUtils,
-                                             ModelMapper modelMapper) {
+                                             ModelMapper modelMapper,
+                                             LikesRepository likesRepository) {
         this.postRepository = postRepository;
         this.accountRepository = accountRepository;
         this.pageUtils = pageUtils;
         this.modelMapper = modelMapper;
+        this.likesRepository = likesRepository;
     }
 
     @Override
@@ -53,8 +59,9 @@ public class GetPostsLikedByUserIdQueryHandler implements Command.Handler
         Pageable pageable = PageRequest.of(pageNumber, pageSize,
                 Sort.by("postId").descending());
 
-        Page<Post> postPages = postRepository.getPostsByRatingsAccountAndStatus(accountRepository.findById(command.getUserId()).get(),
-                2,pageable);
+        String userId = command.getUserId();
+
+        Page<Post> postPages = postRepository.getPostsByLikes_Account_UserId(userId,pageable);
 
         List<PostDTO> postDTOList = postPages.getContent().stream()
                 .map((post) -> modelMapper.map(post, PostDTO.class))
