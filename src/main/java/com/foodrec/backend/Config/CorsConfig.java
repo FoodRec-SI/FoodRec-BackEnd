@@ -1,4 +1,4 @@
-package com.foodrec.backend.Security;
+package com.foodrec.backend.Config;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
