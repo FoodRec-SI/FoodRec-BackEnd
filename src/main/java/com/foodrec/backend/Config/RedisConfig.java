@@ -18,7 +18,6 @@ public class RedisConfig {
 
     @Bean
     public RedisConnectionFactory redisConnectionFactory() {
-        System.out.println(redisHostname);
         RedisStandaloneConfiguration redisConfig = new RedisStandaloneConfiguration(redisHostname, 6379);
         return new LettuceConnectionFactory(redisConfig);
     }
