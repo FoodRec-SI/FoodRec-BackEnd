@@ -3,7 +3,7 @@ package com.foodrec.backend.RatingAPI.controller;
 
 import an.awesome.pipelinr.Pipeline;
 import com.foodrec.backend.Exception.InvalidDataExceptionHandler;
-import com.foodrec.backend.RatingAPI.command.CreateRatingCommand;
+import com.foodrec.backend.RatingAPI.command.create_rating.CreateRatingCommand;
 import com.foodrec.backend.RatingAPI.dto.CreateRatingDTO;
 import com.foodrec.backend.RatingAPI.dto.RatingDTO;
 import com.foodrec.backend.Utils.GetCurrentUserData;

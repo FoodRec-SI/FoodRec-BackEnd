@@ -50,8 +50,6 @@ public class CollectionQueryController {
         }
     }
 
-    @Operation(description = "Get all posts in collection, use by collectionID",
-            security = {@SecurityRequirement(name = BEARER_KEY_SECURITY_SCHEME)})
     @GetMapping("/api/member/collection/{collectionId}")
     public ResponseEntity getCollectionDetailsByCollectionId(@RequestParam(defaultValue = "0") int pageNumber,
                                                              @RequestParam(defaultValue = "6") int pageSize,
@@ -61,10 +59,11 @@ public class CollectionQueryController {
             String userId = GetCurrentUserData.getCurrentUserId(authentication);
             GetCollectionByIdQuery query = new GetCollectionByIdQuery(pageNumber, pageSize, userId, collectionId);
             CollectionDetailsDTO result = pipeline.send(query);
-            return new ResponseEntity<>(result, HttpStatus.OK);
+            HttpStatus status = HttpStatus.OK;
+            return new ResponseEntity<>(result, status);
         } catch (InvalidDataExceptionHandler | NotFoundExceptionHandler | UnauthorizedExceptionHandler e) {
             HttpStatus status = e.getClass().getAnnotation(ResponseStatus.class).value();
-            return ResponseEntity.status(status).body(e.getMessage());
+            return new ResponseEntity<>(e.getMessage(), status);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }

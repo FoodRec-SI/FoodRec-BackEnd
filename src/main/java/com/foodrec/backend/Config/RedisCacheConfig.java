@@ -51,7 +51,8 @@ public class RedisCacheConfig {
 
         return RedisCacheManager.builder(redisConnectionFactory)
                 .cacheDefaults(config)
-                .withCacheConfiguration("post", postConfig)
+                .withCacheConfiguration("postMember", postConfig)
+                .withCacheConfiguration("postModerator", postConfig)
                 .build();
     }
 }

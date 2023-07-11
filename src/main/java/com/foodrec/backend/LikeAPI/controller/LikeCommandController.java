@@ -1,6 +1,7 @@
 package com.foodrec.backend.LikeAPI.controller;
 
 import an.awesome.pipelinr.Pipeline;
+import com.foodrec.backend.Exception.InvalidDataExceptionHandler;
 import com.foodrec.backend.LikeAPI.command.add_like.AddLikeCommand;
 import com.foodrec.backend.LikeAPI.command.remove_like.RemoveLikeCommand;
 import com.foodrec.backend.LikeAPI.dto.DeleteLikeDTO;
@@ -42,8 +43,10 @@ public class LikeCommandController {
             if (likeDTO != null) {
                 result = new ResponseEntity(likeDTO, HttpStatus.OK);
             }
+        }catch (InvalidDataExceptionHandler e){
+            result = new ResponseEntity(e.getMessage(), HttpStatus.OK);
         }catch(Exception e){
-            e.getMessage();
+            result = new ResponseEntity(e.getMessage(), HttpStatus.OK);
         }
         return result;
     }

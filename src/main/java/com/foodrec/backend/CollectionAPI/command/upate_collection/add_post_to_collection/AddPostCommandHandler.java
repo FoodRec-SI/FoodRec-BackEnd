@@ -40,7 +40,7 @@ public class AddPostCommandHandler implements Command.Handler<AddPostCommand, Ht
                 postCollectionDTO.getCollectionId() == null || postCollectionDTO.getCollectionId().isBlank()) {
             throw new InvalidDataExceptionHandler("Invalid Data!");
         }
-        Optional<Post> postOptional = postRepository.findById(postCollectionDTO.getPostId());
+        Optional<Post> postOptional = postRepository.findPostByPostIdAndStatus(postCollectionDTO.getPostId(), 2);
         Optional<Collection> collectionOptional = collectionRepository.findById(postCollectionDTO.getCollectionId());
         if (postOptional.isEmpty() || collectionOptional.isEmpty()) {
             throw new NotFoundExceptionHandler("Not found!");

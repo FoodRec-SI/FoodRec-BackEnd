@@ -1,4 +1,4 @@
-package com.foodrec.backend.RatingAPI.query;
+package com.foodrec.backend.RatingAPI.query.get_rating_details_by_postid;
 
 import an.awesome.pipelinr.Command;
 import com.foodrec.backend.RatingAPI.dto.RatingDetailsDTO;
@@ -9,22 +9,21 @@ import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.text.DecimalFormat;
 import java.util.List;
 
 @Component
-public class GetRatingDetailsByPostIdCommandHandler
-        implements Command.Handler<GetRatingDetailsByPostIdCommand, RatingDetailsDTO> {
+public class GetRatingDetailsByPostIdQueryHandler
+        implements Command.Handler<GetRatingDetailsByPostIdQuery, RatingDetailsDTO> {
     @Autowired
     private RatingRepository ratingRepository;
 
-    public GetRatingDetailsByPostIdCommandHandler(RatingRepository ratingRepository){
+    public GetRatingDetailsByPostIdQueryHandler(RatingRepository ratingRepository){
         this.ratingRepository = ratingRepository;
     }
     @Override
-    public RatingDetailsDTO handle(GetRatingDetailsByPostIdCommand command) {
+    public RatingDetailsDTO handle(GetRatingDetailsByPostIdQuery command) {
         String postId = command.getPostId();
-        List<Rating> ratingListByPostId = ratingRepository.findRatingsByPostId(postId);
+        List<Rating> ratingListByPostId = ratingRepository.getRatingsByPost_PostId(postId);
 
         int raters = ratingListByPostId.size();
         double sum = 0;
