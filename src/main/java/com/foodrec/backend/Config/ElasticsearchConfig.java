@@ -16,7 +16,7 @@ public class ElasticsearchConfig extends ElasticsearchConfiguration {
     public ClientConfiguration clientConfiguration() {
         System.out.println(elasticsearchHostname);
         return ClientConfiguration.builder()
-                .connectedTo(elasticsearchHostname + ":9200")
+                .connectedTo("localhost:9200")
                 .build();
     }
 }
