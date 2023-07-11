@@ -1,6 +1,5 @@
 package com.foodrec.backend.PostAPI.entity;
 
-import com.foodrec.backend.TagAPI.entity.Tag;
 import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -15,7 +14,6 @@ import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.data.elasticsearch.annotations.FieldType;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -34,7 +32,7 @@ public class PostELK implements Persistable<String> {
     private String moderatorName;
     @Field(type = FieldType.Text)
     private String recipeId;
-    @Field(type = FieldType.Text, analyzer = "custom_analyzer.yml")
+    @Field(type = FieldType.Text)
     private String recipeName;
     @Field(type = FieldType.Text)
     private String description;

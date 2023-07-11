@@ -101,7 +101,7 @@ public class PostQueryController {
     @GetMapping("/api/public/post/{tagId}")
     public ResponseEntity getPostsByTagId(@RequestParam(defaultValue = "0") int pageNumber,
                                           @RequestParam(defaultValue = "6") int pageSize,
-                                          @RequestParam String tagId) {
+                                          @PathVariable String tagId) {
         try {
             GetPostsByTagIdQuery query = new GetPostsByTagIdQuery(pageNumber, pageSize, tagId);
             Page<PostDTO> result = pipeline.send(query);
