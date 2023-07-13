@@ -119,8 +119,13 @@ public class UpdateFullPlanCommandHandler implements Command.Handler<UpdateFullP
             List<CreatePostPerMealDTO> createPostPerMealDTOList
                                     = createMealPerPlanDTO.getPostList();
             for(CreatePostPerMealDTO post: createPostPerMealDTOList){
-                finalIngredientList += post.getIngredientList()+"\n\n";
-                totalCalories += post.getCalories();
+                /*Extracts the ingredient and calories details of each existing Post.
+                Based on its Id.*/
+                Post existingPost = postRepository.findById(post.getPostId()).get();
+                String eachIngredient = existingPost.getIngredientList();
+                int eachCalories = existingPost.getCalories();
+                finalIngredientList += eachIngredient+"\n\n";
+                totalCalories += eachCalories;
             }
         }
         result.put("ingredients-list",finalIngredientList);
@@ -155,7 +160,6 @@ public class UpdateFullPlanCommandHandler implements Command.Handler<UpdateFullP
 
 
     private FullPlanDTO returnFullPlanDTO(String planId){
-
         Plan plan = planRepository.findById(planId).get();
         FullPlanDTO result = modelMapper.map(plan, FullPlanDTO.class);
         return result;
