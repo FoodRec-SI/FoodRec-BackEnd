@@ -14,7 +14,7 @@ import java.util.regex.Pattern;
 @Component
 public class RecipeUtils {
     @Autowired
-    private RecipeRepository recipeRepository;
+    public RecipeRepository recipeRepository;
 
     public RecipeUtils() {
     }
