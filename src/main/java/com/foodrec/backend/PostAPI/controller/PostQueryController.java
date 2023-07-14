@@ -10,7 +10,7 @@ import com.foodrec.backend.PostAPI.query.get_all_posts.GetAllPostsApprovedQuery;
 import com.foodrec.backend.PostAPI.query.get_post_by_id.GetPostByIdQuery;
 import com.foodrec.backend.PostAPI.query.get_post_by_id_by_moderator.GetPostByIdByModeratorQuery;
 import com.foodrec.backend.PostAPI.query.get_posts_by_collection_id.GetPostByCollectionIdQuery;
-import com.foodrec.backend.PostAPI.query.get_posts_by_recipe_name.GetPostsByRecipeNameQuery;
+import com.foodrec.backend.PostAPI.query.search_posts.GetPostsByKeywordQuery;
 import com.foodrec.backend.PostAPI.query.get_posts_by_status_by_moderator.GetPostByStatusQuery;
 import com.foodrec.backend.PostAPI.query.get_posts_by_tagId.GetPostsByTagIdQuery;
 import com.foodrec.backend.PostAPI.query.get_posts_by_tagIds.GetPostsByTagIdsQuery;
@@ -73,6 +73,7 @@ public class PostQueryController {
             HttpStatus status = e.getClass().getAnnotation(ResponseStatus.class).value();
             return new ResponseEntity<>(status);
         } catch (Exception e) {
+            System.out.println(e.getMessage());
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -82,9 +83,9 @@ public class PostQueryController {
     @GetMapping("/api/public/posts/search")
     public ResponseEntity getPostsByRecipeName(@RequestParam(defaultValue = "0") int pageNumber,
                                                @RequestParam(defaultValue = "6") int pageSize,
-                                               @RequestParam String recipeName) {
+                                               @RequestParam String keyword) {
         try {
-            GetPostsByRecipeNameQuery query = new GetPostsByRecipeNameQuery(pageNumber, pageSize, recipeName);
+            GetPostsByKeywordQuery query = new GetPostsByKeywordQuery(pageNumber, pageSize, keyword);
             Page<PostDTO> result = pipeline.send(query);
             return new ResponseEntity<>(result, HttpStatus.OK);
         } catch (InvalidDataExceptionHandler | NotFoundExceptionHandler e) {
@@ -97,10 +98,10 @@ public class PostQueryController {
 
     @Operation(description = "Get some posts which have tag ID.",
             security = {@SecurityRequirement(name = BEARER_KEY_SECURITY_SCHEME)})
-    @GetMapping("/api/public/posts/{tagId}")
+    @GetMapping("/api/public/post/{tagId}")
     public ResponseEntity getPostsByTagId(@RequestParam(defaultValue = "0") int pageNumber,
                                           @RequestParam(defaultValue = "6") int pageSize,
-                                          @RequestParam String tagId) {
+                                          @PathVariable String tagId) {
         try {
             GetPostsByTagIdQuery query = new GetPostsByTagIdQuery(pageNumber, pageSize, tagId);
             Page<PostDTO> result = pipeline.send(query);
@@ -115,7 +116,7 @@ public class PostQueryController {
 
     @Operation(description = "Get some posts which have some tags.",
             security = {@SecurityRequirement(name = BEARER_KEY_SECURITY_SCHEME)})
-    @GetMapping("/api/public/posts/some/{tagIds}")
+    @GetMapping("/api/public/posts/some/tagIds")
     public ResponseEntity getPostsByTagIds(@RequestParam(defaultValue = "0") int pageNumber,
                                            @RequestParam(defaultValue = "6") int pageSize,
                                            @RequestParam Set<String> tagIds) {

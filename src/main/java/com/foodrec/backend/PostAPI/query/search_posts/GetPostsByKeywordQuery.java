@@ -1,4 +1,4 @@
-package com.foodrec.backend.PostAPI.query.get_posts_by_recipe_name;
+package com.foodrec.backend.PostAPI.query.search_posts;
 
 import an.awesome.pipelinr.Command;
 import com.foodrec.backend.PostAPI.dto.PostDTO;
@@ -10,8 +10,8 @@ import org.springframework.data.domain.Page;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class GetPostsByRecipeNameQuery implements Command<Page<PostDTO>> {
+public class GetPostsByKeywordQuery implements Command<Page<PostDTO>> {
     private int pageNumber;
     private int pageSize;
-    private String recipeName;
+    private String keyword;
 }
