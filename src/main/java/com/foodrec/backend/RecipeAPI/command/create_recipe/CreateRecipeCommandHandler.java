@@ -15,7 +15,6 @@ import com.foodrec.backend.Utils.IdGenerator;
 import com.foodrec.backend.Utils.ImageUtils;
 import com.foodrec.backend.Utils.RecipeUtils;
 import org.modelmapper.ModelMapper;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -24,7 +23,7 @@ import java.io.IOException;
 import java.util.*;
 
 @Component
-public class CreateRecipeCommandHandler implements Command.Handler<CreateRecipeCommand, HttpStatus> {
+public class CreateRecipeCommandHandler implements Command.Handler<CreateRecipeCommand, String> {
 
     private final RecipeRepository recipeRepository;
     private final ModelMapper modelMapper;
@@ -61,7 +60,7 @@ public class CreateRecipeCommandHandler implements Command.Handler<CreateRecipeC
 
     @Transactional
     @Override
-    public HttpStatus handle(CreateRecipeCommand createRecipeCommand) {
+    public String handle(CreateRecipeCommand createRecipeCommand) {
         ImageUtils imageUtils = new ImageUtils();
         CreateRecipeDTO createRecipeDTO = createRecipeCommand.getCreateRecipeDTO();
         boolean isValid = recipeUtils.fieldValidator(createRecipeCommand.getCreateRecipeDTO(),
@@ -99,6 +98,6 @@ public class CreateRecipeCommandHandler implements Command.Handler<CreateRecipeC
         recipeEntity.getRecipeTags().addAll(recipeTags);
         recipeRepository.save(recipeEntity);
         recipeTagRepository.saveAll(recipeTags);
-        return HttpStatus.OK;
+        return recipeId;
     }
 }
