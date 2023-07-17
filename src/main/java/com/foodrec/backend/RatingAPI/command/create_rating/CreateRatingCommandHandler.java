@@ -4,6 +4,8 @@ import an.awesome.pipelinr.Command;
 import com.foodrec.backend.AccountAPI.entity.Account;
 import com.foodrec.backend.AccountAPI.repository.AccountRepository;
 import com.foodrec.backend.PostAPI.entity.Post;
+import com.foodrec.backend.PostAPI.entity.PostELK;
+import com.foodrec.backend.PostAPI.repository.PostElasticsearchRepository;
 import com.foodrec.backend.PostAPI.repository.PostRepository;
 import com.foodrec.backend.RatingAPI.dto.CreateRatingDTO;
 import com.foodrec.backend.RatingAPI.dto.RatingDTO;
@@ -17,6 +19,7 @@ import org.springframework.stereotype.Component;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.List;
+import java.util.Optional;
 
 
 @Component
@@ -25,6 +28,7 @@ public class CreateRatingCommandHandler implements Command.Handler<CreateRatingC
     private RatingRepository ratingRepository;
     @Autowired
     private ModelMapper modelMapper;
+    private final PostElasticsearchRepository postElasticsearchRepository;
     @Autowired
     private PostRepository postRepository;
     @Autowired
@@ -32,10 +36,11 @@ public class CreateRatingCommandHandler implements Command.Handler<CreateRatingC
 
     public CreateRatingCommandHandler(RatingRepository ratingRepository,
                                       ModelMapper modelMapper,
-                                      PostRepository postRepository,
+                                      PostElasticsearchRepository postElasticsearchRepository, PostRepository postRepository,
                                       AccountRepository accountRepository) {
         this.modelMapper = modelMapper;
         this.ratingRepository = ratingRepository;
+        this.postElasticsearchRepository = postElasticsearchRepository;
         this.postRepository = postRepository;
         this.accountRepository = accountRepository;
     }
@@ -70,18 +75,21 @@ public class CreateRatingCommandHandler implements Command.Handler<CreateRatingC
 
         List<Rating> ratings = ratingRepository
                 .getRatingsByPost_PostId(postId);
-        for(Rating eachRating:ratings){
-            totalScore+=eachRating.getScore();
+        for (Rating eachRating : ratings) {
+            totalScore += eachRating.getScore();
             count++;
         }
 
-        double avgScore = (double)totalScore/count;
+        double avgScore = (double) totalScore / count;
         BigDecimal bd = new BigDecimal(Double.toString(avgScore));
         bd = bd.setScale(1, RoundingMode.UP);
         avgScore = bd.doubleValue();
         likedPost.setAverageScore(avgScore);
         postRepository.save(likedPost);
-
+        Optional<PostELK> postELKOptional = postElasticsearchRepository.getPostELKByPostId(createRatingDTO.getPostId());
+        PostELK postELK = postELKOptional.get();
+        postELK.setAverageScore(avgScore);
+        postElasticsearchRepository.save(postELK);
 
         //Gets the full data of the created/update rating in the DTO format.
         rating = ratingRepository.findRatingByAccount_UserIdAndPost_PostId(userId, postId);

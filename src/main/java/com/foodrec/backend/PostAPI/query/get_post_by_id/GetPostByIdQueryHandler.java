@@ -1,6 +1,7 @@
 package com.foodrec.backend.PostAPI.query.get_post_by_id;
 
 import an.awesome.pipelinr.Command;
+import com.foodrec.backend.AccountAPI.repository.AccountRepository;
 import com.foodrec.backend.Exception.InvalidDataExceptionHandler;
 import com.foodrec.backend.Exception.NotFoundExceptionHandler;
 import com.foodrec.backend.LikeAPI.entity.Likes;
@@ -29,15 +30,17 @@ public class GetPostByIdQueryHandler implements Command.Handler<GetPostByIdQuery
     private final TagRepository tagRepository;
     private final ModelMapper modelMapper;
     private final LikesRepository likesRepository;
+    private final AccountRepository accountRepository;
 
     public GetPostByIdQueryHandler(PostRepository postRepository,
                                    ModelMapper modelMapper,
                                    LikesRepository likesRepository,
-                                   TagRepository tagRepository) {
+                                   TagRepository tagRepository, AccountRepository accountRepository) {
         this.postRepository = postRepository;
         this.tagRepository = tagRepository;
         this.modelMapper = modelMapper;
         this.likesRepository = likesRepository;
+        this.accountRepository = accountRepository;
     }
 
     @Transactional
@@ -56,7 +59,8 @@ public class GetPostByIdQueryHandler implements Command.Handler<GetPostByIdQuery
         PostDTO postDTO = modelMapper.map(optionalPost.get(), PostDTO.class);
         postDTO.setTagDTOList(tagDTOList);
         postDTO.setPostStatus(PostStatus.convertStatusToEnum(optionalPost.get().getStatus()));
-
+        postDTO.setModeratorName(accountRepository.findById(postDTO.getModeratorId()).get().getName());
+        postDTO.setUserName(accountRepository.findById(postDTO.getUserId()).get().getName());
         Optional<Likes> foundLike = likesRepository.findById(
                 new LikesCompositeKey(
                         query.getUserId(),

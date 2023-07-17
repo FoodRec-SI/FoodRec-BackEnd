@@ -4,7 +4,7 @@
 //import com.foodrec.backend.Exception.InvalidDataExceptionHandler;
 //import com.foodrec.backend.Exception.NotFoundExceptionHandler;
 //import com.foodrec.backend.PostAPI.dto.PostDTO;
-//import com.foodrec.backend.PostAPI.query.get_posts_by_recipe_name.GetPostsByRecipeNameQuery;
+//import com.foodrec.backend.PostAPI.query.search_posts.GetPostsByKeywordQuery;
 //import com.foodrec.backend.PostAPI.repository.PostRepository;
 //import org.junit.jupiter.api.Test;
 //import org.springframework.beans.factory.annotation.Autowired;
@@ -40,7 +40,7 @@
 //
 //    @Test
 //    public void testGetPostsByRecipeNameSuccessfully(){
-//        GetPostsByRecipeNameQuery query = new GetPostsByRecipeNameQuery();
+//        GetPostsByKeywordQuery query = new GetPostsByKeywordQuery();
 //        query.setRecipeName("B");
 //        query.setPageNumber(0);
 //        query.setPageSize(6);
@@ -50,7 +50,7 @@
 //
 //    @Test
 //    public void testGetPostsByNullRecipeName(){
-//        GetPostsByRecipeNameQuery query = new GetPostsByRecipeNameQuery();
+//        GetPostsByKeywordQuery query = new GetPostsByKeywordQuery();
 //        query.setRecipeName("");
 //        query.setPageNumber(0);
 //        query.setPageSize(6);
@@ -64,7 +64,7 @@
 //
 //    @Test
 //    public void testGetPostsByWrongPageNumber(){
-//        GetPostsByRecipeNameQuery query = new GetPostsByRecipeNameQuery();
+//        GetPostsByKeywordQuery query = new GetPostsByKeywordQuery();
 //        query.setRecipeName("B");
 //        query.setPageNumber(-1);
 //        query.setPageSize(6);
@@ -78,7 +78,7 @@
 //
 //    @Test
 //    public void testGetPostsByWrongPageSize(){
-//        GetPostsByRecipeNameQuery query = new GetPostsByRecipeNameQuery();
+//        GetPostsByKeywordQuery query = new GetPostsByKeywordQuery();
 //        query.setRecipeName("B");
 //        query.setPageNumber(0);
 //        query.setPageSize(0);
@@ -92,7 +92,7 @@
 //
 //    @Test
 //    public void testGetPostsButNotFound(){
-//        GetPostsByRecipeNameQuery query = new GetPostsByRecipeNameQuery();
+//        GetPostsByKeywordQuery query = new GetPostsByKeywordQuery();
 //        query.setRecipeName("e");
 //        query.setPageNumber(0);
 //        query.setPageSize(6);

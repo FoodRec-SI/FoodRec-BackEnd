@@ -1,9 +1,9 @@
 package com.foodrec.backend.PostAPI.query.get_posts_by_tagId;
 
 import an.awesome.pipelinr.Command;
+import com.foodrec.backend.AccountAPI.repository.AccountRepository;
 import com.foodrec.backend.Exception.InvalidDataExceptionHandler;
 import com.foodrec.backend.Exception.NotFoundExceptionHandler;
-import com.foodrec.backend.LikeAPI.entity.Likes;
 import com.foodrec.backend.PostAPI.dto.PostDTO;
 import com.foodrec.backend.PostAPI.entity.Post;
 import com.foodrec.backend.PostAPI.entity.PostStatus;
@@ -20,19 +20,20 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Component
 public class GetPostsByTagIdQueryHandler implements Command.Handler<GetPostsByTagIdQuery, Page<PostDTO>> {
     private final PostRepository postRepository;
     private final RecipeTagRepository recipeTagRepository;
     private final TagRepository tagRepository;
+    private final AccountRepository accountRepository;
     private final ModelMapper modelMapper;
 
-    public GetPostsByTagIdQueryHandler(PostRepository postRepository, RecipeTagRepository recipeTagRepository, TagRepository tagRepository, ModelMapper modelMapper) {
+    public GetPostsByTagIdQueryHandler(PostRepository postRepository, RecipeTagRepository recipeTagRepository, TagRepository tagRepository, AccountRepository accountRepository, ModelMapper modelMapper) {
         this.postRepository = postRepository;
         this.recipeTagRepository = recipeTagRepository;
         this.tagRepository = tagRepository;
+        this.accountRepository = accountRepository;
         this.modelMapper = modelMapper;
     }
 
@@ -58,6 +59,8 @@ public class GetPostsByTagIdQueryHandler implements Command.Handler<GetPostsByTa
             List<Tag> tagList = tagRepository.findTagsByRecipeTags_Recipe_RecipeId(postDTO.getRecipeId());
             List<TagDTO> tagDTOList = tagList.stream().map(tag -> modelMapper.map(tag, TagDTO.class)).toList();
             postDTO.setTagDTOList(tagDTOList);
+            postDTO.setModeratorName(accountRepository.findById(postDTO.getModeratorId()).get().getName());
+            postDTO.setUserName(accountRepository.findById(postDTO.getUserId()).get().getName());
             postDTO.setPostStatus(PostStatus.convertStatusToEnum(post.getStatus()));
             return postDTO;
         }).toList();

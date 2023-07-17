@@ -1,9 +1,8 @@
 package com.foodrec.backend.PostAPI.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.foodrec.backend.AccountAPI.entity.Account;
-import com.foodrec.backend.MealAPI.entity.MealPost;
 import com.foodrec.backend.LikeAPI.entity.Likes;
+import com.foodrec.backend.MealAPI.entity.MealPost;
 import com.foodrec.backend.RatingAPI.entity.Rating;
 import jakarta.persistence.*;
 import lombok.*;
