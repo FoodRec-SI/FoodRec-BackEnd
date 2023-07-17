@@ -17,7 +17,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import static com.foodrec.backend.Config.SwaggerConfig.BEARER_KEY_SECURITY_SCHEME;
@@ -88,7 +87,7 @@ public class PlanCommandController {
             String userId = GetCurrentUserData.getCurrentUserId(authentication);
             UpdateFullPlanCommand updateFullPlanCommand =
                     new UpdateFullPlanCommand(userId,updateFullPlanDTO);
-            FullPlanDTO result = pipeline.send(updateFullPlanCommand);
+            ReadBasicPlanDTO result = pipeline.send(updateFullPlanCommand);
             if (result!=null) responseEntity = new ResponseEntity<>(result,HttpStatus.OK);
         } catch (InvalidDataExceptionHandler | DuplicateExceptionHandler | UnauthorizedExceptionHandler |
                  NotFoundExceptionHandler e) {
@@ -100,5 +99,6 @@ public class PlanCommandController {
         }
         return responseEntity;
     }
+
 
 }

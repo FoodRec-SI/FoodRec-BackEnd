@@ -9,7 +9,7 @@ import com.foodrec.backend.MealAPI.entity.MealPost;
 import com.foodrec.backend.MealAPI.entity.MealPostId;
 import com.foodrec.backend.MealAPI.repository.MealPostRepository;
 import com.foodrec.backend.MealAPI.repository.MealRepository;
-import com.foodrec.backend.PlanAPI.dto.FullPlanDTO;
+import com.foodrec.backend.PlanAPI.dto.ReadBasicPlanDTO;
 import com.foodrec.backend.PlanAPI.dto.UpdateFullPlanDTO;
 import com.foodrec.backend.PlanAPI.entity.Plan;
 import com.foodrec.backend.PlanAPI.repository.PlanRepository;
@@ -23,7 +23,7 @@ import java.util.*;
 
 
 @Component
-public class UpdateFullPlanCommandHandler implements Command.Handler<UpdateFullPlanCommand, FullPlanDTO> {
+public class UpdateFullPlanCommandHandler implements Command.Handler<UpdateFullPlanCommand, ReadBasicPlanDTO> {
 
     private ModelMapper modelMapper;
     private PlanRepository planRepository;
@@ -159,15 +159,15 @@ public class UpdateFullPlanCommandHandler implements Command.Handler<UpdateFullP
     }
 
 
-    private FullPlanDTO returnFullPlanDTO(String planId){
+    private ReadBasicPlanDTO returnFullPlanDTO(String planId){
         Plan plan = planRepository.findById(planId).get();
-        FullPlanDTO result = modelMapper.map(plan, FullPlanDTO.class);
+        ReadBasicPlanDTO result = modelMapper.map(plan, ReadBasicPlanDTO.class);
         return result;
     }
 
 
     @Override
-    public FullPlanDTO handle(UpdateFullPlanCommand command) {
+    public ReadBasicPlanDTO handle(UpdateFullPlanCommand command) {
         //The reason why we update Meal  BEFORE Plan is
         //that, we can get the full list of mealPerPlanDTO.
         String planId = command.getUpdateFullPlanDTO().getPlanId();
@@ -183,8 +183,8 @@ public class UpdateFullPlanCommandHandler implements Command.Handler<UpdateFullP
         boolean isPlanUpdated = finalizePlanDetails(currentPlan);
         if(!isPlanUpdated) return null;
 
-        FullPlanDTO fullPlanDTO = returnFullPlanDTO(planId);
-        if(fullPlanDTO==null) return null;
-        return fullPlanDTO;
+        ReadBasicPlanDTO readBasicPlanDTO = returnFullPlanDTO(planId);
+        if(readBasicPlanDTO ==null) return null;
+        return readBasicPlanDTO;
     }
 }
