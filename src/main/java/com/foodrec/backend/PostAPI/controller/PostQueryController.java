@@ -4,8 +4,7 @@ import an.awesome.pipelinr.Pipeline;
 import com.foodrec.backend.Exception.InvalidDataExceptionHandler;
 import com.foodrec.backend.Exception.InvalidPageInfoException;
 import com.foodrec.backend.Exception.NotFoundExceptionHandler;
-import com.foodrec.backend.PostAPI.dto.PopularPostDTO;
-import com.foodrec.backend.PostAPI.dto.PostDTO;
+import com.foodrec.backend.PostAPI.dto.*;
 import com.foodrec.backend.PostAPI.entity.PostStatus;
 import com.foodrec.backend.PostAPI.query.get_all_posts.GetAllPostsApprovedQuery;
 import com.foodrec.backend.PostAPI.query.get_post_by_id.GetPostByIdQuery;
@@ -14,6 +13,7 @@ import com.foodrec.backend.PostAPI.query.get_post_by_id_by_user_id.GetPostByPost
 import com.foodrec.backend.PostAPI.query.get_post_by_recipe_id.GetPostByRecipeIdQuery;
 import com.foodrec.backend.PostAPI.query.get_posts_by_average_score.GetPostsByAverageScoreQuery;
 import com.foodrec.backend.PostAPI.query.get_posts_by_collection_id.GetPostByCollectionIdQuery;
+import com.foodrec.backend.PostAPI.query.get_posts_by_moderator_id.GetPostsByModeratorIdQuery;
 import com.foodrec.backend.PostAPI.query.get_posts_by_status_by_moderator.GetPostByStatusQuery;
 import com.foodrec.backend.PostAPI.query.get_posts_by_tagId.GetPostsByTagIdQuery;
 import com.foodrec.backend.PostAPI.query.get_posts_by_tagIds.GetPostsByTagIdsQuery;
@@ -49,10 +49,12 @@ public class PostQueryController {
             security = {@SecurityRequirement(name = BEARER_KEY_SECURITY_SCHEME)})
     @GetMapping("/api/public/posts")
     public ResponseEntity getAllPostsApproved(@RequestParam(defaultValue = "0") int pageNumber,
-                                              @RequestParam(defaultValue = "6") int pageSize) {
+                                              @RequestParam(defaultValue = "6") int pageSize,
+                                              @RequestParam(required = true) SortPostEnum sortPost,
+                                              @RequestParam(required = true) SortTypeEnum sortType) {
         try {
-            GetAllPostsApprovedQuery query = new GetAllPostsApprovedQuery(pageNumber, pageSize);
-            Page<PostDTO> result = pipeline.send(query);
+            GetAllPostsApprovedQuery query = new GetAllPostsApprovedQuery(pageNumber, pageSize, sortType, sortPost);
+            Page<PopularPostDTO> result = pipeline.send(query);
             return new ResponseEntity<>(result, HttpStatus.OK);
         } catch (InvalidDataExceptionHandler e) {
             HttpStatus status = e.getClass().getAnnotation(ResponseStatus.class).value();
@@ -93,7 +95,6 @@ public class PostQueryController {
             HttpStatus status = e.getClass().getAnnotation(ResponseStatus.class).value();
             return new ResponseEntity<>(status);
         } catch (Exception e) {
-            System.out.println(e.getMessage());
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -103,10 +104,12 @@ public class PostQueryController {
     @GetMapping("/api/public/posts/search")
     public ResponseEntity getPostsByRecipeName(@RequestParam(defaultValue = "0") int pageNumber,
                                                @RequestParam(defaultValue = "6") int pageSize,
+                                               @RequestParam(required = true) SortPostEnum sortPost,
+                                               @RequestParam(required = true) SortTypeEnum sortType,
                                                @RequestParam String keyword) {
         try {
-            GetPostsByKeywordQuery query = new GetPostsByKeywordQuery(pageNumber, pageSize, keyword);
-            Page<PostDTO> result = pipeline.send(query);
+            GetPostsByKeywordQuery query = new GetPostsByKeywordQuery(pageNumber, pageSize, keyword, sortType, sortPost);
+            Page<PopularPostDTO> result = pipeline.send(query);
             return new ResponseEntity<>(result, HttpStatus.OK);
         } catch (InvalidDataExceptionHandler | NotFoundExceptionHandler e) {
             HttpStatus status = e.getClass().getAnnotation(ResponseStatus.class).value();
@@ -156,7 +159,6 @@ public class PostQueryController {
             security = {@SecurityRequirement(name = BEARER_KEY_SECURITY_SCHEME)})
     @GetMapping("/api/public/post/{postId}")
     public ResponseEntity getPostById(@PathVariable String postId) {
-
         try {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             String userId = GetCurrentUserData.getCurrentUserId(authentication);
@@ -169,6 +171,27 @@ public class PostQueryController {
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
+    }
+
+    @Operation(description = "Get post by Moderator ID.",
+            security = {@SecurityRequirement(name = BEARER_KEY_SECURITY_SCHEME)})
+    @GetMapping("/api/moderator/posts/view")
+    public ResponseEntity getPostsByModeratorId(@RequestParam(defaultValue = "0") int pageNumber,
+                                                @RequestParam(defaultValue = "6") int pageSize) {
+        ResponseEntity responseEntity = null;
+        try {
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            String moderatorId = GetCurrentUserData.getCurrentUserId(authentication);
+            GetPostsByModeratorIdQuery query = new GetPostsByModeratorIdQuery(moderatorId, pageNumber, pageSize);
+            Page<ModeratorPostDTO> result = pipeline.send(query);
+            responseEntity = new ResponseEntity<>(result, HttpStatus.OK);
+        } catch (InvalidDataExceptionHandler e) {
+            HttpStatus status = e.getClass().getAnnotation(ResponseStatus.class).value();
+            return ResponseEntity.status(status).body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
+        return responseEntity;
     }
 
     @Operation(description = "Check if recipe is public or not.",

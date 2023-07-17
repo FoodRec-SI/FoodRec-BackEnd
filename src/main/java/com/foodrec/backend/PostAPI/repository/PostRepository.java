@@ -33,5 +33,8 @@ public interface PostRepository extends JpaRepository<Post, String> {
     Optional<Post> getPostByPostIdAndUserId(String postId, String userId);
 
     Boolean existsByRecipeIdAndStatusIn(String recipeId, List<Integer> status);
+
     Page<Post> getPostByAverageScoreGreaterThanEqualAndStatus(double averageScore, int status, Pageable pageable);
+
+    Page<Post> getPostsByModeratorIdAndStatusIn(String moderatorId, List<Integer> status, Pageable pageable);
 }
