@@ -41,8 +41,8 @@ public class RecipeCommandController {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             String userId = GetCurrentUserData.getCurrentUserId(authentication);
             CreateRecipeCommand createRecipeCommand = new CreateRecipeCommand(newRec, userId);
-            HttpStatus status = pipeline.send(createRecipeCommand);
-            responseEntity = ResponseEntity.status(status).body("Create recipe successfully !");
+            String recipeId = pipeline.send(createRecipeCommand);
+            responseEntity = new ResponseEntity<>(recipeId, HttpStatus.OK);
         } catch (InvalidDataExceptionHandler | NotFoundExceptionHandler e) {
             HttpStatus status = e.getClass().getAnnotation(ResponseStatus.class).value();
             return ResponseEntity.status(status).body(e.getMessage());
