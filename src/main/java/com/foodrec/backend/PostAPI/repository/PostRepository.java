@@ -28,8 +28,6 @@ public interface PostRepository extends JpaRepository<Post, String> {
 
     List<Post> getPostsByRecipeIdInAndStatus(List<String> recipeIds, int status);
 
-    Page<Post> getPostsByLikes_Account_UserId(String userId, Pageable pageable);
-
     Optional<Post> getPostByPostIdAndUserId(String postId, String userId);
 
     Boolean existsByRecipeIdAndStatusIn(String recipeId, List<Integer> status);
@@ -37,4 +35,11 @@ public interface PostRepository extends JpaRepository<Post, String> {
     Page<Post> getPostByAverageScoreGreaterThanEqualAndStatus(double averageScore, int status, Pageable pageable);
 
     Page<Post> getPostsByModeratorIdAndStatusIn(String moderatorId, List<Integer> status, Pageable pageable);
+
+    Page<Post> getPostsByLikes_Account_UserId(String userId, Pageable pageable);
+
+    /*Finds the list of Posts based on the join table(MealPosts).
+    * In the join table, find a list of Posts belong to 1 Meal
+    , and find that Meal by the MealId.*/
+    List<Post> getPostsByMealPosts_Meal_MealId(String mealId);
 }

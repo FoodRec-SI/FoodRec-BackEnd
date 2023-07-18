@@ -1,19 +1,17 @@
 package com.foodrec.backend.PlanAPI.dto;
 
-import com.foodrec.backend.MealAPI.dto.CreateMealPerPlanDTO;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 //This DTO is used to return the full Plan Data to the Front-end,
 //after the creation process is completed.
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-public class FullPlanDTO {
+public class ReadBasicPlanDTO {
     private String planId;
     private String planName;
     private String description;

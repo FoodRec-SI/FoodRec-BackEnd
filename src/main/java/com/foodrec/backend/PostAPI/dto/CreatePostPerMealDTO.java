@@ -12,6 +12,4 @@ import lombok.NoArgsConstructor;
  * */
 public class CreatePostPerMealDTO {
     private String postId;
-    private String ingredientList;
-    private int calories;
 }

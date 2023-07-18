@@ -1,6 +1,7 @@
 package com.foodrec.backend.RatingAPI.query.get_rating_percentages_by_postid;
 
 import an.awesome.pipelinr.Command;
+import com.foodrec.backend.Exception.NotFoundExceptionHandler;
 import com.foodrec.backend.RatingAPI.dto.RatingPercentageDTO;
 import com.foodrec.backend.LikeAPI.entity.Likes;
 
@@ -27,7 +28,7 @@ public class GetRatingPercentagesQueryHandler implements Command.Handler<GetRati
         BigDecimal bd = new BigDecimal(Double.toString(counts*100/ totalElements));
         bd = bd.setScale(1, RoundingMode.UP);
         double avg = bd.doubleValue();
-        String result = avg + "%";
+        String result = Double.toString(avg);
         return result;
     }
 
@@ -35,12 +36,16 @@ public class GetRatingPercentagesQueryHandler implements Command.Handler<GetRati
     public RatingPercentageDTO handle(GetRatingPercentagesQuery command) {
         String postId = command.getPostId();
         List<Rating> ratingList = ratingRepository.getRatingsByPost_PostId(postId);
+        if(ratingList.isEmpty()) throw new NotFoundExceptionHandler("No ratings " +
+                "for the specified post can be found. Please add at least one rating.");
+
         Map<String, Integer> ratings = new HashMap<String, Integer>();
         ratings.put("fiveStars", 0);
         ratings.put("fourStars", 0);
         ratings.put("threeStars", 0);
         ratings.put("twoStars", 0);
         ratings.put("oneStar", 0);
+
 
         for (Rating eachRating : ratingList) {
             int score = eachRating.getScore();
@@ -75,11 +80,11 @@ public class GetRatingPercentagesQueryHandler implements Command.Handler<GetRati
         }
 
         RatingPercentageDTO ratingPercentageDTO = new RatingPercentageDTO();
-        ratingPercentageDTO.setFiveStars(convertToStringPercentage(ratings.get("fiveStars"), ratingList.size()));
-        ratingPercentageDTO.setFourStars(convertToStringPercentage(ratings.get("fourStars"), ratingList.size()));
-        ratingPercentageDTO.setThreeStars(convertToStringPercentage(ratings.get("threeStars"), ratingList.size()));
-        ratingPercentageDTO.setTwoStars(convertToStringPercentage(ratings.get("twoStars"), ratingList.size()));
-        ratingPercentageDTO.setOneStar(convertToStringPercentage(ratings.get("oneStar"), ratingList.size()));
+        ratingPercentageDTO.setFive_stars(convertToStringPercentage(ratings.get("fiveStars"), ratingList.size()));
+        ratingPercentageDTO.setFour_stars(convertToStringPercentage(ratings.get("fourStars"), ratingList.size()));
+        ratingPercentageDTO.setThree_stars(convertToStringPercentage(ratings.get("threeStars"), ratingList.size()));
+        ratingPercentageDTO.setTwo_stars(convertToStringPercentage(ratings.get("twoStars"), ratingList.size()));
+        ratingPercentageDTO.setOne_star(convertToStringPercentage(ratings.get("oneStar"), ratingList.size()));
 
         return ratingPercentageDTO;
     }

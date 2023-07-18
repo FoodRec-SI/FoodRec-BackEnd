@@ -62,6 +62,7 @@ public class RatingQueryController {
                 result = new ResponseEntity(ratingPercentageDTO, HttpStatus.OK);
             }
         }catch(Exception e){
+            result = new ResponseEntity(e.getMessage(),HttpStatus.INTERNAL_SERVER_ERROR);
         }
         return result;
     }
@@ -83,6 +84,8 @@ public class RatingQueryController {
                 result = new ResponseEntity(ratingByUserIdPostIdDTO, HttpStatus.OK);
             }
         }catch(Exception e){
+            result = new ResponseEntity("Something went wrong on the server side, and we are still investigating..."
+                    , HttpStatus.INTERNAL_SERVER_ERROR);
         }
         return result;
     }
