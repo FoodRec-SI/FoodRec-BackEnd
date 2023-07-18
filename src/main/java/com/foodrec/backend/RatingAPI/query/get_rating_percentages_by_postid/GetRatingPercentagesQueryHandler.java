@@ -28,7 +28,7 @@ public class GetRatingPercentagesQueryHandler implements Command.Handler<GetRati
         BigDecimal bd = new BigDecimal(Double.toString(counts*100/ totalElements));
         bd = bd.setScale(1, RoundingMode.UP);
         double avg = bd.doubleValue();
-        String result = avg + "%";
+        String result = Double.toString(avg);
         return result;
     }
 
@@ -80,11 +80,11 @@ public class GetRatingPercentagesQueryHandler implements Command.Handler<GetRati
         }
 
         RatingPercentageDTO ratingPercentageDTO = new RatingPercentageDTO();
-        ratingPercentageDTO.set_5_stars(convertToStringPercentage(ratings.get("fiveStars"), ratingList.size()));
-        ratingPercentageDTO.set_4_stars(convertToStringPercentage(ratings.get("fourStars"), ratingList.size()));
-        ratingPercentageDTO.set_3_stars(convertToStringPercentage(ratings.get("threeStars"), ratingList.size()));
-        ratingPercentageDTO.set_2_stars(convertToStringPercentage(ratings.get("twoStars"), ratingList.size()));
-        ratingPercentageDTO.set_1_star(convertToStringPercentage(ratings.get("oneStar"), ratingList.size()));
+        ratingPercentageDTO.setFive_stars(convertToStringPercentage(ratings.get("fiveStars"), ratingList.size()));
+        ratingPercentageDTO.setFour_stars(convertToStringPercentage(ratings.get("fourStars"), ratingList.size()));
+        ratingPercentageDTO.setThree_stars(convertToStringPercentage(ratings.get("threeStars"), ratingList.size()));
+        ratingPercentageDTO.setTwo_stars(convertToStringPercentage(ratings.get("twoStars"), ratingList.size()));
+        ratingPercentageDTO.setOne_star(convertToStringPercentage(ratings.get("oneStar"), ratingList.size()));
 
         return ratingPercentageDTO;
     }
