@@ -13,6 +13,7 @@ import com.foodrec.backend.PlanAPI.query.get_plan_by_id.GetPlanByIdQuery;
 import com.foodrec.backend.Utils.GetCurrentUserData;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -23,18 +24,18 @@ import java.util.List;
 
 import static com.foodrec.backend.Config.SwaggerConfig.BEARER_KEY_SECURITY_SCHEME;
 
+
+@Tag(name = "PlanAPI")
 @RestController
 public class PlanQueryController {
     final Pipeline pipeline;
     public PlanQueryController(Pipeline pipeline){ this.pipeline = pipeline;}
     @Operation(description = "Gets the plan list given From and To Date.",
             security = {@SecurityRequirement(name = BEARER_KEY_SECURITY_SCHEME)})
-    @RequestMapping(value = "/api/member/plan/list", method = RequestMethod.GET)
+    @RequestMapping(value = "/api/member/plan/list", method = RequestMethod.POST)
     public ResponseEntity getPlansBetweenDate(@RequestBody DateDTO dateDTO) {
         ResponseEntity responseEntity = null;
         try {
-            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-            String userId = GetCurrentUserData.getCurrentUserId(authentication);
             GetPlansBetweenDatesQuery getPlansBetweenDatesQuery =
                     new GetPlansBetweenDatesQuery(dateDTO.getStartDate(),dateDTO.getEndDate());
             List<ReadBasicPlanDTO> result = pipeline.send(getPlansBetweenDatesQuery);
