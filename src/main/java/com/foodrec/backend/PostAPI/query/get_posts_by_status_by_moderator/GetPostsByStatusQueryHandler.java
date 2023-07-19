@@ -1,6 +1,7 @@
 package com.foodrec.backend.PostAPI.query.get_posts_by_status_by_moderator;
 
 import an.awesome.pipelinr.Command;
+import com.foodrec.backend.AccountAPI.repository.AccountRepository;
 import com.foodrec.backend.PostAPI.dto.PostDTO;
 import com.foodrec.backend.PostAPI.entity.Post;
 import com.foodrec.backend.PostAPI.entity.PostStatus;
@@ -18,11 +19,13 @@ import java.util.List;
 public class GetPostsByStatusQueryHandler implements Command.Handler<GetPostByStatusQuery, Page<PostDTO>> {
     private final PostRepository postRepository;
     private final TagRepository tagRepository;
+    private final AccountRepository accountRepository;
     private final ModelMapper modelMapper;
 
-    public GetPostsByStatusQueryHandler(PostRepository postRepository, TagRepository tagRepository, ModelMapper modelMapper) {
+    public GetPostsByStatusQueryHandler(PostRepository postRepository, TagRepository tagRepository, AccountRepository accountRepository, ModelMapper modelMapper) {
         this.postRepository = postRepository;
         this.tagRepository = tagRepository;
+        this.accountRepository = accountRepository;
         this.modelMapper = modelMapper;
     }
 
@@ -39,7 +42,13 @@ public class GetPostsByStatusQueryHandler implements Command.Handler<GetPostBySt
             List<Tag> tagList = tagRepository.findTagsByRecipeTags_Recipe_RecipeId(postDTO.getRecipeId());
             List<TagDTO> tagDTOList = tagList.stream().map(tag -> modelMapper.map(tag, TagDTO.class)).toList();
             postDTO.setTagDTOList(tagDTOList);
+            postDTO.setUserName(accountRepository.findById(postDTO.getUserId()).get().getName());
             postDTO.setPostStatus(PostStatus.convertStatusToEnum(post.getStatus()));
+            if(postDTO.getPostStatus() == PostStatus.PENDING_APPROVAL){
+                postDTO.setModeratorName(null);
+                return postDTO;
+            }
+            postDTO.setModeratorName(accountRepository.findById(postDTO.getModeratorId()).get().getName());
             return postDTO;
         }).toList();
         return new PageImpl<>(postDTOS, pageable, postsPage.getTotalElements());

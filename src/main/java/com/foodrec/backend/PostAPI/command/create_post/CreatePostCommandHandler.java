@@ -6,14 +6,12 @@ import com.foodrec.backend.Exception.InvalidDataExceptionHandler;
 import com.foodrec.backend.Exception.NotFoundExceptionHandler;
 import com.foodrec.backend.Exception.UnauthorizedExceptionHandler;
 import com.foodrec.backend.PostAPI.dto.CreatePostDTO;
-import com.foodrec.backend.PostAPI.dto.PostDTO;
 import com.foodrec.backend.PostAPI.entity.Post;
 import com.foodrec.backend.PostAPI.entity.PostStatus;
 import com.foodrec.backend.PostAPI.repository.PostRepository;
 import com.foodrec.backend.RecipeAPI.entity.Recipe;
 import com.foodrec.backend.RecipeAPI.repository.RecipeRepository;
 import com.foodrec.backend.Utils.IdGenerator;
-import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,21 +21,18 @@ import java.util.Objects;
 import java.util.Optional;
 
 @Component
-public class CreatePostCommandHandler implements Command.Handler<CreatePostCommand, PostDTO> {
+public class CreatePostCommandHandler implements Command.Handler<CreatePostCommand, String> {
     private final RecipeRepository recipeRepository;
     private final PostRepository postRepository;
-    private final ModelMapper modelMapper;
 
-    public CreatePostCommandHandler(RecipeRepository recipeRepository,
-                                    PostRepository postRepository, ModelMapper modelMapper) {
+    public CreatePostCommandHandler(RecipeRepository recipeRepository, PostRepository postRepository) {
         this.recipeRepository = recipeRepository;
         this.postRepository = postRepository;
-        this.modelMapper = modelMapper;
     }
 
     @Transactional
     @Override
-    public PostDTO handle(CreatePostCommand command) {
+    public String handle(CreatePostCommand command) {
         CreatePostDTO createPostDTO = command.getCreatePostDTO();
         LocalDateTime localDateTime = LocalDateTime.now();
         if (createPostDTO.getRecipeId() == null || command.getUserId() == null) {
@@ -63,7 +58,8 @@ public class CreatePostCommandHandler implements Command.Handler<CreatePostComma
         post.setPostId(postId);
         post.setUserId(command.getUserId());
         post.setRecipeId(createPostDTO.getRecipeId());
-        post.setVerifiedTime(localDateTime);
+        post.setCreatedTime(localDateTime);
+        post.setVerifiedTime(null);
         post.setStatus(PostStatus.PENDING_APPROVAL.getValue());
         post.setRecipeName(optionalRecipe.get().getRecipeName());
         post.setDescription(optionalRecipe.get().getDescription());
@@ -74,12 +70,6 @@ public class CreatePostCommandHandler implements Command.Handler<CreatePostComma
         post.setInstruction(optionalRecipe.get().getInstructions());
         post.setAverageScore(0);
         postRepository.save(post);
-        Optional<Post> optionalPost = postRepository.findById(post.getPostId());
-        if (optionalPost.isEmpty()) {
-            throw new NotFoundExceptionHandler("Can not create post!");
-        }
-        PostDTO postDTO = modelMapper.map(optionalPost.get(), PostDTO.class);
-        postDTO.setPostStatus(PostStatus.convertStatusToEnum(optionalPost.get().getStatus()));
-        return postDTO;
+        return postId;
     }
 }

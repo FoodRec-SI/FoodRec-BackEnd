@@ -44,7 +44,7 @@ public class GetPostByIdByModeratorQueryHandlerTests {
     @Test
     public void testGetPostByIdSuccessfully() {
         String postId = "POS000001";
-        GetPostByIdQuery query = new GetPostByIdQuery(postId);
+        GetPostByIdQuery query = new GetPostByIdQuery(postId, "74007e14-840e-44f0-bc8c-99e3e9d1674c");
         PostDTO postDTO = pipeline.send(query);
         Optional<Post> optionalPost = postRepository.findPostByPostIdAndStatus(query.getPostId(), 2);
         assertEquals(postDTO.getPostId(), optionalPost.get().getPostId());
@@ -56,7 +56,7 @@ public class GetPostByIdByModeratorQueryHandlerTests {
     @Test
     public void testNotFoundPost() {
         String postId = "POS000009";
-        GetPostByIdQuery query = new GetPostByIdQuery(postId);
+        GetPostByIdQuery query = new GetPostByIdQuery(postId, "74007e14-840e-44f0-bc8c-99e3e9d1674c");
         Exception exception = assertThrows(NotFoundExceptionHandler.class, () -> {
             pipeline.send(query);
         });
@@ -68,7 +68,7 @@ public class GetPostByIdByModeratorQueryHandlerTests {
     @Test
     public void testNullPostId() {
         String postId = "";
-        GetPostByIdQuery query = new GetPostByIdQuery(postId);
+        GetPostByIdQuery query = new GetPostByIdQuery(postId, "74007e14-840e-44f0-bc8c-99e3e9d1674c");
         Exception exception = assertThrows(InvalidDataExceptionHandler.class, () -> {
             pipeline.send(query);
         });

@@ -22,8 +22,8 @@ public enum PostStatus {
 
     public static List<Integer> convertPostStatusesToIntArray(List<PostStatus> postStatuses) {
         List<Integer> statusNum = new ArrayList<>();
-        for (int i = 0; i < postStatuses.size(); i++) {
-            statusNum.add(postStatuses.get(i).getValue());
+        for (PostStatus postStatus : postStatuses) {
+            statusNum.add(postStatus.getValue());
         }
         return statusNum;
     }

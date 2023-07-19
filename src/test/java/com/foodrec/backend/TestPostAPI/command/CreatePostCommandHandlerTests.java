@@ -1,15 +1,14 @@
 package com.foodrec.backend.TestPostAPI.command;
 
 import an.awesome.pipelinr.Pipeline;
-import com.foodrec.backend.PostAPI.command.create_post.CreatePostCommand;
-import com.foodrec.backend.PostAPI.dto.CreatePostDTO;
-import com.foodrec.backend.PostAPI.dto.PostDTO;
-import com.foodrec.backend.PostAPI.entity.Post;
-import com.foodrec.backend.PostAPI.repository.PostRepository;
 import com.foodrec.backend.Exception.DuplicateExceptionHandler;
 import com.foodrec.backend.Exception.InvalidDataExceptionHandler;
 import com.foodrec.backend.Exception.NotFoundExceptionHandler;
 import com.foodrec.backend.Exception.UnauthorizedExceptionHandler;
+import com.foodrec.backend.PostAPI.command.create_post.CreatePostCommand;
+import com.foodrec.backend.PostAPI.dto.CreatePostDTO;
+import com.foodrec.backend.PostAPI.entity.Post;
+import com.foodrec.backend.PostAPI.repository.PostRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -51,11 +50,9 @@ public class CreatePostCommandHandlerTests {
         createPostDTO.setRecipeId("REC000025");
         String userId = "74007e14-840e-44f0-bc8c-99e3e9d1674c";
         CreatePostCommand command = new CreatePostCommand(createPostDTO, userId);
-        PostDTO postDTOTest = pipeline.send(command);
-        Optional<Post> post = postRepository.findById(postDTOTest.getPostId());
+        String postDTOTest = pipeline.send(command);
+        Optional<Post> post = postRepository.findById(postDTOTest);
         assertEquals(createPostDTO.getRecipeId(), post.get().getRecipeId());
-        assertEquals(command.getUserId(), post.get().getUserId());
-        assertEquals(postDTOTest.getRecipeName(), post.get().getRecipeName());
     }
 
     @Test

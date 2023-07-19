@@ -8,9 +8,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class RatingPercentageDTO {
-    private String fiveStars;
-    private String fourStars;
-    private String threeStars;
-    private String twoStars;
-    private String oneStar;
+    private String five_stars;
+    private String four_stars;
+    private String three_stars;
+    private String two_stars;
+    private String one_star;
 }

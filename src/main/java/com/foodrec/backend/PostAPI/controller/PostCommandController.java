@@ -1,6 +1,10 @@
 package com.foodrec.backend.PostAPI.controller;
 
 import an.awesome.pipelinr.Pipeline;
+import com.foodrec.backend.Exception.DuplicateExceptionHandler;
+import com.foodrec.backend.Exception.InvalidDataExceptionHandler;
+import com.foodrec.backend.Exception.NotFoundExceptionHandler;
+import com.foodrec.backend.Exception.UnauthorizedExceptionHandler;
 import com.foodrec.backend.PostAPI.command.create_post.CreatePostCommand;
 import com.foodrec.backend.PostAPI.command.delete_post.DeletePostCommand;
 import com.foodrec.backend.PostAPI.command.update_post.UpdatePostCommand;
@@ -8,10 +12,6 @@ import com.foodrec.backend.PostAPI.dto.CreatePostDTO;
 import com.foodrec.backend.PostAPI.dto.DeletePostDTO;
 import com.foodrec.backend.PostAPI.dto.PostDTO;
 import com.foodrec.backend.PostAPI.dto.UpdatePostDTO;
-import com.foodrec.backend.Exception.DuplicateExceptionHandler;
-import com.foodrec.backend.Exception.InvalidDataExceptionHandler;
-import com.foodrec.backend.Exception.NotFoundExceptionHandler;
-import com.foodrec.backend.Exception.UnauthorizedExceptionHandler;
 import com.foodrec.backend.Utils.GetCurrentUserData;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -42,14 +42,13 @@ public class PostCommandController {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             String userId = GetCurrentUserData.getCurrentUserId(authentication);
             CreatePostCommand command = new CreatePostCommand(createPostDTO, userId);
-            PostDTO postDTO = pipeline.send(command);
-            responseEntity = new ResponseEntity<>(postDTO, HttpStatus.OK);
+            String postId = pipeline.send(command);
+            responseEntity = new ResponseEntity<>(postId, HttpStatus.OK);
         } catch (InvalidDataExceptionHandler | DuplicateExceptionHandler | UnauthorizedExceptionHandler |
                  NotFoundExceptionHandler e) {
             HttpStatus status = e.getClass().getAnnotation(ResponseStatus.class).value();
             return ResponseEntity.status(status).body(e.getMessage());
         } catch (Exception e) {
-            System.out.println(e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Internal server error!");
         }
         return responseEntity;

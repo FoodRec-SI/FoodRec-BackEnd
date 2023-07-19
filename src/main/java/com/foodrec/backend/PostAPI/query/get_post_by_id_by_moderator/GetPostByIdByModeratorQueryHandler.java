@@ -1,6 +1,7 @@
 package com.foodrec.backend.PostAPI.query.get_post_by_id_by_moderator;
 
 import an.awesome.pipelinr.Command;
+import com.foodrec.backend.AccountAPI.repository.AccountRepository;
 import com.foodrec.backend.Exception.InvalidDataExceptionHandler;
 import com.foodrec.backend.Exception.NotFoundExceptionHandler;
 import com.foodrec.backend.PostAPI.dto.PostDTO;
@@ -24,11 +25,13 @@ import java.util.Optional;
 public class GetPostByIdByModeratorQueryHandler implements Command.Handler<GetPostByIdByModeratorQuery, PostDTO> {
     private final PostRepository postRepository;
     private final TagRepository tagRepository;
+    private final AccountRepository accountRepository;
     private final ModelMapper modelMapper;
 
-    public GetPostByIdByModeratorQueryHandler(PostRepository postRepository, TagRepository tagRepository, ModelMapper modelMapper) {
+    public GetPostByIdByModeratorQueryHandler(PostRepository postRepository, TagRepository tagRepository, AccountRepository accountRepository, ModelMapper modelMapper) {
         this.postRepository = postRepository;
         this.tagRepository = tagRepository;
+        this.accountRepository = accountRepository;
         this.modelMapper = modelMapper;
     }
 
@@ -48,6 +51,10 @@ public class GetPostByIdByModeratorQueryHandler implements Command.Handler<GetPo
         PostDTO postDTO = modelMapper.map(optionalPost.get(), PostDTO.class);
         postDTO.setTagDTOList(tagDTOList);
         postDTO.setPostStatus(PostStatus.convertStatusToEnum(optionalPost.get().getStatus()));
+        if (postDTO.getModeratorId() == null) {
+            return postDTO;
+        }
+        postDTO.setModeratorName(accountRepository.findById(postDTO.getModeratorId()).get().getName());
         return postDTO;
     }
 }

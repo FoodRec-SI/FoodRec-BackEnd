@@ -32,4 +32,6 @@ public class PostDTO implements Serializable {
     private String ingredientList;
     private String instruction;
     private List<TagDTO> tagDTOList;
+    private String userName;
+    private String moderatorName;
 }

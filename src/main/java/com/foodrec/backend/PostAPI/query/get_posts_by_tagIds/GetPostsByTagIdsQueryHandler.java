@@ -1,6 +1,7 @@
 package com.foodrec.backend.PostAPI.query.get_posts_by_tagIds;
 
 import an.awesome.pipelinr.Command;
+import com.foodrec.backend.AccountAPI.repository.AccountRepository;
 import com.foodrec.backend.Exception.InvalidDataExceptionHandler;
 import com.foodrec.backend.Exception.NotFoundExceptionHandler;
 import com.foodrec.backend.PostAPI.dto.PostDTO;
@@ -24,12 +25,14 @@ import java.util.List;
 public class GetPostsByTagIdsQueryHandler implements Command.Handler<GetPostsByTagIdsQuery, Page<PostDTO>> {
     private final PostRepository postRepository;
     private final TagRepository tagRepository;
+    private final AccountRepository accountRepository;
     private final ModelMapper modelMapper;
     private final RecipeTagRepository recipeTagRepository;
 
-    public GetPostsByTagIdsQueryHandler(PostRepository postRepository, TagRepository tagRepository, ModelMapper modelMapper, RecipeTagRepository recipeTagRepository) {
+    public GetPostsByTagIdsQueryHandler(PostRepository postRepository, TagRepository tagRepository, AccountRepository accountRepository, ModelMapper modelMapper, RecipeTagRepository recipeTagRepository) {
         this.postRepository = postRepository;
         this.tagRepository = tagRepository;
+        this.accountRepository = accountRepository;
         this.modelMapper = modelMapper;
         this.recipeTagRepository = recipeTagRepository;
     }
@@ -56,6 +59,8 @@ public class GetPostsByTagIdsQueryHandler implements Command.Handler<GetPostsByT
             List<Tag> tagList = tagRepository.findTagsByRecipeTags_Recipe_RecipeId(postDTO.getRecipeId());
             List<TagDTO> tagDTOList = tagList.stream().map(tag -> modelMapper.map(tag, TagDTO.class)).toList();
             postDTO.setTagDTOList(tagDTOList);
+            postDTO.setUserName(accountRepository.findById(postDTO.getUserId()).get().getName());
+            postDTO.setModeratorName(accountRepository.findById(postDTO.getModeratorId()).get().getName());
             postDTO.setPostStatus(PostStatus.convertStatusToEnum(post.getStatus()));
             return postDTO;
         }).toList();
