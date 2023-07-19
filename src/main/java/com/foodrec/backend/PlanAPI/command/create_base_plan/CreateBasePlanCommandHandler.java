@@ -1,6 +1,7 @@
 package com.foodrec.backend.PlanAPI.command.create_base_plan;
 
 import an.awesome.pipelinr.Command;
+import com.foodrec.backend.Exception.InvalidDataExceptionHandler;
 import com.foodrec.backend.PlanAPI.dto.CreateBasePlanDTO;
 import com.foodrec.backend.PlanAPI.dto.BasePlanDTO;
 import com.foodrec.backend.PlanAPI.entity.Plan;
@@ -9,7 +10,10 @@ import com.foodrec.backend.Utils.IdGenerator;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.Date;
 import java.util.Optional;
 
 
@@ -23,9 +27,10 @@ public class CreateBasePlanCommandHandler implements Command.Handler<CreateBaseP
         this.modelMapper = modelMapper;
         this.planRepository = planRepository;
     }
-    private LocalDateTime getDateTime(){
-        LocalDateTime localDateTime = LocalDateTime.now();
-        return localDateTime;
+    public LocalDateTime convertToLocalDateTimeViaInstant(Date dateToConvert) {
+        return dateToConvert.toInstant()
+                .atZone(ZoneId.systemDefault())
+                .toLocalDateTime();
     }
     @Override
     public BasePlanDTO handle(CreateBasePlanCommand command) {
@@ -33,11 +38,24 @@ public class CreateBasePlanCommandHandler implements Command.Handler<CreateBaseP
         String userId = command.getUserId();
         String planId = IdGenerator.generateNextId(Plan.class,"planId");
 
+        /*Check if the given date belongs to an existing Plan.
+        * If not, we won't allow the user to create a plan,
+        * Since our goal is to ONLY ALLOW 1 PLAN PER DATE.*/
+        LocalDateTime givenDateTime = convertToLocalDateTimeViaInstant(createBasePlanDTO.getPlanDate());
+        String queryDateTime = givenDateTime.toString().split("T")[0];
+        Optional<Plan> existingPlan = planRepository.findAll().stream()
+                .filter(eachPlan->eachPlan.getDate()
+                        .toString().contains(queryDateTime))
+                        .findFirst();
+
+        if(existingPlan.isPresent())
+            throw new InvalidDataExceptionHandler("A plan with a similar date is found!");
+
         Plan newPlan = new Plan();
         modelMapper.map(createBasePlanDTO,newPlan);
         newPlan.setPlanId(planId);
         newPlan.setUserId(userId);
-        newPlan.setDate(getDateTime());
+        newPlan.setDate(givenDateTime);
 
         /*At this point, because the user hasn't GENERATED any Meals yet,
         * we have to generate dummy data for Ingredient List, Meal Quantity and Calories
