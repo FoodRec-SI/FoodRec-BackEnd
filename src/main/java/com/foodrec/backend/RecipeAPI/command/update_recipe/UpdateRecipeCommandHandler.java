@@ -56,7 +56,7 @@ public class UpdateRecipeCommandHandler implements Command.Handler<UpdateRecipeC
         }
         Recipe recipe = recipeOptional.get();
         if (!command.getUserId().equals(recipe.getUserId())) {
-            throw new UnauthorizedExceptionHandler("You are not authorized to delete this recipe!");
+            throw new UnauthorizedExceptionHandler("You are not authorized to update this recipe!");
         }
         String imageUrl = imageUtils.updateImage(recipe.getImage(), updateRecipeDTO.getImageFile(),
                 "recipe", String.valueOf(UUID.randomUUID()));
