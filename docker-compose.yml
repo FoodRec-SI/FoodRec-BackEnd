@@ -3,6 +3,7 @@ services:
   app:
     image: nam2507/foodrec:foodrec_v1
     container_name: foodrec
+    restart: always
     ports:
       - "8080:8080"
     environment:
