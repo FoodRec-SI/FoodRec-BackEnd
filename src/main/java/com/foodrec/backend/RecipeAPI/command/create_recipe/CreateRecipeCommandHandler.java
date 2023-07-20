@@ -31,16 +31,10 @@ public class CreateRecipeCommandHandler implements Command.Handler<CreateRecipeC
     private final TagRepository tagRepository;
     private final RecipeTagRepository recipeTagRepository;
 
-    private final ArrayList<String> nonNullFields = new ArrayList<>
-            (Arrays.asList("recipeName", "description", "image"));
-    private final ArrayList<String> nonNegativeFields = new ArrayList<>
-            (Arrays.asList("calories", "duration"));
+    private final ArrayList<String> nonNullFields = new ArrayList<>(Arrays.asList("recipeName", "description", "image"));
+    private final ArrayList<String> nonNegativeFields = new ArrayList<>(Arrays.asList("calories", "duration"));
 
-    public CreateRecipeCommandHandler(RecipeRepository recipeRepository,
-                                      RecipeUtils recipeUtils,
-                                      ModelMapper modelMapper,
-                                      TagRepository tagRepository,
-                                      RecipeTagRepository recipeTagRepository) {
+    public CreateRecipeCommandHandler(RecipeRepository recipeRepository, RecipeUtils recipeUtils, ModelMapper modelMapper, TagRepository tagRepository, RecipeTagRepository recipeTagRepository) {
         this.recipeRepository = recipeRepository;
         this.recipeUtils = recipeUtils;
         this.modelMapper = modelMapper;
@@ -63,17 +57,18 @@ public class CreateRecipeCommandHandler implements Command.Handler<CreateRecipeC
     public String handle(CreateRecipeCommand createRecipeCommand) {
         ImageUtils imageUtils = new ImageUtils();
         CreateRecipeDTO createRecipeDTO = createRecipeCommand.getCreateRecipeDTO();
-        boolean isValid = recipeUtils.fieldValidator(createRecipeCommand.getCreateRecipeDTO(),
-                nonNullFields, nonNegativeFields);
+
+        boolean isValid = true;
+        if (!recipeUtils.fieldValidator(createRecipeCommand.getCreateRecipeDTO(), nonNullFields, nonNegativeFields) || !imageUtils.isImage(createRecipeDTO.getImage())) {
+            isValid = false;
+        }
+
         if (!isValid) {
-            throw new InvalidDataExceptionHandler("One of the recipe attributes " +
-                    "(name, description, calories, duration, image)" +
-                    " is invalid. Please try again.");
+            throw new InvalidDataExceptionHandler("One of the recipe attributes " + "(name, description, calories, duration, image)" + " is invalid. Please try again.");
         }
 
         String recipeId = IdGenerator.generateNextId(Recipe.class, "recipeId");
-        String imageUrl = (String) imageUtils.upload(createRecipeDTO.getImage(),
-                "recipe", String.valueOf(UUID.randomUUID()));
+        String imageUrl = (String) imageUtils.upload(createRecipeDTO.getImage(), "recipe", String.valueOf(UUID.randomUUID()));
 
         Recipe recipeEntity = modelMapper.map(createRecipeDTO, Recipe.class);
         recipeEntity.setRecipeId(recipeId);
