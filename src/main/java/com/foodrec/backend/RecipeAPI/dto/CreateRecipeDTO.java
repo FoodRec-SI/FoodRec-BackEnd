@@ -28,6 +28,6 @@ public class CreateRecipeDTO implements Serializable {
     private int duration;
     private String instructions;
     private String ingredientList;
-    private MultipartFile image;
-    private Set<String> tagsIdSet;
+    private MultipartFile imageFile;
+    private Set<String> tagIdSet;
 }

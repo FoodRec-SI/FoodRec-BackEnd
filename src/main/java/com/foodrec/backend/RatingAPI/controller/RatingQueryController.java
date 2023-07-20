@@ -1,6 +1,7 @@
 package com.foodrec.backend.RatingAPI.controller;
 
 import an.awesome.pipelinr.Pipeline;
+import com.foodrec.backend.Exception.NotFoundExceptionHandler;
 import com.foodrec.backend.RatingAPI.dto.RatingByUserIdPostIdDTO;
 import com.foodrec.backend.RatingAPI.dto.RatingDetailsDTO;
 import com.foodrec.backend.RatingAPI.dto.RatingPercentageDTO;
