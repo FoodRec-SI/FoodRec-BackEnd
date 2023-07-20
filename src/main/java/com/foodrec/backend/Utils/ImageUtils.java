@@ -98,6 +98,9 @@ public class ImageUtils {
     }
 
     public boolean isImage(MultipartFile file) {
+        if (file == null) {
+            return true;
+        }
         try (InputStream inputStream = file.getInputStream()) {
             byte[] fileSignature = new byte[4];
             inputStream.read(fileSignature);
@@ -111,4 +114,5 @@ public class ImageUtils {
             return false;
         }
     }
+
 }
