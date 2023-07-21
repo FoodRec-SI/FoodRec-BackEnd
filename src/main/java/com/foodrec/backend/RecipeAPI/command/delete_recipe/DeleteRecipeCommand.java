@@ -3,7 +3,7 @@ package com.foodrec.backend.RecipeAPI.command.delete_recipe;
 import an.awesome.pipelinr.Command;
 import org.springframework.http.HttpStatus;
 
-public class DeleteRecipeCommand implements Command<HttpStatus> {
+public class DeleteRecipeCommand implements Command<String> {
     private final String recipeId;
     private final String userId;
 

@@ -9,6 +9,7 @@ import com.foodrec.backend.RecipeAPI.command.create_recipe.CreateRecipeCommand;
 import com.foodrec.backend.RecipeAPI.command.delete_recipe.DeleteRecipeCommand;
 import com.foodrec.backend.RecipeAPI.command.update_recipe.UpdateRecipeCommand;
 import com.foodrec.backend.RecipeAPI.dto.CreateRecipeDTO;
+import com.foodrec.backend.RecipeAPI.dto.SimpleRecipeDTO;
 import com.foodrec.backend.RecipeAPI.dto.UpdateRecipeDTO;
 import com.foodrec.backend.Utils.GetCurrentUserData;
 import io.swagger.v3.oas.annotations.Operation;
@@ -62,8 +63,8 @@ public class RecipeCommandController {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             String userId = GetCurrentUserData.getCurrentUserId(authentication);
             UpdateRecipeCommand updateRecipeCommand = new UpdateRecipeCommand(updateRecipeDTO, userId);
-            HttpStatus status = pipeline.send(updateRecipeCommand);
-            responseEntity = ResponseEntity.status(status).body("Update recipe successfully!");
+            SimpleRecipeDTO result = pipeline.send(updateRecipeCommand);
+            responseEntity = new ResponseEntity<>(result,HttpStatus.OK);
         } catch (InvalidDataExceptionHandler | NotFoundExceptionHandler | DuplicateExceptionHandler |
                  UnauthorizedExceptionHandler e) {
             HttpStatus status = e.getClass().getAnnotation(ResponseStatus.class).value();
@@ -84,8 +85,8 @@ public class RecipeCommandController {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             String userId = GetCurrentUserData.getCurrentUserId(authentication);
             DeleteRecipeCommand command = new DeleteRecipeCommand(recipeId, userId);
-            HttpStatus status = pipeline.send(command);
-            responseEntity = ResponseEntity.status(status).body("");
+            String result = pipeline.send(command);
+            responseEntity = new ResponseEntity<>(result,HttpStatus.OK);
         } catch (InvalidDataExceptionHandler | DuplicateExceptionHandler | UnauthorizedExceptionHandler |
                  NotFoundExceptionHandler e) {
             HttpStatus status = e.getClass().getAnnotation(ResponseStatus.class).value();

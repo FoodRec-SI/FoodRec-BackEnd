@@ -2,12 +2,11 @@ package com.foodrec.backend.RecipeAPI.entity;
 
 import com.foodrec.backend.TagAPI.entity.Tag;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Entity
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "recipe_tag")

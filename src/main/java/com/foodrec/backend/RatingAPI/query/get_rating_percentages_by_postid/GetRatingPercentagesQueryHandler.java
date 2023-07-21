@@ -36,17 +36,19 @@ public class GetRatingPercentagesQueryHandler implements Command.Handler<GetRati
     public RatingPercentageDTO handle(GetRatingPercentagesQuery command) {
         String postId = command.getPostId();
         List<Rating> ratingList = ratingRepository.getRatingsByPost_PostId(postId);
-        if(ratingList.isEmpty()) throw new NotFoundExceptionHandler("No ratings " +
-                "for the specified post can be found. Please add at least one rating.");
-
         Map<String, Integer> ratings = new HashMap<String, Integer>();
+
+
+
         ratings.put("fiveStars", 0);
         ratings.put("fourStars", 0);
         ratings.put("threeStars", 0);
         ratings.put("twoStars", 0);
         ratings.put("oneStar", 0);
 
-
+        if(ratingList.isEmpty()){
+            return new RatingPercentageDTO("0","0","0","0","0");
+        };
         for (Rating eachRating : ratingList) {
             int score = eachRating.getScore();
             int count;
