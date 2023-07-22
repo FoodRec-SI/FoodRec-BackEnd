@@ -1,10 +1,11 @@
 package com.foodrec.backend.RecipeAPI.command.update_recipe;
 
 import an.awesome.pipelinr.Command;
+import com.foodrec.backend.RecipeAPI.dto.SimpleRecipeDTO;
 import com.foodrec.backend.RecipeAPI.dto.UpdateRecipeDTO;
 import org.springframework.http.HttpStatus;
 
-public class UpdateRecipeCommand implements Command<HttpStatus> {
+public class UpdateRecipeCommand implements Command<SimpleRecipeDTO> {
     private final UpdateRecipeDTO UpdateRecipeDTO;
     private String userId;
 

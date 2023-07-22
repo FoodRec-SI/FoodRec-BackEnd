@@ -17,7 +17,7 @@ import java.io.IOException;
 import java.util.Optional;
 
 @Component
-public class DeleteRecipeCommandHandler implements Command.Handler<DeleteRecipeCommand, HttpStatus> {
+public class DeleteRecipeCommandHandler implements Command.Handler<DeleteRecipeCommand, String> {
     private final RecipeRepository recipeRepository;
     private final RecipeTagRepository recipeTagRepository;
     private final RecipeUtils recipeUtils;
@@ -31,16 +31,16 @@ public class DeleteRecipeCommandHandler implements Command.Handler<DeleteRecipeC
 
     @Transactional
     @Override
-    public HttpStatus handle(DeleteRecipeCommand deleteRecipeCommand) throws InvalidDataExceptionHandler {
+    public String handle(DeleteRecipeCommand deleteRecipeCommand) {
         boolean isValidRecId = recipeUtils.validateRecipeId(deleteRecipeCommand.getRecipeId());
         if (!isValidRecId)
-            throw new InvalidDataExceptionHandler("Invalid Recipe Id detected. Please try again !");
+            return "Invalid Recipe Id detected. Please try again!";
         Optional<Recipe> foundRecipe = recipeRepository.findById(deleteRecipeCommand.getRecipeId());
         if (foundRecipe.isEmpty() || !foundRecipe.get().isStatus()) {
-            throw new NotFoundExceptionHandler("Not found recipe !");
+            return "Recipe not found!";
         }
         if (!foundRecipe.get().getUserId().equals(deleteRecipeCommand.getUserId())) {
-            throw new UnauthorizedExceptionHandler("You are not authorized to delete this recipe !");
+            return "You are not authorized to delete this recipe!";
         }
         Recipe recipe = foundRecipe.get();
         recipe.setStatus(false);
@@ -53,6 +53,6 @@ public class DeleteRecipeCommandHandler implements Command.Handler<DeleteRecipeC
         }
         recipeTagRepository.deleteRecipeTagByRecipe_RecipeId(recipe.getRecipeId());
         recipeRepository.save(recipe);
-        return HttpStatus.OK;
+        return "Successfully deleted recipe "+recipe.getRecipeId();
     }
 }

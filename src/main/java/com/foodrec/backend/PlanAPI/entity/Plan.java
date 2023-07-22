@@ -27,7 +27,7 @@ public class Plan {
     private String description;
 
     /*Sidenote: This ingredient-list
-    * is derived from ALL Meals within a Plan.*/
+    * is derived from ALL Meals svelwithin a Plan.*/
     @Column(name="ingredient-list")
     private String ingredientList;
     @Column(name="meal-quantity")
