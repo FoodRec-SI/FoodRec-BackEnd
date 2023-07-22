@@ -4,11 +4,13 @@ import an.awesome.pipelinr.Command;
 import com.foodrec.backend.AccountAPI.repository.AccountRepository;
 import com.foodrec.backend.Exception.InvalidDataExceptionHandler;
 import com.foodrec.backend.Exception.NotFoundExceptionHandler;
-import com.foodrec.backend.PostAPI.dto.PopularPostDTO;
+import com.foodrec.backend.PostAPI.dto.SearchPostDTO;
 import com.foodrec.backend.PostAPI.dto.SortPostEnum;
 import com.foodrec.backend.PostAPI.dto.SortTypeEnum;
 import com.foodrec.backend.PostAPI.entity.PostELK;
 import com.foodrec.backend.PostAPI.repository.PostElasticsearchRepository;
+import com.foodrec.backend.TagAPI.dto.TagDTO;
+import com.foodrec.backend.TagAPI.entity.Tag;
 import com.foodrec.backend.TagAPI.repository.TagRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.*;
@@ -17,7 +19,7 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 @Component
-public class GetPostsByKeywordQueryHandler implements Command.Handler<GetPostsByKeywordQuery, Page<PopularPostDTO>> {
+public class GetPostsByKeywordQueryHandler implements Command.Handler<GetPostsByKeywordQuery, Page<SearchPostDTO>> {
     private final PostElasticsearchRepository postElasticsearchRepository;
     private final TagRepository tagRepository;
     private final ModelMapper modelMapper;
@@ -29,7 +31,7 @@ public class GetPostsByKeywordQueryHandler implements Command.Handler<GetPostsBy
     }
 
     @Override
-    public Page<PopularPostDTO> handle(GetPostsByKeywordQuery query) {
+    public Page<SearchPostDTO> handle(GetPostsByKeywordQuery query) {
         if (query.getPageNumber() < 0 || query.getPageSize() < 1 || query.getKeyword().isBlank()) {
             throw new InvalidDataExceptionHandler("Invalid data!");
         }
@@ -46,15 +48,17 @@ public class GetPostsByKeywordQueryHandler implements Command.Handler<GetPostsBy
         if (postsPage.isEmpty()) {
             throw new NotFoundExceptionHandler("Not found!");
         }
-        List<PopularPostDTO> popularPostDTOS = postsPage.getContent().stream().map(postELK -> {
-            PopularPostDTO popularPostDTO = new PopularPostDTO();
-            popularPostDTO.setPostId(postELK.getPostId());
-            popularPostDTO.setRecipeName(postELK.getRecipeName());
-            popularPostDTO.setDuration(postELK.getDuration());
-            popularPostDTO.setImage(postELK.getImage());
-            postELK.setAverageScore(postELK.getAverageScore());
-            return popularPostDTO;
+        List<SearchPostDTO> searchPostDTOS = postsPage.getContent().stream().map(postELK -> {
+            SearchPostDTO searchPostDTO = new SearchPostDTO();
+            searchPostDTO.setPostId(postELK.getPostId());
+            searchPostDTO.setRecipeName(postELK.getRecipeName());
+            searchPostDTO.setDuration(postELK.getDuration());
+            searchPostDTO.setImage(postELK.getImage());
+            searchPostDTO.setAverageScore(postELK.getAverageScore());
+            List<Tag> tagList = tagRepository.findTagsByRecipeTags_Recipe_RecipeId(postELK.getRecipeId());
+            searchPostDTO.setTagDTOList(tagList.stream().map(tag -> modelMapper.map(tag, TagDTO.class)).toList());
+            return searchPostDTO;
         }).toList();
-        return new PageImpl<>(popularPostDTOS, pageable, postsPage.getTotalElements());
+        return new PageImpl<>(searchPostDTOS, pageable, postsPage.getTotalElements());
     }
 }
