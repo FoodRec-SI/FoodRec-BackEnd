@@ -54,6 +54,7 @@ public class UpdateRecipeCommandHandler implements Command.Handler<UpdateRecipeC
             throw new NotFoundExceptionHandler("The provided RecipeId " +
                     "is not found or already deleted. Please try again.");
         }
+
         Recipe recipe = recipeOptional.get();
         if (!command.getUserId().equals(recipe.getUserId())) {
             throw new UnauthorizedExceptionHandler("You are not authorized to update this recipe!");
@@ -69,7 +70,7 @@ public class UpdateRecipeCommandHandler implements Command.Handler<UpdateRecipeC
                 .collect(Collectors.toList());
         recipeTagRepository.saveAll(recipeTags);
         recipe = modelMapper.map(updateRecipeDTO, Recipe.class);
-        recipe.setUserId(command.getUserId());
+        recipe.setPublicStatus(false);
         recipe.setStatus(true);
         recipe.setImage(imageUrl);
         recipeRepository.save(recipe);

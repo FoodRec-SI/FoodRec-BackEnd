@@ -8,11 +8,15 @@ services:
       - "8080:8080"
     environment:
       SPRING_PROFILES_ACTIVE: production
-      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/foodrec-db
-      SPRING_DATASOURCE_USERNAME: postgres
-      SPRING_DATASOURCE_PASSWORD: 12345
-      SPRING_REDIS_HOSTNAME: redis
-      SPRING_ELASTICSEARCH_HOSTNAME: elasticsearch
+      SPRING_DATASOURCE_URL: $(SPRING_DATASOURCE_URL)
+      SPRING_DATASOURCE_USERNAME: $(SPRING_DATASOURCE_USERNAME)
+      SPRING_DATASOURCE_PASSWORD: $(SPRING_DATASOURCE_PASSWORD)
+      SPRING_REDIS_HOSTNAME: $(SPRING_REDIS_HOSTNAME)
+      SPRING_REDIS_PASSWORD: $(SPRING_REDIS_PASSWORD)
+      SPRING_ELASTICSEARCH_HOSTNAME: $(SPRING_ELASTICSEARCH_HOSTNAME)
+      OPENAI_API_KEY: $(OPENAI_API_KEY)
+      OPENAI_API_URL: $(OPENAI_API_URL)
+      OPENAI_API_MODEL: $(OPENAI_API_MODEL)
     depends_on:
       - db
       - redis-server
@@ -25,23 +29,25 @@ services:
     ports:
       - "5432:5432"
     environment:
-      POSTGRES_DB: foodrec-db
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: 12345
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${SPRING_DATASOURCE_USERNAME}
+      POSTGRES_PASSWORD: ${SPRING_DATASOURCE_PASSWORD}
     volumes:
       - postgres_data:/var/lib/postgresql/data
 
   redis-server:
     image: redis:latest
-    hostname: redis
+    hostname: ${SPRING_REDIS_HOSTNAME}
     container_name: foodrec_redis
     restart: always
+    environment:
+      - REDIS_PASSWORD=${REDIS_PASSWORD}
     ports:
       - "6379:6379"
 
   elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:7.17.11
-    hostname: elasticsearch
+    hostname: ${SPRING_ELASTICSEARCH_HOSTNAME}
     container_name: foodrec_elasticsearch
     restart: always
     environment:
@@ -49,7 +55,7 @@ services:
       - discovery.type=single-node
       - xpack.security.enabled=false
     ports:
-      - 9200:9200
+      - "9200:9200"
     volumes:
       - esdata:/usr/share/elasticsearch/data
 

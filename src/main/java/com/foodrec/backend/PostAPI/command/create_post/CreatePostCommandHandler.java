@@ -1,7 +1,6 @@
 package com.foodrec.backend.PostAPI.command.create_post;
 
 import an.awesome.pipelinr.Command;
-import com.foodrec.backend.Exception.DuplicateExceptionHandler;
 import com.foodrec.backend.Exception.InvalidDataExceptionHandler;
 import com.foodrec.backend.Exception.NotFoundExceptionHandler;
 import com.foodrec.backend.Exception.UnauthorizedExceptionHandler;
@@ -16,7 +15,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -42,17 +40,13 @@ public class CreatePostCommandHandler implements Command.Handler<CreatePostComma
         if (optionalRecipe.isEmpty() || !optionalRecipe.get().isStatus()) {
             throw new NotFoundExceptionHandler("Recipe not found!");
         }
+        Recipe recipe = optionalRecipe.get();
+        recipe.setPublicStatus(true);
+        recipeRepository.save(recipe);
         if (!Objects.equals(command.getUserId(), optionalRecipe.get().getUserId())) {
             throw new UnauthorizedExceptionHandler("You are not allowed to create post!");
         }
         Post post = new Post();
-        List<Post> posts = postRepository.findPostByRecipeId(createPostDTO.getRecipeId());
-        for (Post value : posts) {
-            if (value.getRecipeName().toLowerCase().trim().equals(optionalRecipe.get().getRecipeName().toLowerCase().trim()) &&
-                    value.getDescription().toLowerCase().trim().equals(optionalRecipe.get().getDescription().toLowerCase().trim())) {
-                throw new DuplicateExceptionHandler("Duplicate recipe!");
-            }
-        }
         // Add new data for Post entity
         String postId = IdGenerator.generateNextId(Post.class, "postId");
         post.setPostId(postId);

@@ -31,7 +31,7 @@ jwt:
       principal-attribute: preferred_username
 app:
   cors:
-    allowed-origins: https://foodrec.yp2743.me
+    allowed-origins: https://foodrec.yp2743.me, http://localhost:5173
 management:
   endpoints:
     web:

@@ -46,6 +46,9 @@ public class Recipe {
     @Column(name = "ingredient-list")
     private String ingredientList;
 
+    @Column(name = "public-status")
+    private boolean publicStatus;
+
     @OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL)
     @JsonIgnore
     @EqualsAndHashCode.Exclude

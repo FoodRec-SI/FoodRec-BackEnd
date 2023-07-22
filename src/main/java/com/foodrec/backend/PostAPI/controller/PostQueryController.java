@@ -50,8 +50,8 @@ public class PostQueryController {
     @GetMapping("/api/public/posts")
     public ResponseEntity getAllPostsApproved(@RequestParam(defaultValue = "0") int pageNumber,
                                               @RequestParam(defaultValue = "6") int pageSize,
-                                              @RequestParam(required = true) SortPostEnum sortPost,
-                                              @RequestParam(required = true) SortTypeEnum sortType) {
+                                              @RequestParam SortPostEnum sortPost,
+                                              @RequestParam SortTypeEnum sortType) {
         try {
             GetAllPostsApprovedQuery query = new GetAllPostsApprovedQuery(pageNumber, pageSize, sortType, sortPost);
             Page<PopularPostDTO> result = pipeline.send(query);
