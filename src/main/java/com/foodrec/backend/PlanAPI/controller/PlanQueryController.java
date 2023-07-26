@@ -25,7 +25,6 @@ import java.util.List;
 
 import static com.foodrec.backend.Config.SwaggerConfig.BEARER_KEY_SECURITY_SCHEME;
 
-
 @Tag(name = "PlanAPI")
 @RestController
 public class PlanQueryController {
@@ -41,8 +40,7 @@ public class PlanQueryController {
     public ResponseEntity getPlansBetweenDate(@RequestBody DateDTO dateDTO) {
         ResponseEntity responseEntity = null;
         try {
-            GetPlansBetweenDatesQuery getPlansBetweenDatesQuery =
-                    new GetPlansBetweenDatesQuery(dateDTO.getStartDate(), dateDTO.getEndDate());
+            GetPlansBetweenDatesQuery getPlansBetweenDatesQuery = new GetPlansBetweenDatesQuery(dateDTO);
             List<ReadBasicPlanDTO> result = pipeline.send(getPlansBetweenDatesQuery);
             if (result != null) responseEntity = new ResponseEntity<>(result, HttpStatus.OK);
         } catch (InvalidDataExceptionHandler | DuplicateExceptionHandler | UnauthorizedExceptionHandler |
@@ -50,8 +48,7 @@ public class PlanQueryController {
             HttpStatus status = e.getClass().getAnnotation(ResponseStatus.class).value();
             return ResponseEntity.status(status).body(e.getMessage());
         } catch (Exception e) {
-            System.out.println(e.getMessage());
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Internal server error!");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
         return responseEntity;
     }
@@ -71,8 +68,7 @@ public class PlanQueryController {
             HttpStatus status = e.getClass().getAnnotation(ResponseStatus.class).value();
             return ResponseEntity.status(status).body(e.getMessage());
         } catch (Exception e) {
-            System.out.println(e.getMessage());
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Internal server error!");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
         return responseEntity;
     }

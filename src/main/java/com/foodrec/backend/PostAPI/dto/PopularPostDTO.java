@@ -12,5 +12,6 @@ public class PopularPostDTO {
     private String recipeName;
     private String image;
     private int duration;
+    private String description;
     private double averageScore;
 }

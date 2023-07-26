@@ -12,7 +12,9 @@ import java.util.List;
 @AllArgsConstructor
 public class SearchPostDTO {
     private String postId;
+    private String recipeId;
     private String recipeName;
+    private String description;
     private String image;
     private int duration;
     private double averageScore;

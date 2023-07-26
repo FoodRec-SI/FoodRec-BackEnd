@@ -37,7 +37,7 @@ public class Post {
     @Column(name = "recipename")
     private String recipeName;
 
-    @Column(name = "description")
+    @Column(name = "description", columnDefinition = "text")
     private String description;
 
     @Column(name = "calories")
@@ -57,10 +57,10 @@ public class Post {
     @Column(name = "average-score")
     private double averageScore;
 
-    @Column(name = "ingredient-list")
+    @Column(name = "ingredient-list", columnDefinition = "text")
     private String ingredientList;
 
-    @Column(name = "instruction")
+    @Column(name = "instruction", columnDefinition = "text")
     private String instruction;
 
     @OneToMany(mappedBy = "post")

@@ -41,7 +41,7 @@ services:
     container_name: foodrec_redis
     restart: always
     environment:
-      - REDIS_PASSWORD=${REDIS_PASSWORD}
+      - REDIS_PASSWORD=${SPRING_REDIS_PASSWORD}
     ports:
       - "6379:6379"
 

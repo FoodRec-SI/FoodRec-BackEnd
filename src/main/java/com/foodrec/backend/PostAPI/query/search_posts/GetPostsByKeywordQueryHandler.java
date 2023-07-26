@@ -52,6 +52,7 @@ public class GetPostsByKeywordQueryHandler implements Command.Handler<GetPostsBy
             SearchPostDTO searchPostDTO = new SearchPostDTO();
             searchPostDTO.setPostId(postELK.getPostId());
             searchPostDTO.setRecipeName(postELK.getRecipeName());
+            searchPostDTO.setDescription(postELK.getDescription());
             searchPostDTO.setDuration(postELK.getDuration());
             searchPostDTO.setImage(postELK.getImage());
             searchPostDTO.setAverageScore(postELK.getAverageScore());

@@ -59,19 +59,12 @@ public class UpdatePostCommandHandler implements Command.Handler<UpdatePostComma
         }
         PostELK postELK = new PostELK();
         postELK.setPostId(post.getPostId());
-        postELK.setUserName(accountRepository.findById(post.getUserId()).get().getName());
-        postELK.setModeratorName(accountRepository.findById(command.getUserId()).get().getName());
         postELK.setRecipeId(post.getRecipeId());
         postELK.setRecipeName(post.getRecipeName());
         postELK.setDescription(post.getDescription());
-        postELK.setCalories(post.getCalories());
         postELK.setDuration(post.getDuration());
         postELK.setImage(post.getImage());
-        postELK.setCreatedTime(post.getCreatedTime());
-        postELK.setVerifiedTime(post.getVerifiedTime());
         postELK.setAverageScore(post.getAverageScore());
-        postELK.setIngredientList(post.getIngredientList());
-        postELK.setInstruction(post.getInstruction());
         postElasticsearchRepository.save(postELK);
         return modelMapper.map(post, PostDTO.class);
     }

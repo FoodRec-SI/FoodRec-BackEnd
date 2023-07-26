@@ -38,4 +38,4 @@ out/
 
 local.env
 firebase-config.json
-foodrec/foodrec.env
+docker-compose/foodrec.env

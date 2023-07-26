@@ -5,6 +5,7 @@ import com.foodrec.backend.Exception.DuplicateExceptionHandler;
 import com.foodrec.backend.Exception.InvalidDataExceptionHandler;
 import com.foodrec.backend.Exception.NotFoundExceptionHandler;
 import com.foodrec.backend.Exception.UnauthorizedExceptionHandler;
+import com.foodrec.backend.PostAPI.command.add_post_to_postELK.AddPostToPostELKCommand;
 import com.foodrec.backend.PostAPI.command.create_post.CreatePostCommand;
 import com.foodrec.backend.PostAPI.command.delete_post.DeletePostCommand;
 import com.foodrec.backend.PostAPI.command.update_post.UpdatePostCommand;
@@ -49,7 +50,7 @@ public class PostCommandController {
             HttpStatus status = e.getClass().getAnnotation(ResponseStatus.class).value();
             return ResponseEntity.status(status).body(e.getMessage());
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Internal server error!");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
         return responseEntity;
     }
@@ -69,7 +70,7 @@ public class PostCommandController {
             HttpStatus status = e.getClass().getAnnotation(ResponseStatus.class).value();
             return ResponseEntity.status(status).body(e.getMessage());
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Internal server error!");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
         return responseEntity;
     }
@@ -89,6 +90,23 @@ public class PostCommandController {
                  DuplicateExceptionHandler e) {
             HttpStatus status = e.getClass().getAnnotation(ResponseStatus.class).value();
             return ResponseEntity.status(status).body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
+        return responseEntity;
+    }
+
+    @Operation(description = "Add post data to Elasticsearch",
+            security = {@SecurityRequirement(name = BEARER_KEY_SECURITY_SCHEME)})
+    @RequestMapping(value = "/api/moderator/post/elasticsearch", method = RequestMethod.GET)
+    public ResponseEntity addPostDataToElasticsearch() {
+        ResponseEntity responseEntity = null;
+        try {
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            String userId = GetCurrentUserData.getCurrentUserId(authentication);
+            AddPostToPostELKCommand command = new AddPostToPostELKCommand(userId);
+            Boolean isAdded = pipeline.send(command);
+            responseEntity = new ResponseEntity<>(isAdded, HttpStatus.OK);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }

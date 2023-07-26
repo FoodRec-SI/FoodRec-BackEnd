@@ -14,8 +14,6 @@ import java.util.Optional;
 public interface PostRepository extends JpaRepository<Post, String> {
     Page<Post> findAllByStatus(int status, Pageable pageable);
 
-    List<Post> findPostByRecipeId(String recipeid);
-
     Page<Post> findAllByStatusIn(List<Integer> statuses, Pageable pageable);
 
     Optional<Post> findPostByPostIdAndStatus(String postId, int status);
@@ -38,8 +36,12 @@ public interface PostRepository extends JpaRepository<Post, String> {
 
     Page<Post> getPostsByLikes_Account_UserId(String userId, Pageable pageable);
 
+    List<Post> findAllByStatus(int status);
+
     /*Finds the list of Posts based on the join table(MealPosts).
     * In the join table, find a list of Posts belong to 1 Meal
     , and find that Meal by the MealId.*/
     List<Post> getPostsByMealPosts_Meal_MealId(String mealId);
+
+    Optional<Post> getFirstByMealPosts_Meal_MealIdOrderByRecipeNameAsc(String mealId);
 }

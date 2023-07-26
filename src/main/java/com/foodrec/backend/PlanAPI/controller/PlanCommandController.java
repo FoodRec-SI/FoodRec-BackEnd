@@ -41,15 +41,14 @@ public class PlanCommandController {
             String userId = GetCurrentUserData.getCurrentUserId(authentication);
             CreateBasePlanCommand createBasePlanCommand = new CreateBasePlanCommand(userId, createBasePlanDTO);
             BasePlanDTO result = pipeline.send(createBasePlanCommand);
-            if (result!=null) responseEntity = new ResponseEntity<>(result,HttpStatus.OK);
-
+            if (result != null) responseEntity = new ResponseEntity<>(result, HttpStatus.OK);
         } catch (InvalidDataExceptionHandler | DuplicateExceptionHandler | UnauthorizedExceptionHandler |
                  NotFoundExceptionHandler e) {
             HttpStatus status = e.getClass().getAnnotation(ResponseStatus.class).value();
             return ResponseEntity.status(status).body(e.getMessage());
         } catch (Exception e) {
             System.out.println(e.getMessage());
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Internal server error!");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
         return responseEntity;
     }
@@ -63,15 +62,15 @@ public class PlanCommandController {
         try {
             RemovePlanCommand removePlanCommand = new RemovePlanCommand(removePlanDTO);
             Boolean result = pipeline.send(removePlanCommand);
-            if (result==true) responseEntity = new ResponseEntity<>(
-                    "Successfully removed plan with Id" + removePlanCommand.getRemovePlanDTO().getPlanId(),HttpStatus.OK);
+            if (result) responseEntity = new ResponseEntity<>(
+                    "Successfully removed plan with Id" + removePlanCommand.getRemovePlanDTO().getPlanId(), HttpStatus.OK);
         } catch (InvalidDataExceptionHandler | DuplicateExceptionHandler | UnauthorizedExceptionHandler |
                  NotFoundExceptionHandler e) {
             HttpStatus status = e.getClass().getAnnotation(ResponseStatus.class).value();
             return ResponseEntity.status(status).body(e.getMessage());
         } catch (Exception e) {
             System.out.println(e.getMessage());
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Internal server error!");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
         return responseEntity;
     }
@@ -85,20 +84,19 @@ public class PlanCommandController {
         try {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             String userId = GetCurrentUserData.getCurrentUserId(authentication);
-            UpdateFullPlanCommand updateFullPlanCommand =
-                    new UpdateFullPlanCommand(userId,updateFullPlanDTO);
+            UpdateFullPlanCommand updateFullPlanCommand = new UpdateFullPlanCommand(userId, updateFullPlanDTO);
             ReadBasicPlanDTO result = pipeline.send(updateFullPlanCommand);
-            if (result!=null) responseEntity = new ResponseEntity<>(result,HttpStatus.OK);
+            if (result != null) {
+                responseEntity = new ResponseEntity<>(result, HttpStatus.OK);
+            }
         } catch (InvalidDataExceptionHandler | DuplicateExceptionHandler | UnauthorizedExceptionHandler |
                  NotFoundExceptionHandler e) {
             HttpStatus status = e.getClass().getAnnotation(ResponseStatus.class).value();
             return ResponseEntity.status(status).body(e.getMessage());
         } catch (Exception e) {
             System.out.println(e.getMessage());
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Internal server error!");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
         return responseEntity;
     }
-
-
 }
