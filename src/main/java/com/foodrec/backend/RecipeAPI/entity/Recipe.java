@@ -20,7 +20,7 @@ public class Recipe {
     @Column(name = "recipename")
     private String recipeName;
 
-    @Column(name = "description")
+    @Column(name = "description", columnDefinition = "text")
     private String description;
 
     @Column(name = "calories")
@@ -38,11 +38,14 @@ public class Recipe {
     @Column(name = "status")
     private boolean status;
 
-    @Column(name = "instructions")
+    @Column(name = "instructions", columnDefinition = "text")
     private String instructions;
 
-    @Column(name = "ingredient-list")
+    @Column(name = "ingredient-list", columnDefinition = "text")
     private String ingredientList;
+
+    @Column(name = "public-status")
+    private boolean publicStatus;
 
     @OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL)
     @JsonIgnore

@@ -113,6 +113,7 @@ public class CreateRecipeCommandHandler implements Command.Handler<CreateRecipeC
         Recipe recipeEntity = modelMapper.map(createRecipeDTO, Recipe.class);
         recipeEntity.setRecipeId(recipeId);
         recipeEntity.setImage(imageUrl);
+        recipeEntity.setPublicStatus(false);
         recipeEntity.setUserId(createRecipeCommand.getUserid());
         recipeEntity.setStatus(true);
         recipeEntity.setRecipeTags(new HashSet<>());

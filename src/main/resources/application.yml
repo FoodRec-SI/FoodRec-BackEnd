@@ -1,8 +1,8 @@
 spring:
   datasource:
-    url: ${POSTGRESQL_URI}
-    username: ${POSTGRESQL_DATABASE_NAME}
-    password: ${POSTGRESQL_DATABASE_PASSWORD}
+    url: ${SPRING_DATASOURCE_URL}
+    username: ${SPRING_DATASOURCE_USERNAME}
+    password: ${SPRING_DATASOURCE_PASSWORD}
   jpa:
     hibernate:
       ddl-auto: update
@@ -31,8 +31,7 @@ jwt:
       principal-attribute: preferred_username
 app:
   cors:
-    allowed-origins: http://localhost:5173
-
+    allowed-origins: https://foodrec.yp2743.me, http://localhost:5173
 management:
   endpoints:
     web:
