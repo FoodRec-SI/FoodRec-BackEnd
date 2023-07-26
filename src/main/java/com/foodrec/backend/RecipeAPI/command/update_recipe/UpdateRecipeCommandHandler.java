@@ -101,24 +101,20 @@ public class UpdateRecipeCommandHandler implements Command.Handler<UpdateRecipeC
                     "to modify this recipe. Please log out and try again.");
         }
 
-        String imageUrl = null;
-        if (updateRecipeDTO.getImageUrl()==null &&
-                updateRecipeDTO.getImageFile()==null){
-            return new SimpleRecipeDTO("null", "Both Image URL and File" +
-                    " can't be empty at the same time!");
-        }
-        if (updateRecipeDTO.getImageUrl()!=null &&
-                updateRecipeDTO.getImageFile()!=null){
-            return new SimpleRecipeDTO("null", "Both Image URL and File" +
-                    " can't co-exist! Please choose one of them and try again.");
-        }
-        if(updateRecipeDTO.getImageUrl()==null
-                || updateRecipeDTO .getImageUrl().length()==0){
-            imageUrl = (String) imageUtils.upload(updateRecipeDTO.getImageFile(),
-                    "recipe", String.valueOf(UUID.randomUUID()));
-        }else{
-            imageUrl = updateRecipeDTO.getImageUrl();
-        }
+//        String imageUrl = null;
+//        if(updateRecipeDTO.getImageUrl()==null
+//                || updateRecipeDTO .getImageUrl().length()==0){
+//            imageUrl = (String) imageUtils.upload(updateRecipeDTO.getImageFile(),
+//                    "recipe", String.valueOf(UUID.randomUUID()));
+//        }else{
+//            imageUrl = updateRecipeDTO.getImageUrl();
+//        }
+
+        String imageUrl = updateRecipeDTO.getImageFile()==null
+                ? updateRecipeDTO.getImageUrl()
+                : imageUtils.updateImage(recipe.getImage(), updateRecipeDTO.getImageFile(),
+                "profile", String.valueOf(UUID.randomUUID()));
+
 
         /*IMPORTANT: Updates for the Set<RecipeTag> MUST BE DONE on both the entity (Recipe)
         * and the Join Table (Recipe_Tag)*/

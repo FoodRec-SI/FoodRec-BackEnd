@@ -6,4 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface MealRepository extends JpaRepository<Meal, String> {
+    void deleteAllByPlan_PlanId(String planId);
 }

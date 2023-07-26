@@ -64,7 +64,7 @@ public class PlanCommandController {
             RemovePlanCommand removePlanCommand = new RemovePlanCommand(removePlanDTO);
             Boolean result = pipeline.send(removePlanCommand);
             if (result==true) responseEntity = new ResponseEntity<>(
-                    "Successfully removed plan with Id" + removePlanCommand.getRemovePlanDTO().getPlanId(),HttpStatus.OK);
+                    "Successfully removed plan with Id " + removePlanCommand.getRemovePlanDTO().getPlanId(),HttpStatus.OK);
         } catch (InvalidDataExceptionHandler | DuplicateExceptionHandler | UnauthorizedExceptionHandler |
                  NotFoundExceptionHandler e) {
             HttpStatus status = e.getClass().getAnnotation(ResponseStatus.class).value();

@@ -10,4 +10,5 @@ import java.util.List;
 @Repository
 public interface MealPostRepository extends JpaRepository<MealPost, String> {
     List<Post> findByMeal_MealId(String mealId);
+    void deleteAllByMeal_MealId(String mealId);
 }

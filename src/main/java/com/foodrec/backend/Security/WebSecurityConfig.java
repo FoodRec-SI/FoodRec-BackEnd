@@ -32,7 +32,8 @@ public class WebSecurityConfig {
                         .requestMatchers("/api/private/**").hasAnyRole(MODERATOR,MEMBER)
                         .requestMatchers("/api/moderator/**").hasRole(MODERATOR)
                         .requestMatchers("/api/member/**").hasAnyRole(MEMBER)
-                        .requestMatchers("/swagger-ui.html", "/swagger-ui/**", "/v3/api-docs", "/v3/api-docs/**").permitAll()
+                        .requestMatchers("/swagger-ui.html", "/swagger-ui/**", "/v3/api-docs", "/v3/api-docs/**")
+                        .permitAll()
                         .anyRequest().authenticated())
                 .oauth2ResourceServer(oauth2ResourceServer -> oauth2ResourceServer.jwt(
                         jwt -> jwt.jwtAuthenticationConverter(jwtAuthConverter)))
@@ -43,4 +44,5 @@ public class WebSecurityConfig {
 
     public static final String MODERATOR = "MODERATOR";
     public static final String MEMBER = "MEMBER";
+
 }
