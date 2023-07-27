@@ -44,12 +44,11 @@ public class DeleteRecipeCommandHandler implements Command.Handler<DeleteRecipeC
         }
         Recipe recipe = foundRecipe.get();
         recipe.setStatus(false);
+        recipe.setPublicStatus(false);
         ImageUtils imageUtils = new ImageUtils();
         try {
             imageUtils.deleteImage(foundRecipe.get().getImage());
-            recipe.setImage(null);
         } catch (IOException e) {
-            throw new RuntimeException(e);
         }
         recipeTagRepository.deleteRecipeTagByRecipe_RecipeId(recipe.getRecipeId());
         recipeRepository.save(recipe);

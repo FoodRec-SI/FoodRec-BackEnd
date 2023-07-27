@@ -16,6 +16,7 @@ import com.foodrec.backend.PlanAPI.repository.PlanRepository;
 import com.foodrec.backend.PostAPI.dto.CreatePostPerMealDTO;
 import com.foodrec.backend.PostAPI.entity.Post;
 import com.foodrec.backend.PostAPI.repository.PostRepository;
+import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 
@@ -52,6 +53,7 @@ public class UpdateFullPlanCommandHandler implements Command.Handler<UpdateFullP
     /*This includes:
      - Step 1: Adding new MealPost to mealPost list (in the Meal Entity)
      - Step 2: The MealPost join table */
+
     private Meal saveMealPostPerMealEntity(Meal eachMeal, CreateMealPerPlanDTO createMealPerPlanDTO,
                                            String mealId) {
         //Step 2: Save each MealPost (Post) Info of a Meal to the list.
@@ -63,6 +65,8 @@ public class UpdateFullPlanCommandHandler implements Command.Handler<UpdateFullP
 
         List<CreatePostPerMealDTO> postList = createMealPerPlanDTO.getPostList();
         //The loop that updates the Posts list (mealPosts) of 1 Meal.
+        //Removes all of the Previous Posts in that existing Meal.
+        mealPostRepository.deleteAllByMeal_MealId(mealId);
         for (CreatePostPerMealDTO eachPost : postList) {
             String postId = eachPost.getPostId();
             MealPostId eachMealPostId = new MealPostId(mealId, postId);
@@ -167,6 +171,7 @@ public class UpdateFullPlanCommandHandler implements Command.Handler<UpdateFullP
 
 
     @Override
+    @Transactional
     public ReadBasicPlanDTO handle(UpdateFullPlanCommand command) {
         //The reason why we update Meal  BEFORE Plan is
         //that, we can get the full list of mealPerPlanDTO.
