@@ -65,8 +65,12 @@ public class UpdateFullPlanCommandHandler implements Command.Handler<UpdateFullP
 
         List<CreatePostPerMealDTO> postList = createMealPerPlanDTO.getPostList();
         //The loop that updates the Posts list (mealPosts) of 1 Meal.
-        //Removes all of the Previous Posts in that existing Meal.
-        mealPostRepository.deleteAllByMeal_MealId(mealId);
+        //Removes all of the Previous Posts in that existing Meal, to prevent
+        //update errors (
+
+        //Removes all previous Meals belonging to a Plan.
+        //Prevents old data from being overlapped with new data.
+
         for (CreatePostPerMealDTO eachPost : postList) {
             String postId = eachPost.getPostId();
             MealPostId eachMealPostId = new MealPostId(mealId, postId);
@@ -90,6 +94,7 @@ public class UpdateFullPlanCommandHandler implements Command.Handler<UpdateFullP
         String planId = updateFullPlanDTO.getPlanId();
         createMealPerPlanDTOList = updateFullPlanDTO.getMealPerPlanList();
         Set<Meal> tempMealSet = plan.getMealSet();
+
 
         for (CreateMealPerPlanDTO createMealPerPlanDTO : createMealPerPlanDTOList) {
             String mealId = createMealPerPlanDTO.getMealId();
@@ -162,7 +167,19 @@ public class UpdateFullPlanCommandHandler implements Command.Handler<UpdateFullP
         return true;
     }
 
+    private void removeOldData(Plan plan){
 
+        Set<Meal> mealSet = plan.getMealSet();
+        //Deletes all Meal_Post (A) in many Meals (B).
+        for(Meal eachMeal:mealSet){
+            String mealId = eachMeal.getMealId();
+            mealPostRepository.deleteAllByMeal_MealId(mealId);
+        }
+        //Deletes all Meals (B) in a Plan (C).
+        mealRepository.deleteAllByPlan_PlanId(plan.getPlanId());
+        plan.setMealSet(new HashSet<>());
+        planRepository.save(plan);
+    }
     private ReadBasicPlanDTO returnFullPlanDTO(String planId){
         Plan plan = planRepository.findById(planId).get();
         ReadBasicPlanDTO result = modelMapper.map(plan, ReadBasicPlanDTO.class);
@@ -178,9 +195,9 @@ public class UpdateFullPlanCommandHandler implements Command.Handler<UpdateFullP
         String planId = command.getUpdateFullPlanDTO().getPlanId();
         Plan currentPlan = planRepository.findById(planId).get();
 
-
-        /*tempPlan is already added with a list of Meals.
-         Then, it is used to update (overwrite) the currentPlan.*/
+        removeOldData(currentPlan);
+        /*tempPlan is already added with a list of Meals. (From the Front-end).
+         Then, it is used to update (overwrite) the currentPlan. (Previously existed in the Database)*/
         Plan tempPlan = saveMealEntity(command,currentPlan);
         if(tempPlan==null) return null;
         currentPlan = tempPlan;
