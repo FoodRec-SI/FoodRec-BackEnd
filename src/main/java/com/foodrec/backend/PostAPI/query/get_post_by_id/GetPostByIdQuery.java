@@ -11,5 +11,4 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class GetPostByIdQuery implements Command<PostDTO> {
     private String postId;
-    private String userId;
 }

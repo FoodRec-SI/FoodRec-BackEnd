@@ -44,7 +44,7 @@ public class IngredientListGeneratorQueryHandler implements Command.Handler<Ingr
         if (!optionalPlan.get().getUserId().equals(query.getUserId())) {
             throw new UnauthorizedExceptionHandler("You are not authorized to access this plan.");
         }
-        String prompt = "Create me a shopping list based on these ingredients and return it in jason format. " +
+        String prompt = "Create me a shopping list based on these ingredients and return array. " +
                 "Do not reply anything else beside the json and do not put it in your code block just plain text. " +
                 "Count any duplicate items into one. Do not line break: " + optionalPlan.get().getIngredientList();
 

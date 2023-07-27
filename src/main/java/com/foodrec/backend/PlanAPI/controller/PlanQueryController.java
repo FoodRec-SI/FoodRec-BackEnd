@@ -40,7 +40,8 @@ public class PlanQueryController {
     public ResponseEntity getPlansBetweenDate(@RequestBody DateDTO dateDTO) {
         ResponseEntity responseEntity = null;
         try {
-            GetPlansBetweenDatesQuery getPlansBetweenDatesQuery = new GetPlansBetweenDatesQuery(dateDTO);
+            GetPlansBetweenDatesQuery getPlansBetweenDatesQuery =
+                    new GetPlansBetweenDatesQuery(dateDTO.getStartDate(), dateDTO.getEndDate());
             List<ReadBasicPlanDTO> result = pipeline.send(getPlansBetweenDatesQuery);
             if (result != null) responseEntity = new ResponseEntity<>(result, HttpStatus.OK);
         } catch (InvalidDataExceptionHandler | DuplicateExceptionHandler | UnauthorizedExceptionHandler |
@@ -48,6 +49,7 @@ public class PlanQueryController {
             HttpStatus status = e.getClass().getAnnotation(ResponseStatus.class).value();
             return ResponseEntity.status(status).body(e.getMessage());
         } catch (Exception e) {
+            System.out.println(e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
         return responseEntity;

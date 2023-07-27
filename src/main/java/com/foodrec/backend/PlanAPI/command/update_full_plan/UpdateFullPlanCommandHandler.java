@@ -80,7 +80,7 @@ public class UpdateFullPlanCommandHandler implements Command.Handler<UpdateFullP
 
     /*Updates all details within the Meal table*/
     private Plan saveMealEntity(UpdateFullPlanCommand command,
-                                   Plan plan) {
+                                Plan plan) {
         UpdateFullPlanDTO updateFullPlanDTO = command.getUpdateFullPlanDTO();
         String userId = command.getUserId();
         String planId = updateFullPlanDTO.getPlanId();
@@ -92,7 +92,7 @@ public class UpdateFullPlanCommandHandler implements Command.Handler<UpdateFullP
             Meal eachMeal = new Meal();
             eachMeal.setMealId(mealId);
             eachMeal.setMealName(createMealPerPlanDTO.getMealName());
-            eachMeal.setUserid(userId);
+            eachMeal.setUserId(userId);
             eachMeal.setCalories(createMealPerPlanDTO.getCurrentCalories());
             eachMeal.setPlanId(planId);
             eachMeal.setPlan(plan);
@@ -117,7 +117,7 @@ public class UpdateFullPlanCommandHandler implements Command.Handler<UpdateFullP
         HashMap<String,Object> result = new HashMap<>();
         for(CreateMealPerPlanDTO createMealPerPlanDTO : createMealPerPlanDTOList){
             List<CreatePostPerMealDTO> createPostPerMealDTOList
-                                    = createMealPerPlanDTO.getPostList();
+                    = createMealPerPlanDTO.getPostList();
             for(CreatePostPerMealDTO post: createPostPerMealDTOList){
                 /*Extracts the ingredient and calories details of each existing Post.
                 Based on its Id.*/
@@ -153,7 +153,7 @@ public class UpdateFullPlanCommandHandler implements Command.Handler<UpdateFullP
         currentPlan.setIngredientList(additionalDetails.
                 get("ingredients-list").toString());
         currentPlan.setCalories(Integer.parseInt
-                        (additionalDetails.get("total-calories").toString()));
+                (additionalDetails.get("total-calories").toString()));
         planRepository.save(currentPlan);
         return true;
     }

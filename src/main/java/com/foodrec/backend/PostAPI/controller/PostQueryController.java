@@ -160,9 +160,7 @@ public class PostQueryController {
     @GetMapping("/api/public/post/{postId}")
     public ResponseEntity getPostById(@PathVariable String postId) {
         try {
-            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-            String userId = GetCurrentUserData.getCurrentUserId(authentication);
-            GetPostByIdQuery query = new GetPostByIdQuery(postId, userId);
+            GetPostByIdQuery query = new GetPostByIdQuery(postId);
             PostDTO result = pipeline.send(query);
             return new ResponseEntity<>(result, HttpStatus.OK);
         } catch (InvalidDataExceptionHandler | NotFoundExceptionHandler e) {

@@ -4,8 +4,6 @@ import an.awesome.pipelinr.Command;
 import com.foodrec.backend.AccountAPI.repository.AccountRepository;
 import com.foodrec.backend.Exception.InvalidDataExceptionHandler;
 import com.foodrec.backend.Exception.NotFoundExceptionHandler;
-import com.foodrec.backend.LikeAPI.entity.Likes;
-import com.foodrec.backend.LikeAPI.entity.LikesCompositeKey;
 import com.foodrec.backend.LikeAPI.repository.LikesRepository;
 import com.foodrec.backend.PostAPI.dto.PostDTO;
 import com.foodrec.backend.PostAPI.entity.Post;
@@ -61,12 +59,6 @@ public class GetPostByIdQueryHandler implements Command.Handler<GetPostByIdQuery
         postDTO.setPostStatus(PostStatus.convertStatusToEnum(optionalPost.get().getStatus()));
         postDTO.setModeratorName(accountRepository.findById(postDTO.getModeratorId()).get().getName());
         postDTO.setUserName(accountRepository.findById(postDTO.getUserId()).get().getName());
-        Optional<Likes> foundLike = likesRepository.findById(
-                new LikesCompositeKey(
-                        query.getUserId(),
-                        query.getPostId()
-                ));
-        postDTO.setLiked(foundLike.isPresent());
         return postDTO;
     }
 }
