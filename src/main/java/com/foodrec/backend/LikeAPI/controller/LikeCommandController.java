@@ -32,7 +32,7 @@ public class LikeCommandController {
             description = "Allows the signed-in user to Like a post.",
             security = {@SecurityRequirement(name = BEARER_KEY_SECURITY_SCHEME)})
     @RequestMapping(value = "/api/member/like", method = RequestMethod.POST)
-    public ResponseEntity addLike(@RequestBody NewLikeDTO newLikedUserDTO){
+    public ResponseEntity addLike(@RequestBody NewLikeDTO newLikedUserDTO) {
         ResponseEntity result = null;
         Authentication authentication = null;
         try {
@@ -41,12 +41,13 @@ public class LikeCommandController {
             AddLikeCommand command = new AddLikeCommand(newLikedUserDTO.getPostId(), userId);
             LikeDTO likeDTO = pipeline.send(command);
             if (likeDTO != null) {
-                result = new ResponseEntity(likeDTO, HttpStatus.OK);
+                result = new ResponseEntity<>(likeDTO, HttpStatus.OK);
             }
-        }catch (InvalidDataExceptionHandler e){
-            result = new ResponseEntity(e.getMessage(), HttpStatus.OK);
-        }catch(Exception e){
-            result = new ResponseEntity(e.getMessage(), HttpStatus.OK);
+        } catch (InvalidDataExceptionHandler e) {
+            HttpStatus status = e.getClass().getAnnotation(ResponseStatus.class).value();
+            return ResponseEntity.status(status).body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
         return result;
     }
@@ -55,7 +56,7 @@ public class LikeCommandController {
             description = "Allows the signed-in user to Like a post.",
             security = {@SecurityRequirement(name = BEARER_KEY_SECURITY_SCHEME)})
     @RequestMapping(value = "/api/member/like", method = RequestMethod.DELETE)
-    public ResponseEntity removeLike(@RequestBody DeleteLikeDTO deleteLikeDTO){
+    public ResponseEntity removeLike(@RequestBody DeleteLikeDTO deleteLikeDTO) {
         ResponseEntity result = null;
         Authentication authentication = null;
         try {
@@ -64,11 +65,11 @@ public class LikeCommandController {
             RemoveLikeCommand command = new RemoveLikeCommand(userId, deleteLikeDTO.getPostId());
             Boolean isRemoved = pipeline.send(command);
             if (isRemoved) {
-                result = new ResponseEntity("Successfully removed like for post with Id "+deleteLikeDTO.getPostId()
+                result = new ResponseEntity<>("Successfully removed like for post with Id " + deleteLikeDTO.getPostId()
                         , HttpStatus.OK);
             }
-        }catch(Exception e){
-            e.getMessage();
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
         return result;
     }

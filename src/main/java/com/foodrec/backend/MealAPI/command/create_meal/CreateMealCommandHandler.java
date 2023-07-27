@@ -75,6 +75,10 @@ public class CreateMealCommandHandler implements Command.Handler<CreateMealComma
             }
         }
         MealDTO mealDTO = new MealDTO();
+        if(postDTOList.isEmpty()) {
+            mealDTO.setMessage("No recipes found!");
+            return mealDTO;
+        }
         String mealId = IdGenerator.generateNextId(Meal.class, "mealId");
         mealDTO.setMealId(mealId);
         mealDTO.setMealName(createMealDTO.getMealName());

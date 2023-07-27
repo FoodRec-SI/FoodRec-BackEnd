@@ -46,7 +46,7 @@ public class CollectionQueryController {
             return new ResponseEntity<>(status);
         } catch (Exception e) {
             System.out.println(e.getMessage());
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
     }
 

@@ -21,4 +21,5 @@ public class ReadBasicPlanDTO {
     private int mealQuantity;
     private LocalDateTime date;
     private int calories;
+    private String image;
 }

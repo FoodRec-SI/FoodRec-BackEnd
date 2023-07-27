@@ -61,8 +61,7 @@ public class GetPostByPostIdAndUserIdQueryHandler implements Command.Handler<Get
                         query.getUserId(),
                         query.getPostId()
                 ));
-        if (foundLike.isEmpty()) postDTO.setLiked(false);
-        else postDTO.setLiked(true);
+        postDTO.setLiked(foundLike.isPresent());
         if (postDTO.getModeratorId() == null) {
             return postDTO;
         }

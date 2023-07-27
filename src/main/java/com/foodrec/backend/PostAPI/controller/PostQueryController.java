@@ -50,8 +50,8 @@ public class PostQueryController {
     @GetMapping("/api/public/posts")
     public ResponseEntity getAllPostsApproved(@RequestParam(defaultValue = "0") int pageNumber,
                                               @RequestParam(defaultValue = "6") int pageSize,
-                                              @RequestParam(required = true) SortPostEnum sortPost,
-                                              @RequestParam(required = true) SortTypeEnum sortType) {
+                                              @RequestParam SortPostEnum sortPost,
+                                              @RequestParam SortTypeEnum sortType) {
         try {
             GetAllPostsApprovedQuery query = new GetAllPostsApprovedQuery(pageNumber, pageSize, sortType, sortPost);
             Page<PopularPostDTO> result = pipeline.send(query);
@@ -109,7 +109,7 @@ public class PostQueryController {
                                                @RequestParam String keyword) {
         try {
             GetPostsByKeywordQuery query = new GetPostsByKeywordQuery(pageNumber, pageSize, keyword, sortType, sortPost);
-            Page<PopularPostDTO> result = pipeline.send(query);
+            Page<SearchPostDTO> result = pipeline.send(query);
             return new ResponseEntity<>(result, HttpStatus.OK);
         } catch (InvalidDataExceptionHandler | NotFoundExceptionHandler e) {
             HttpStatus status = e.getClass().getAnnotation(ResponseStatus.class).value();
@@ -261,10 +261,11 @@ public class PostQueryController {
                     new GetPostsLikedByUserIdQuery(userId, pageNumber, pageSize);
             Page<PostDTO> likedUserDTO = pipeline.send(command);
             if (likedUserDTO != null) {
-                result = new ResponseEntity(likedUserDTO, HttpStatus.OK);
+                result = new ResponseEntity<>(likedUserDTO, HttpStatus.OK);
             }
         } catch (InvalidPageInfoException e) {
-            result = new ResponseEntity(e.getMessage(), HttpStatus.OK);
+            HttpStatus status = e.getClass().getAnnotation(ResponseStatus.class).value();
+            return ResponseEntity.status(status).body(e.getMessage());
         }
         return result;
     }

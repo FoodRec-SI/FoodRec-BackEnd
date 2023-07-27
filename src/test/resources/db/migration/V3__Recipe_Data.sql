@@ -1,66 +1,33 @@
---
--- PostgreSQL database dump
---
-
--- Dumped from database version 15.3
--- Dumped by pg_dump version 15.3
-
--- Started on 2023-06-09 12:13:05
-
-SET statement_timeout = 0;
-SET lock_timeout = 0;
-SET idle_in_transaction_session_timeout = 0;
-SET client_encoding = 'UTF8';
-SET standard_conforming_strings = on;
-SELECT pg_catalog.set_config('search_path', '', false);
-SET check_function_bodies = false;
-SET xmloption = content;
-SET client_min_messages = warning;
-SET row_security = off;
-
-SET default_tablespace = '';
-
---
--- TOC entry 218 (class 1259 OID 21648)
--- Name: recipe; Type: TABLE; Schema: public; Owner: postgres
---
-
-
---
--- TOC entry 3367 (class 0 OID 21648)
--- Dependencies: 218
--- Data for Name: recipe; Type: TABLE DATA; Schema: public; Owner: postgres
---
-
-INSERT INTO public.recipe (recipeid, recipename, description, calories, userid, duration, image, status, username) VALUES ('REC000019', 'cơm xèo', '1 loại cơm ngon', 47, '74007e14-840e-44f0-bc8c-99e3e9d1674c', 200, '\x00', true, NULL);
-INSERT INTO public.recipe (recipeid, recipename, description, calories, userid, duration, image, status, username) VALUES ('REC000021', 'bún riêu cua', '1 loại bún truyền thống', 76, '74007e14-840e-44f0-bc8c-99e3e9d1674c', 200, '\x00', true, NULL);
-INSERT INTO public.recipe (recipeid, recipename, description, calories, userid, duration, image, status, username) VALUES ('REC000023', 'cafe sữa đá', '1 loại cafe đặc trưng của Việt Nam', 67, '74007e14-840e-44f0-bc8c-99e3e9d1674c', 200, '\x00', true, NULL);
-INSERT INTO public.recipe (recipeid, recipename, description, calories, userid, duration, image, status, username) VALUES ('REC000016', 'bánh xèo', '1 loại bánh', 87, '74007e14-840e-44f0-bc8c-99e3e9d1674c', 200, '\x00', true, NULL);
-INSERT INTO public.recipe (recipeid, recipename, description, calories, userid, duration, image, status, username) VALUES ('REC000017', 'bánh bao', '1 loại bánh bao', 79, '74007e14-840e-44f0-bc8c-99e3e9d1674c', 200, '\x00', true, NULL);
-INSERT INTO public.recipe (recipeid, recipename, description, calories, userid, duration, image, status, username) VALUES ('REC000018', 'cơm chiên', '1 loại cơm chiên', 76, '74007e14-840e-44f0-bc8c-99e3e9d1674c', 200, '\x00', true, NULL);
-INSERT INTO public.recipe (recipeid, recipename, description, calories, userid, duration, image, status, username) VALUES ('REC000020', 'mì quảng', '1 loại mì siêu đỉnh', 47, '74007e14-840e-44f0-bc8c-99e3e9d1674c', 200, '\x00', true, NULL);
-INSERT INTO public.recipe (recipeid, recipename, description, calories, userid, duration, image, status, username) VALUES ('REC000022', 'sinh tố xoài', '1 loại sinh tố thơm ngon', 76, '74007e14-840e-44f0-bc8c-99e3e9d1674c', 200, '\x00', true, NULL);
-INSERT INTO public.recipe (recipeid, recipename, description, calories, userid, duration, image, status, username) VALUES ('REC000024', 'trà sữa', '1 loại trà cực ngon', 34, '74007e14-840e-44f0-bc8c-99e3e9d1674c', 200, '\x00', true, NULL);
-INSERT INTO public.recipe (recipeid, recipename, description, calories, userid, duration, image, status, username) VALUES ('REC000025', 'bánh xèo', '1 loại bánh siêu mềm', 7, '74007e14-840e-44f0-bc8c-99e3e9d1674c', 200, '\x00', true, NULL);
-INSERT INTO public.recipe (recipeid, recipename, description, calories, userid, duration, image, status, username) VALUES ('REC000026', 'bánh kem ABC', '1 loại bánh kem cực cuốn', 8, '74007e14-840e-44f0-bc8c-99e3e9d1674c', 200, '\x00', true, NULL);
-INSERT INTO public.recipe (recipeid, recipename, description, calories, userid, duration, image, status, username) VALUES ('REC000027', 'cơm niêu quảng ninh', 'cơm niêu không thể thiếu của mọi nhà', 22, '74007e14-840e-44f0-bc8c-99e3e9d1674c', 200, '\x00', true, NULL);
-
-
-
---
--- TOC entry 3223 (class 2606 OID 22001)
--- Name: recipe recipe_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
---
-
---
--- TOC entry 3224 (class 2606 OID 21912)
--- Name: recipe recipe_username_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
-
--- Completed on 2023-06-09 12:13:05
-
---
--- PostgreSQL database dump complete
---
-
+INSERT INTO public.recipe (recipeid, recipename, description, calories, userid, duration, status, image, instructions, "ingredient-list") VALUES ('REC000008', 'cá hồi nướng', 'Cá hồi nướng mỡ hành', 320, '74007e14-840e-44f0-bc8c-99e3e9d1674c', 35, true, 'https://storage.googleapis.com/foodrec-389515.appspot.com/recipe-REC000029.png', NULL, NULL);
+INSERT INTO public.recipe (recipeid, recipename, description, calories, userid, duration, status, image, instructions, "ingredient-list") VALUES ('REC000001', 'bún chả cá ', 'Món ăn truyền thống của Việt Nam', 250, '74007e14-840e-44f0-bc8c-99e3e9d1674c', 20, true, 'https://storage.googleapis.com/foodrec-389515.appspot.com/recipe-REC000001.jpg', 'Bước 1: Chuẩn bị ..
+', NULL);
+INSERT INTO public.recipe (recipeid, recipename, description, calories, userid, duration, status, image, instructions, "ingredient-list") VALUES ('REC000009', 'súp cua', 'Súp cua tuyệt hảo cho ngày se lạnh', 280, '74007e14-840e-44f0-bc8c-99e3e9d1674c', 25, true, 'https://storage.googleapis.com/foodrec-389515.appspot.com/recipe-REC000029.png', NULL, NULL);
+INSERT INTO public.recipe (recipeid, recipename, description, calories, userid, duration, status, image, instructions, "ingredient-list") VALUES ('REC000005', 'Gà', '12133', 12, '74007e14-840e-44f0-bc8c-99e3e9d1674c', 21, true, 'https://storage.googleapis.com/foodrec-389515.appspot.com/recipe-REC000005.png', '123456', NULL);
+INSERT INTO public.recipe (recipeid, recipename, description, calories, userid, duration, status, image, instructions, "ingredient-list") VALUES ('REC000010', 'bún riêu cua', 'Bún riêu cua ngon tuyệt', 320, '74007e14-840e-44f0-bc8c-99e3e9d1674c', 50, true, 'https://storage.googleapis.com/foodrec-389515.appspot.com/recipe-REC000029.png', NULL, NULL);
+INSERT INTO public.recipe (recipeid, recipename, description, calories, userid, duration, status, image, instructions, "ingredient-list") VALUES ('REC000023', 'Bánh sô kem', 'abcd', 123, '74007e14-840e-44f0-bc8c-99e3e9d1674c', 12, true, 'https://storage.googleapis.com/foodrec-389515.appspot.com/recipe-REC000026.jpg', 'kem', NULL);
+INSERT INTO public.recipe (recipeid, recipename, description, calories, userid, duration, status, image, instructions, "ingredient-list") VALUES ('REC000026', 'Khoai tây lắc', 'Rất ngon', 200, '74007e14-840e-44f0-bc8c-99e3e9d1674c', 10, true, 'https://storage.googleapis.com/foodrec-389515.appspot.com/recipe-REC000029.png', 'KO', NULL);
+INSERT INTO public.recipe (recipeid, recipename, description, calories, userid, duration, status, image, instructions, "ingredient-list") VALUES ('REC000027', 'Bánh tráng trộn', 'đéo biết', 123, '74007e14-840e-44f0-bc8c-99e3e9d1674c', 10, true, 'https://storage.googleapis.com/foodrec-389515.appspot.com/recipe-REC000030.png', 'Không biết', NULL);
+INSERT INTO public.recipe (recipeid, recipename, description, calories, userid, duration, status, image, instructions, "ingredient-list") VALUES ('REC000028', 'Bánh tráng trộn bơ', 'đéo biết gì', 1232, '74007e14-840e-44f0-bc8c-99e3e9d1674c', 102, true, 'https://storage.googleapis.com/foodrec-389515.appspot.com/recipe-REC000031.jpg', 'Không biết', NULL);
+INSERT INTO public.recipe (recipeid, recipename, description, calories, userid, duration, status, image, instructions, "ingredient-list") VALUES ('REC000011', 'gỏi cuốn', 'Gỏi cuốn tươi mát', 200, '74007e14-840e-44f0-bc8c-99e3e9d1674c', 15, true, 'https://storage.googleapis.com/foodrec-389515.appspot.com/recipe-REC000029.png', NULL, NULL);
+INSERT INTO public.recipe (recipeid, recipename, description, calories, userid, duration, status, image, instructions, "ingredient-list") VALUES ('REC000012', 'bò lúc lắc', 'Bò lúc lắc kiểu Sài Gòn', 400, '74007e14-840e-44f0-bc8c-99e3e9d1674c', 30, true, 'https://storage.googleapis.com/foodrec-389515.appspot.com/recipe-REC000029.png', NULL, NULL);
+INSERT INTO public.recipe (recipeid, recipename, description, calories, userid, duration, status, image, instructions, "ingredient-list") VALUES ('REC000013', 'mì hoành thánh', 'Mì hoành thánh ngon tuyệt', 380, '74007e14-840e-44f0-bc8c-99e3e9d1674c', 55, true, 'https://storage.googleapis.com/foodrec-389515.appspot.com/recipe-REC000029.png', NULL, NULL);
+INSERT INTO public.recipe (recipeid, recipename, description, calories, userid, duration, status, image, instructions, "ingredient-list") VALUES ('REC000014', 'bánh tráng trộn', 'Bánh tráng trộn độc đáo', 280, '74007e14-840e-44f0-bc8c-99e3e9d1674c', 10, true, 'https://storage.googleapis.com/foodrec-389515.appspot.com/recipe-REC000029.png', NULL, NULL);
+INSERT INTO public.recipe (recipeid, recipename, description, calories, userid, duration, status, image, instructions, "ingredient-list") VALUES ('REC000015', 'bún bò huế', 'Món ăn đặc sản của Huế', 420, '74007e14-840e-44f0-bc8c-99e3e9d1674c', 60, true, 'https://storage.googleapis.com/foodrec-389515.appspot.com/recipe-REC000029.png', NULL, NULL);
+INSERT INTO public.recipe (recipeid, recipename, description, calories, userid, duration, status, image, instructions, "ingredient-list") VALUES ('REC000016', 'bánh xèo', '1 loại bánh', 87, '74007e14-840e-44f0-bc8c-99e3e9d1674c', 200, true, 'https://storage.googleapis.com/foodrec-389515.appspot.com/recipe-REC000029.png', NULL, NULL);
+INSERT INTO public.recipe (recipeid, recipename, description, calories, userid, duration, status, image, instructions, "ingredient-list") VALUES ('REC000002', 'Gà rán', 'Ngon vl', 200, '74007e14-840e-44f0-bc8c-99e3e9d1674c', 10, true, 'https://storage.googleapis.com/foodrec-389515.appspot.com/recipe-REC000002.jpg', 'Bột', NULL);
+INSERT INTO public.recipe (recipeid, recipename, description, calories, userid, duration, status, image, instructions, "ingredient-list") VALUES ('REC000003', 'mì xào', 'Mì xào hải sản với rau củ', 400, '74007e14-840e-44f0-bc8c-99e3e9d1674c', 20, true, 'https://storage.googleapis.com/foodrec-389515.appspot.com/recipe-REC000029.png', NULL, NULL);
+INSERT INTO public.recipe (recipeid, recipename, description, calories, userid, duration, status, image, instructions, "ingredient-list") VALUES ('REC000004', 'gà nướng', 'Gà nướng với gia vị đặc biệt', 350, '74007e14-840e-44f0-bc8c-99e3e9d1674c', 60, true, 'https://storage.googleapis.com/foodrec-389515.appspot.com/recipe-REC000029.png', NULL, NULL);
+INSERT INTO public.recipe (recipeid, recipename, description, calories, userid, duration, status, image, instructions, "ingredient-list") VALUES ('REC000006', 'sushi', 'Món ăn Nhật Bản truyền thống', 350, '74007e14-840e-44f0-bc8c-99e3e9d1674c', 40, true, 'https://storage.googleapis.com/foodrec-389515.appspot.com/recipe-REC000029.png', NULL, NULL);
+INSERT INTO public.recipe (recipeid, recipename, description, calories, userid, duration, status, image, instructions, "ingredient-list") VALUES ('REC000007', 'thịt kho tàu', 'Món ăn ngon của người Việt', 450, '74007e14-840e-44f0-bc8c-99e3e9d1674c', 90, true, 'https://storage.googleapis.com/foodrec-389515.appspot.com/recipe-REC000029.png', NULL, NULL);
+INSERT INTO public.recipe (recipeid, recipename, description, calories, userid, duration, status, image, instructions, "ingredient-list") VALUES ('REC000029', 'adasdadsada', 'ádadadasdasdsa', 12, '74007e14-840e-44f0-bc8c-99e3e9d1674c', 12, true, 'https://storage.googleapis.com/foodrec-389515.appspot.com/recipe-REC000029.png', 'đâsdasdasdsadsaasd', NULL);
+INSERT INTO public.recipe (recipeid, recipename, description, calories, userid, duration, status, image, instructions, "ingredient-list") VALUES ('REC000017', 'cơm xèo', '1 loại cơm ngon', 47, '74007e14-840e-44f0-bc8c-99e3e9d1674c', 200, true, 'https://storage.googleapis.com/foodrec-389515.appspot.com/recipe-REC000029.png', NULL, NULL);
+INSERT INTO public.recipe (recipeid, recipename, description, calories, userid, duration, status, image, instructions, "ingredient-list") VALUES ('REC000018', 'bún riêu cua', '1 loại bún truyền thống', 76, '74007e14-840e-44f0-bc8c-99e3e9d1674c', 200, true, 'https://storage.googleapis.com/foodrec-389515.appspot.com/recipe-REC000029.png', NULL, NULL);
+INSERT INTO public.recipe (recipeid, recipename, description, calories, userid, duration, status, image, instructions, "ingredient-list") VALUES ('REC000019', 'sinh tố xoài', '1 loại sinh tố thơm ngon', 76, '74007e14-840e-44f0-bc8c-99e3e9d1674c', 200, true, 'https://storage.googleapis.com/foodrec-389515.appspot.com/recipe-REC000029.png', NULL, NULL);
+INSERT INTO public.recipe (recipeid, recipename, description, calories, userid, duration, status, image, instructions, "ingredient-list") VALUES ('REC000020', 'cafe sữa đá', '1 loại cafe đặc trưng của Việt Nam', 67, '74007e14-840e-44f0-bc8c-99e3e9d1674c', 200, true, 'https://storage.googleapis.com/foodrec-389515.appspot.com/recipe-REC000029.png', NULL, NULL);
+INSERT INTO public.recipe (recipeid, recipename, description, calories, userid, duration, status, image, instructions, "ingredient-list") VALUES ('REC000021', 'trà sữa', '1 loại trà cực ngon', 34, '74007e14-840e-44f0-bc8c-99e3e9d1674c', 200, true, 'https://storage.googleapis.com/foodrec-389515.appspot.com/recipe-REC000029.png', NULL, NULL);
+INSERT INTO public.recipe (recipeid, recipename, description, calories, userid, duration, status, image, instructions, "ingredient-list") VALUES ('REC000022', 'bánh xèo', '1 loại bánh siêu mềm', 7, '74007e14-840e-44f0-bc8c-99e3e9d1674c', 200, true, 'https://storage.googleapis.com/foodrec-389515.appspot.com/recipe-REC000029.png', NULL, NULL);
+INSERT INTO public.recipe (recipeid, recipename, description, calories, userid, duration, status, image, instructions, "ingredient-list") VALUES ('REC000024', 'cơm niêu quảng ninh', 'cơm niêu không thể thiếu của mọi nhà', 22, '74007e14-840e-44f0-bc8c-99e3e9d1674c', 200, true, 'https://storage.googleapis.com/foodrec-389515.appspot.com/recipe-REC000029.png', NULL, NULL);
+INSERT INTO public.recipe (recipeid, recipename, description, calories, userid, duration, status, image, instructions, "ingredient-list") VALUES ('REC000025', 'cơm tấm', 'Cơm tấm sườn bì chả trứng', 480, '74007e14-840e-44f0-bc8c-99e3e9d1674c', 40, true, 'https://storage.googleapis.com/foodrec-389515.appspot.com/recipe-REC000029.png', NULL, NULL);
+INSERT INTO public.recipe (recipeid, recipename, description, calories, userid, duration, status, image, instructions, "ingredient-list") VALUES ('REC000030', 'Tôm chiên', 'ngon', 1234, '74007e14-840e-44f0-bc8c-99e3e9d1674c', 12, true, 'https://storage.googleapis.com/foodrec-389515.appspot.com/recipe-REC000030.png', 'Làm gì đó đi', NULL);
+INSERT INTO public.recipe (recipeid, recipename, description, calories, userid, duration, status, image, instructions, "ingredient-list") VALUES ('REC000031', 'Cơm xèo', 'gà ', 500, '74007e14-840e-44f0-bc8c-99e3e9d1674c', 50, true, 'https://storage.googleapis.com/foodrec-389515.appspot.com/recipe-c5d26bdd-d772-4d3c-8145-959173d15835.png', 'Gà ...', '300g gà, 200 gram muối');
+INSERT INTO public.recipe (recipeid, recipename, description, calories, userid, duration, status, image, instructions, "ingredient-list") VALUES ('REC000032', 'Cơm tấm', 'Lề đường', 500, '74007e14-840e-44f0-bc8c-99e3e9d1674c', 20, true, 'https://storage.googleapis.com/foodrec-389515.appspot.com/recipe-6d4f617b-d807-43ec-8e71-1d5e23a76167.gif', 'Nướng sườn', '1 kg sườn');
