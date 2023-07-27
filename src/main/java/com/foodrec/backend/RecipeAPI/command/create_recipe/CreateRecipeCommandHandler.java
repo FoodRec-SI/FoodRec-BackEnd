@@ -74,16 +74,6 @@ public class CreateRecipeCommandHandler implements Command.Handler<CreateRecipeC
         this.recipeTagRepository = recipeTagRepository;
     }
 
-    private String updateImage(String existingImage, MultipartFile image, String folder, String userId) {
-        ImageUtils imageUtils = new ImageUtils();
-        try {
-            imageUtils.deleteImage(existingImage);
-            return (String) imageUtils.upload(image, folder, userId);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
     @Transactional
     @Override
     public String handle(CreateRecipeCommand createRecipeCommand) {

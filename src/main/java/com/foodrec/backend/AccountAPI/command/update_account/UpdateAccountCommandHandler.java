@@ -5,6 +5,7 @@ import com.foodrec.backend.AccountAPI.dto.AccountDTO;
 import com.foodrec.backend.AccountAPI.dto.UpdateAccountDTO;
 import com.foodrec.backend.AccountAPI.entity.Account;
 import com.foodrec.backend.AccountAPI.repository.AccountRepository;
+import com.foodrec.backend.Exception.InvalidDataExceptionHandler;
 import com.foodrec.backend.Exception.NotFoundExceptionHandler;
 import com.foodrec.backend.Utils.ImageUtils;
 import org.modelmapper.ModelMapper;
@@ -29,6 +30,12 @@ public class UpdateAccountCommandHandler implements Command.Handler<UpdateAccoun
 
         ImageUtils imageUtils = new ImageUtils();
         UpdateAccountDTO updateAccountDTO = command.getUpdateAccountDTO();
+
+        if (!imageUtils.isImage(updateAccountDTO.getProfileImage())
+            || !imageUtils.isImage(updateAccountDTO.getBackgroundImage())){
+            throw new InvalidDataExceptionHandler("Invalid Image Type !");
+        }
+
         Optional<Account> optionalAccount = accountRepository.findById(command.getUserId());
         if (optionalAccount.isEmpty()) {
             throw new NotFoundExceptionHandler("Invalid Account !");
