@@ -65,7 +65,6 @@ public class CreateRatingCommandHandler implements Command.Handler<CreateRatingC
 
 
 
-
         /*Step 2: Saves the newest Rating into the Join Table (Rating).*/
         ratingRepository.save(rating);
         /*Step 3: Calculates and updates the average rating

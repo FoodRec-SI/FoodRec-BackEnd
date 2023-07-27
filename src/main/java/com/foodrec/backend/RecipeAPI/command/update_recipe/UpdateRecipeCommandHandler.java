@@ -95,25 +95,11 @@ public class UpdateRecipeCommandHandler implements Command.Handler<UpdateRecipeC
             return new SimpleRecipeDTO("null", "The logged-in user is NOT authorized " +
                     "to modify this recipe. Please log out and try again.");
         }
+        String imageUrl = updateRecipeDTO.getImageFile()==null
+                ? updateRecipeDTO.getImageUrl()
+                : imageUtils.updateImage(recipe.getImage(), updateRecipeDTO.getImageFile(),
+                "profile", String.valueOf(UUID.randomUUID()));
 
-        String imageUrl;
-        if (updateRecipeDTO.getImageUrl() == null &&
-                updateRecipeDTO.getImageFile() == null) {
-            return new SimpleRecipeDTO("null", "Both Image URL and File" +
-                    " can't be empty at the same time!");
-        }
-        if (updateRecipeDTO.getImageUrl() != null &&
-                updateRecipeDTO.getImageFile() != null) {
-            return new SimpleRecipeDTO("null", "Both Image URL and File" +
-                    " can't co-exist! Please choose one of them and try again.");
-        }
-        if (updateRecipeDTO.getImageUrl() == null
-                || updateRecipeDTO.getImageUrl().length() == 0) {
-            imageUrl = (String) imageUtils.upload(updateRecipeDTO.getImageFile(),
-                    "recipe", String.valueOf(UUID.randomUUID()));
-        } else {
-            imageUrl = updateRecipeDTO.getImageUrl();
-        }
         /*IMPORTANT: Updates for the Set<RecipeTag> MUST BE DONE on both the entity (Recipe)
          * and the Join Table (Recipe_Tag)*/
         Set<String> tagIdSet = updateRecipeDTO.getTagIdSet();
@@ -125,6 +111,7 @@ public class UpdateRecipeCommandHandler implements Command.Handler<UpdateRecipeC
                 .collect(Collectors.toSet());
         recipeTagRepository.saveAll(recipeTags);
         recipe = modelMapper.map(updateRecipeDTO, Recipe.class);
+        recipe.setUserId(command.getUserId());
         recipe.setPublicStatus(false);
         recipe.setStatus(true);
         recipe.setImage(imageUrl);
