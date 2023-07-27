@@ -25,6 +25,8 @@ public class IngredientListGeneratorQueryHandler implements Command.Handler<Ingr
     private String model;
     @Value("${OPENAI_API_URL}")
     private String apiUrl;
+    @Value("${OPENAI_API_MESSAGE}")
+    private String openaiMessage;
 
     public IngredientListGeneratorQueryHandler(PlanRepository planRepository, RestTemplate restTemplate) {
         this.planRepository = planRepository;
@@ -44,9 +46,7 @@ public class IngredientListGeneratorQueryHandler implements Command.Handler<Ingr
         if (!optionalPlan.get().getUserId().equals(query.getUserId())) {
             throw new UnauthorizedExceptionHandler("You are not authorized to access this plan.");
         }
-        String prompt = "Create me a shopping list based on these ingredients and return array. " +
-                "Do not reply anything else beside the json and do not put it in your code block just plain text. " +
-                "Count any duplicate items into one. Do not line break: " + optionalPlan.get().getIngredientList();
+        String prompt = openaiMessage + " " + optionalPlan.get().getIngredientList();
 
         IngredientListRequestDTO ingredientListRequestDTO = new IngredientListRequestDTO(model, prompt);
         IngredientListResponseDTO ingredientListResponseDTO = restTemplate.postForObject(apiUrl, ingredientListRequestDTO, IngredientListResponseDTO.class);

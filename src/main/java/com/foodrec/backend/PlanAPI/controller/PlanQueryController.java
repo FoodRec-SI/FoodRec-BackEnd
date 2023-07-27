@@ -8,7 +8,7 @@ import com.foodrec.backend.Exception.UnauthorizedExceptionHandler;
 import com.foodrec.backend.PlanAPI.dto.DateDTO;
 import com.foodrec.backend.PlanAPI.dto.ReadBasicPlanDTO;
 import com.foodrec.backend.PlanAPI.dto.ReadFullPlanDTO;
-import com.foodrec.backend.PlanAPI.query.get_plan_by_date.GetPlansBetweenDatesQuery;
+import com.foodrec.backend.PostAPI.query.get_posts_by_collection_id.get_plan_by_date.GetPlansBetweenDatesQuery;
 import com.foodrec.backend.PlanAPI.query.get_plan_by_id.GetPlanByIdQuery;
 import com.foodrec.backend.PlanAPI.query.ingredient_list_generate.IngredientListGeneratorQuery;
 import com.foodrec.backend.Utils.GetCurrentUserData;

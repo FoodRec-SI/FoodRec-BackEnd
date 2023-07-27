@@ -17,6 +17,7 @@ services:
       OPENAI_API_KEY: ${OPENAI_API_KEY}
       OPENAI_API_URL: ${OPENAI_API_URL}
       OPENAI_API_MODEL: ${OPENAI_API_MODEL}
+      OPENAI_API_MESSAGE: ${OPENAI_API_MESSAGE}
     depends_on:
       - db
       - redis-server

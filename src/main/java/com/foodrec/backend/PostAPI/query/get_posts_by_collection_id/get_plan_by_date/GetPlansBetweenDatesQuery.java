@@ -1,4 +1,4 @@
-package com.foodrec.backend.PlanAPI.query.get_plan_by_date;
+package com.foodrec.backend.PostAPI.query.get_posts_by_collection_id.get_plan_by_date;
 
 import an.awesome.pipelinr.Command;
 import com.foodrec.backend.PlanAPI.dto.ReadBasicPlanDTO;

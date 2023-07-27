@@ -2,19 +2,16 @@ package com.foodrec.backend.PostAPI.query.get_post_by_recipe_id;
 
 import an.awesome.pipelinr.Command;
 import com.foodrec.backend.Exception.InvalidDataExceptionHandler;
-import com.foodrec.backend.PostAPI.entity.PostStatus;
-import com.foodrec.backend.PostAPI.repository.PostRepository;
+import com.foodrec.backend.RecipeAPI.repository.RecipeRepository;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Arrays;
-
 @Component
 public class GetPostByRecipeIdQueryHandler implements Command.Handler<GetPostByRecipeIdQuery, Boolean> {
-    private final PostRepository postRepository;
+    private final RecipeRepository recipeRepository;
 
-    public GetPostByRecipeIdQueryHandler(PostRepository postRepository) {
-        this.postRepository = postRepository;
+    public GetPostByRecipeIdQueryHandler(RecipeRepository recipeRepository) {
+        this.recipeRepository = recipeRepository;
     }
 
     @Transactional
@@ -23,6 +20,6 @@ public class GetPostByRecipeIdQueryHandler implements Command.Handler<GetPostByR
         if (query.getRecipeId().isEmpty()) {
             throw new InvalidDataExceptionHandler("Invalid data!");
         }
-        return postRepository.existsByRecipeIdAndStatusIn(query.getRecipeId(), Arrays.asList(PostStatus.PENDING_APPROVAL.getValue(), PostStatus.APPROVED.getValue()));
+        return recipeRepository.findById(query.getRecipeId()).get().isPublicStatus();
     }
 }
