@@ -2,15 +2,13 @@ package com.foodrec.backend.RecipeAPI.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.Set;
 
 @Table(name = "recipe")
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
@@ -22,7 +20,7 @@ public class Recipe {
     @Column(name = "recipename")
     private String recipeName;
 
-    @Column(name = "description")
+    @Column(name = "description", columnDefinition = "text")
     private String description;
 
     @Column(name = "calories")
@@ -40,11 +38,14 @@ public class Recipe {
     @Column(name = "status")
     private boolean status;
 
-    @Column(name = "instructions")
+    @Column(name = "instructions", columnDefinition = "text")
     private String instructions;
 
-    @Column(name = "ingredient-list")
+    @Column(name = "ingredient-list", columnDefinition = "text")
     private String ingredientList;
+
+    @Column(name = "public-status")
+    private boolean publicStatus;
 
     @OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL)
     @JsonIgnore

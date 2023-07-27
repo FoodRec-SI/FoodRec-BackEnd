@@ -1,110 +1,29 @@
---
--- PostgreSQL database dump
---
-
--- Dumped from database version 15.3
--- Dumped by pg_dump version 15.3
-
--- Started on 2023-06-09 12:06:24
-
-SET statement_timeout = 0;
-SET lock_timeout = 0;
-SET idle_in_transaction_session_timeout = 0;
-SET client_encoding = 'UTF8';
-SET standard_conforming_strings = on;
-SELECT pg_catalog.set_config('search_path', '', false);
-SET check_function_bodies = false;
-SET xmloption = content;
-SET client_min_messages = warning;
-SET row_security = off;
-
-SET default_tablespace = '';
-
---
--- TOC entry 229 (class 1259 OID 21704)
--- Name: post; Type: TABLE; Schema: public; Owner: postgres
---
-
-
---
--- TOC entry 228 (class 1259 OID 21703)
--- Name: post_status_seq; Type: SEQUENCE; Schema: public; Owner: postgres
---
-
-
---
--- TOC entry 3373 (class 0 OID 21704)
--- Dependencies: 229
--- Data for Name: post; Type: TABLE DATA; Schema: public; Owner: postgres
---
-
-INSERT INTO public.post (postid, status, userid, moderatorid, recipename, description, calories, duration, image, "time", recipeid)
-VALUES ('POS000001', 2, '74007e14-840e-44f0-bc8c-99e3e9d1674c', 'ec1f01cf-1255-4987-bdd0-3ba039747648', 'cafe sữa đá', '1 loại cafe đặc trưng của Việt Nam', 67, 200, '\x00', '2023-06-06 13:54:25.306751', 'REC000023');
-
-INSERT INTO public.post (postid, status, userid, moderatorid, recipename, description, calories, duration, image, "time", recipeid)
-VALUES ('POS000002', 1, '74007e14-840e-44f0-bc8c-99e3e9d1674c', null, 'bánh xèo', '1 loại bánh', 87, 200, '\x00', '2023-06-06 13:54:25.306751', 'REC000016');
-
-INSERT INTO public.post (postid, status, userid, moderatorid, recipename, description, calories, duration, image, "time", recipeid)
-VALUES ('POS000003', 2, '74007e14-840e-44f0-bc8c-99e3e9d1674c', 'ec1f01cf-1255-4987-bdd0-3ba039747648', 'cơm xèo', '1 loại cơm ngon', 47, 200, '\x00', '2023-06-06 13:54:25.306751', 'REC000019');
-
-
---
--- TOC entry 3379 (class 0 OID 0)
--- Dependencies: 228
--- Name: post_status_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('public.post_status_seq', 1, false);
-
-
---
--- TOC entry 3224 (class 2606 OID 21710)
--- Name: post post_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
---
-
-
---
--- TOC entry 3221 (class 2606 OID 21993)
--- Name: post status; Type: CHECK CONSTRAINT; Schema: public; Owner: postgres
---
-
-
---
--- TOC entry 3222 (class 1259 OID 21862)
--- Name: fki_post_username_fkey; Type: INDEX; Schema: public; Owner: postgres
---
-
-
---
--- TOC entry 3225 (class 1259 OID 21994)
--- Name: post_recipeid_fkey; Type: INDEX; Schema: public; Owner: postgres
---
-
-
---
--- TOC entry 3226 (class 2606 OID 22032)
--- Name: post fki4kh1uspt4ppy89vu0oaxk2w1; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
---
--- TOC entry 3227 (class 2606 OID 21863)
--- Name: post post_morderatorname_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
-
---
--- TOC entry 3228 (class 2606 OID 22027)
--- Name: post post_recipeid_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
---
--- TOC entry 3229 (class 2606 OID 21868)
--- Name: post post_username_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
--- Completed on 2023-06-09 12:06:24
-
---
--- PostgreSQL database dump complete
---
-
+INSERT INTO public.post (postid, status, userid, moderatorid, recipename, description, calories, duration, recipeid, "created-time", image, "verified-time", "average-score", "ingredient-list", instruction) VALUES ('POS000012', 3, '74007e14-840e-44f0-bc8c-99e3e9d1674c', '0e018b53-39d5-4de0-97cc-164940baaaa0', 'mì hoành thánh', 'Mì hoành thánh ngon tuyệt', 380, 55, 'REC000013', '2023-06-25 10:03:47.52594', 'https://storage.googleapis.com/foodrec-389515.appspot.com/recipe-REC000029.png', '2023-06-25 10:31:46.621062', 0, NULL, NULL);
+INSERT INTO public.post (postid, status, userid, moderatorid, recipename, description, calories, duration, recipeid, "created-time", image, "verified-time", "average-score", "ingredient-list", instruction) VALUES ('POS000013', 3, '74007e14-840e-44f0-bc8c-99e3e9d1674c', '0e018b53-39d5-4de0-97cc-164940baaaa0', 'mì xào', 'Mì xào hải sản với rau củ', 400, 20, 'REC000003', '2023-06-25 10:04:31.182492', 'https://storage.googleapis.com/foodrec-389515.appspot.com/recipe-REC000029.png', '2023-06-25 10:31:50.036809', 0, NULL, NULL);
+INSERT INTO public.post (postid, status, userid, moderatorid, recipename, description, calories, duration, recipeid, "created-time", image, "verified-time", "average-score", "ingredient-list", instruction) VALUES ('POS000014', 3, '74007e14-840e-44f0-bc8c-99e3e9d1674c', '0e018b53-39d5-4de0-97cc-164940baaaa0', 'bánh tráng trộn', 'Bánh tráng trộn độc đáo', 280, 10, 'REC000014', '2023-06-25 10:05:12.09405', 'https://storage.googleapis.com/foodrec-389515.appspot.com/recipe-REC000029.png', '2023-06-25 10:31:53.159798', 0, NULL, NULL);
+INSERT INTO public.post (postid, status, userid, moderatorid, recipename, description, calories, duration, recipeid, "created-time", image, "verified-time", "average-score", "ingredient-list", instruction) VALUES ('POS000015', 3, '74007e14-840e-44f0-bc8c-99e3e9d1674c', '0e018b53-39d5-4de0-97cc-164940baaaa0', 'bún bò huế', 'Món ăn đặc sản của Huế', 420, 60, 'REC000015', '2023-06-25 10:05:17.942659', 'https://storage.googleapis.com/foodrec-389515.appspot.com/recipe-REC000029.png', '2023-06-25 10:31:58.375202', 0, NULL, NULL);
+INSERT INTO public.post (postid, status, userid, moderatorid, recipename, description, calories, duration, recipeid, "created-time", image, "verified-time", "average-score", "ingredient-list", instruction) VALUES ('POS000022', 1, '74007e14-840e-44f0-bc8c-99e3e9d1674c', NULL, 'bánh xèo', '1 loại bánh siêu mềm', 7, 200, 'REC000022', '2023-06-25 10:06:07.62963', 'https://storage.googleapis.com/foodrec-389515.appspot.com/recipe-REC000029.png', NULL, 0, NULL, NULL);
+INSERT INTO public.post (postid, status, userid, moderatorid, recipename, description, calories, duration, recipeid, "created-time", image, "verified-time", "average-score", "ingredient-list", instruction) VALUES ('POS000023', 1, '74007e14-840e-44f0-bc8c-99e3e9d1674c', NULL, 'Bánh sô kem', 'abcd', 123, 12, 'REC000023', '2023-06-25 10:06:10.762554', 'https://storage.googleapis.com/foodrec-389515.appspot.com/recipe-REC000026.jpg', NULL, 0, NULL, NULL);
+INSERT INTO public.post (postid, status, userid, moderatorid, recipename, description, calories, duration, recipeid, "created-time", image, "verified-time", "average-score", "ingredient-list", instruction) VALUES ('POS000024', 1, '74007e14-840e-44f0-bc8c-99e3e9d1674c', NULL, 'cơm niêu quảng ninh', 'cơm niêu không thể thiếu của mọi nhà', 22, 200, 'REC000024', '2023-06-25 10:06:16.775739', 'https://storage.googleapis.com/foodrec-389515.appspot.com/recipe-REC000029.png', NULL, 0, NULL, NULL);
+INSERT INTO public.post (postid, status, userid, moderatorid, recipename, description, calories, duration, recipeid, "created-time", image, "verified-time", "average-score", "ingredient-list", instruction) VALUES ('POS000026', 1, '74007e14-840e-44f0-bc8c-99e3e9d1674c', NULL, 'Khoai tây lắc', 'Rất ngon', 200, 10, 'REC000026', '2023-06-25 10:06:53.080127', 'https://storage.googleapis.com/foodrec-389515.appspot.com/recipe-REC000029.png', NULL, 0, NULL, NULL);
+INSERT INTO public.post (postid, status, userid, moderatorid, recipename, description, calories, duration, recipeid, "created-time", image, "verified-time", "average-score", "ingredient-list", instruction) VALUES ('POS000027', 1, '74007e14-840e-44f0-bc8c-99e3e9d1674c', NULL, 'Bánh tráng trộn', 'đéo biết', 123, 10, 'REC000027', '2023-06-25 10:07:02.966118', 'https://storage.googleapis.com/foodrec-389515.appspot.com/recipe-REC000030.png', NULL, 0, NULL, NULL);
+INSERT INTO public.post (postid, status, userid, moderatorid, recipename, description, calories, duration, recipeid, "created-time", image, "verified-time", "average-score", "ingredient-list", instruction) VALUES ('POS000016', 3, '74007e14-840e-44f0-bc8c-99e3e9d1674c', '0e018b53-39d5-4de0-97cc-164940baaaa0', 'bánh xèo', '1 loại bánh', 87, 200, 'REC000016', '2023-06-25 10:05:21.555564', 'https://storage.googleapis.com/foodrec-389515.appspot.com/recipe-REC000029.png', '2023-06-25 10:32:05.042897', 0, NULL, NULL);
+INSERT INTO public.post (postid, status, userid, moderatorid, recipename, description, calories, duration, recipeid, "created-time", image, "verified-time", "average-score", "ingredient-list", instruction) VALUES ('POS000017', 3, '74007e14-840e-44f0-bc8c-99e3e9d1674c', '0e018b53-39d5-4de0-97cc-164940baaaa0', 'cơm xèo', '1 loại cơm ngon', 47, 200, 'REC000017', '2023-06-25 10:05:25.928391', 'https://storage.googleapis.com/foodrec-389515.appspot.com/recipe-REC000029.png', '2023-06-25 10:32:08.030186', 0, NULL, NULL);
+INSERT INTO public.post (postid, status, userid, moderatorid, recipename, description, calories, duration, recipeid, "created-time", image, "verified-time", "average-score", "ingredient-list", instruction) VALUES ('POS000018', 3, '74007e14-840e-44f0-bc8c-99e3e9d1674c', '0e018b53-39d5-4de0-97cc-164940baaaa0', 'bún riêu cua', '1 loại bún truyền thống', 76, 200, 'REC000018', '2023-06-25 10:05:32.987377', 'https://storage.googleapis.com/foodrec-389515.appspot.com/recipe-REC000029.png', '2023-06-25 10:32:10.887149', 0, NULL, NULL);
+INSERT INTO public.post (postid, status, userid, moderatorid, recipename, description, calories, duration, recipeid, "created-time", image, "verified-time", "average-score", "ingredient-list", instruction) VALUES ('POS000019', 3, '74007e14-840e-44f0-bc8c-99e3e9d1674c', '0e018b53-39d5-4de0-97cc-164940baaaa0', 'sinh tố xoài', '1 loại sinh tố thơm ngon', 76, 200, 'REC000019', '2023-06-25 10:05:38.014102', 'https://storage.googleapis.com/foodrec-389515.appspot.com/recipe-REC000029.png', '2023-06-25 10:32:14.033235', 0, NULL, NULL);
+INSERT INTO public.post (postid, status, userid, moderatorid, recipename, description, calories, duration, recipeid, "created-time", image, "verified-time", "average-score", "ingredient-list", instruction) VALUES ('POS000003', 2, '74007e14-840e-44f0-bc8c-99e3e9d1674c', '0e018b53-39d5-4de0-97cc-164940baaaa0', 'gà nướng', 'Gà nướng với gia vị đặc biệt', 350, 60, 'REC000004', '2023-06-25 10:02:35.596187', 'https://storage.googleapis.com/foodrec-389515.appspot.com/recipe-REC000029.png', '2023-06-25 10:28:32.520462', 4, NULL, NULL);
+INSERT INTO public.post (postid, status, userid, moderatorid, recipename, description, calories, duration, recipeid, "created-time", image, "verified-time", "average-score", "ingredient-list", instruction) VALUES ('POS000004', 2, '74007e14-840e-44f0-bc8c-99e3e9d1674c', '0e018b53-39d5-4de0-97cc-164940baaaa0', 'Gà', '12133', 12, 21, 'REC000005', '2023-06-25 10:02:44.603573', 'https://storage.googleapis.com/foodrec-389515.appspot.com/recipe-REC000005.png', '2023-06-25 10:28:35.405976', 4.3, NULL, NULL);
+INSERT INTO public.post (postid, status, userid, moderatorid, recipename, description, calories, duration, recipeid, "created-time", image, "verified-time", "average-score", "ingredient-list", instruction) VALUES ('POS000002', 2, '74007e14-840e-44f0-bc8c-99e3e9d1674c', '0e018b53-39d5-4de0-97cc-164940baaaa0', 'Gà rán', 'Ngon vl', 200, 10, 'REC000002', '2023-06-25 10:02:27.745844', 'https://storage.googleapis.com/foodrec-389515.appspot.com/recipe-REC000002.jpg', '2023-06-25 10:28:29.89932', 2, NULL, NULL);
+INSERT INTO public.post (postid, status, userid, moderatorid, recipename, description, calories, duration, recipeid, "created-time", image, "verified-time", "average-score", "ingredient-list", instruction) VALUES ('POS000010', 2, '74007e14-840e-44f0-bc8c-99e3e9d1674c', '0e018b53-39d5-4de0-97cc-164940baaaa0', 'gỏi cuốn', 'Gỏi cuốn tươi mát', 200, 15, 'REC000011', '2023-06-25 10:03:37.21626', 'https://storage.googleapis.com/foodrec-389515.appspot.com/recipe-REC000029.png', '2023-06-25 10:28:57.795001', 4.1, NULL, NULL);
+INSERT INTO public.post (postid, status, userid, moderatorid, recipename, description, calories, duration, recipeid, "created-time", image, "verified-time", "average-score", "ingredient-list", instruction) VALUES ('POS000001', 2, '74007e14-840e-44f0-bc8c-99e3e9d1674c', '0e018b53-39d5-4de0-97cc-164940baaaa0', 'bún chả cá ', 'Món ăn truyền thống của Việt Nam', 250, 20, 'REC000001', '2023-06-25 10:02:19.542277', 'https://storage.googleapis.com/foodrec-389515.appspot.com/recipe-REC000001.jpg', '2023-06-25 10:28:25.33962', 3, NULL, NULL);
+INSERT INTO public.post (postid, status, userid, moderatorid, recipename, description, calories, duration, recipeid, "created-time", image, "verified-time", "average-score", "ingredient-list", instruction) VALUES ('POS000011', 2, '74007e14-840e-44f0-bc8c-99e3e9d1674c', '0e018b53-39d5-4de0-97cc-164940baaaa0', 'bò lúc lắc', 'Bò lúc lắc kiểu Sài Gòn', 400, 30, 'REC000012', '2023-06-25 10:03:42.429036', 'https://storage.googleapis.com/foodrec-389515.appspot.com/recipe-REC000029.png', '2023-06-25 10:31:43.826059', 4, NULL, NULL);
+INSERT INTO public.post (postid, status, userid, moderatorid, recipename, description, calories, duration, recipeid, "created-time", image, "verified-time", "average-score", "ingredient-list", instruction) VALUES ('POS000020', 3, '74007e14-840e-44f0-bc8c-99e3e9d1674c', '0e018b53-39d5-4de0-97cc-164940baaaa0', 'cafe sữa đá', '1 loại cafe đặc trưng của Việt Nam', 67, 200, 'REC000020', '2023-06-25 10:05:52.912353', 'https://storage.googleapis.com/foodrec-389515.appspot.com/recipe-REC000029.png', '2023-06-25 10:32:17.676574', 0, NULL, NULL);
+INSERT INTO public.post (postid, status, userid, moderatorid, recipename, description, calories, duration, recipeid, "created-time", image, "verified-time", "average-score", "ingredient-list", instruction) VALUES ('POS000030', 2, '74007e14-840e-44f0-bc8c-99e3e9d1674c', '0e018b53-39d5-4de0-97cc-164940baaaa0', 'Tôm chiên', 'ngon', 1234, 12, 'REC000030', '2023-06-25 10:07:29.63899', 'https://storage.googleapis.com/foodrec-389515.appspot.com/recipe-REC000030.png', NULL, 0, NULL, NULL);
+INSERT INTO public.post (postid, status, userid, moderatorid, recipename, description, calories, duration, recipeid, "created-time", image, "verified-time", "average-score", "ingredient-list", instruction) VALUES ('POS000029', 2, '74007e14-840e-44f0-bc8c-99e3e9d1674c', '0e018b53-39d5-4de0-97cc-164940baaaa0', 'Heo quay', 'ngon', 500, 100, 'REC000029', '2023-06-25 10:07:20.228153', 'https://storage.googleapis.com/foodrec-389515.appspot.com/recipe-REC000032.png', NULL, 0, NULL, NULL);
+INSERT INTO public.post (postid, status, userid, moderatorid, recipename, description, calories, duration, recipeid, "created-time", image, "verified-time", "average-score", "ingredient-list", instruction) VALUES ('POS000005', 2, '74007e14-840e-44f0-bc8c-99e3e9d1674c', '0e018b53-39d5-4de0-97cc-164940baaaa0', 'sushi', 'Món ăn Nhật Bản truyền thống', 350, 40, 'REC000006', '2023-06-25 10:02:53.529484', 'https://storage.googleapis.com/foodrec-389515.appspot.com/recipe-REC000029.png', '2023-06-25 10:28:38.323611', 3.5, NULL, NULL);
+INSERT INTO public.post (postid, status, userid, moderatorid, recipename, description, calories, duration, recipeid, "created-time", image, "verified-time", "average-score", "ingredient-list", instruction) VALUES ('POS000006', 2, '74007e14-840e-44f0-bc8c-99e3e9d1674c', '0e018b53-39d5-4de0-97cc-164940baaaa0', 'thịt kho tàu', 'Món ăn ngon của người Việt', 450, 90, 'REC000007', '2023-06-25 10:03:03.799638', 'https://storage.googleapis.com/foodrec-389515.appspot.com/recipe-REC000029.png', '2023-06-25 10:28:41.203599', 4.8, NULL, NULL);
+INSERT INTO public.post (postid, status, userid, moderatorid, recipename, description, calories, duration, recipeid, "created-time", image, "verified-time", "average-score", "ingredient-list", instruction) VALUES ('POS000007', 2, '74007e14-840e-44f0-bc8c-99e3e9d1674c', '0e018b53-39d5-4de0-97cc-164940baaaa0', 'cá hồi nướng', 'Cá hồi nướng mỡ hành', 320, 35, 'REC000008', '2023-06-25 10:03:13.958589', 'https://storage.googleapis.com/foodrec-389515.appspot.com/recipe-REC000029.png', '2023-06-25 10:28:44.123895', 3.7, NULL, NULL);
+INSERT INTO public.post (postid, status, userid, moderatorid, recipename, description, calories, duration, recipeid, "created-time", image, "verified-time", "average-score", "ingredient-list", instruction) VALUES ('POS000008', 2, '74007e14-840e-44f0-bc8c-99e3e9d1674c', '0e018b53-39d5-4de0-97cc-164940baaaa0', 'súp cua', 'Súp cua tuyệt hảo cho ngày se lạnh', 280, 25, 'REC000009', '2023-06-25 10:03:22.741487', 'https://storage.googleapis.com/foodrec-389515.appspot.com/recipe-REC000029.png', '2023-06-25 10:28:48.683784', 2.5, NULL, NULL);
+INSERT INTO public.post (postid, status, userid, moderatorid, recipename, description, calories, duration, recipeid, "created-time", image, "verified-time", "average-score", "ingredient-list", instruction) VALUES ('POS000021', 2, '74007e14-840e-44f0-bc8c-99e3e9d1674c', '0e018b53-39d5-4de0-97cc-164940baaaa0', 'trà sữa', '1 loại trà cực ngon', 34, 200, 'REC000021', '2023-06-25 10:06:03.241816', 'https://storage.googleapis.com/foodrec-389515.appspot.com/recipe-REC000029.png', '2023-07-04 00:48:00.958459', 0, NULL, NULL);
+INSERT INTO public.post (postid, status, userid, moderatorid, recipename, description, calories, duration, recipeid, "created-time", image, "verified-time", "average-score", "ingredient-list", instruction) VALUES ('POS000031', 2, '74007e14-840e-44f0-bc8c-99e3e9d1674c', '0e018b53-39d5-4de0-97cc-164940baaaa0', 'Cơm xèo', 'gà ', 500, 50, 'REC000031', '2023-07-04 17:36:47.328306', 'https://storage.googleapis.com/foodrec-389515.appspot.com/recipe-c5d26bdd-d772-4d3c-8145-959173d15835.png', '2023-07-05 01:15:34.866347', 0, '300g gà, 200 gram muối', 'Gà ...');
+INSERT INTO public.post (postid, status, userid, moderatorid, recipename, description, calories, duration, recipeid, "created-time", image, "verified-time", "average-score", "ingredient-list", instruction) VALUES ('POS000032', 2, '74007e14-840e-44f0-bc8c-99e3e9d1674c', '0e018b53-39d5-4de0-97cc-164940baaaa0', 'Cơm tấm', 'Lề đường', 500, 20, 'REC000032', '2023-07-08 15:53:59.816505', 'https://storage.googleapis.com/foodrec-389515.appspot.com/recipe-6d4f617b-d807-43ec-8e71-1d5e23a76167.gif', '2023-07-08 15:54:23.682137', 5, '1 kg sườn', 'Nướng sườn');

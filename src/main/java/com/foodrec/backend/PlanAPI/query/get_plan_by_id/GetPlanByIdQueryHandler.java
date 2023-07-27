@@ -2,13 +2,8 @@ package com.foodrec.backend.PlanAPI.query.get_plan_by_id;
 
 import an.awesome.pipelinr.Command;
 import com.foodrec.backend.MealAPI.dto.MealDTO;
-import com.foodrec.backend.MealAPI.entity.Meal;
-import com.foodrec.backend.MealAPI.repository.MealPostRepository;
-import com.foodrec.backend.MealAPI.repository.MealRepository;
-import com.foodrec.backend.PlanAPI.dto.ReadBasicPlanDTO;
 import com.foodrec.backend.PlanAPI.dto.ReadFullPlanDTO;
 import com.foodrec.backend.PlanAPI.entity.Plan;
-import com.foodrec.backend.PlanAPI.query.get_plan_by_date.GetPlansBetweenDatesQuery;
 import com.foodrec.backend.PlanAPI.repository.PlanRepository;
 import com.foodrec.backend.PostAPI.dto.PostDTO;
 import com.foodrec.backend.PostAPI.entity.Post;
@@ -17,15 +12,14 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 @Component
 public class GetPlanByIdQueryHandler implements Command.Handler<GetPlanByIdQuery,ReadFullPlanDTO> {
-    private PlanRepository planRepository;
-    private PostRepository postRepository;
-    private ModelMapper modelMapper;
+    private final PlanRepository planRepository;
+    private final PostRepository postRepository;
+    private final ModelMapper modelMapper;
     public GetPlanByIdQueryHandler(ModelMapper modelMapper,
                                    PlanRepository planRepository,
                                    PostRepository postRepository){

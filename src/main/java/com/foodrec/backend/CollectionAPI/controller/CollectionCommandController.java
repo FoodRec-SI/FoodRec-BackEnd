@@ -88,7 +88,7 @@ public class CollectionCommandController {
             HttpStatus status = e.getClass().getAnnotation(ResponseStatus.class).value();
             return ResponseEntity.status(status).body(e.getMessage());
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Internal server error!");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
         return responseEntity;
     }
@@ -108,7 +108,7 @@ public class CollectionCommandController {
             HttpStatus status = e.getClass().getAnnotation(ResponseStatus.class).value();
             return ResponseEntity.status(status).body(e.getMessage());
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Internal server error!");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
         return responseEntity;
     }
@@ -129,7 +129,7 @@ public class CollectionCommandController {
             return ResponseEntity.status(status).body(e.getMessage());
         } catch (Exception e) {
             System.out.println(e.getMessage());
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Internal server error!");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
         return responseEntity;
     }
