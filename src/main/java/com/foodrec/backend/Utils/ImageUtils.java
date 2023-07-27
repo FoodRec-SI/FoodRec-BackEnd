@@ -84,4 +84,35 @@ public class ImageUtils {
         }
     }
 
+    private static final byte[] JPEG_SIGNATURE = new byte[]{(byte) 0xFF, (byte) 0xD8, (byte) 0xFF, (byte) 0xE0};
+    private static final byte[] PNG_SIGNATURE = new byte[]{(byte) 0x89, (byte) 0x50, (byte) 0x4E, (byte) 0x47};
+    private static final byte[] GIF_SIGNATURE = new byte[]{(byte) 0x47, (byte) 0x49, (byte) 0x46, (byte) 0x38};
+
+    private static boolean isSignatureMatch(byte[] fileSignature, byte[] expectedSignature) {
+        for (int i = 0; i < expectedSignature.length; i++) {
+            if (fileSignature[i] != expectedSignature[i]) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public boolean isImage(MultipartFile file) {
+        if (file == null) {
+            return true;
+        }
+        try (InputStream inputStream = file.getInputStream()) {
+            byte[] fileSignature = new byte[4];
+            inputStream.read(fileSignature);
+
+            // Check the file signature against known image format signatures
+            return isSignatureMatch(fileSignature, JPEG_SIGNATURE) ||
+                    isSignatureMatch(fileSignature, PNG_SIGNATURE) ||
+                    isSignatureMatch(fileSignature, GIF_SIGNATURE) ;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
 }

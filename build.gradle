@@ -40,10 +40,6 @@ dependencies {
     testImplementation "org.testcontainers:junit-jupiter:1.18.3"
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation "org.flywaydb:flyway-core"
-
-    implementation "org.springframework.boot:spring-boot-starter-websocket"
-    implementation group: 'org.springframework.security', name: 'spring-security-messaging', version: '5.6.0'
-
 }
 
 bootJar {
